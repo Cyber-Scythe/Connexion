@@ -25,25 +25,33 @@ _List the most important questions you have about your design, or things that yo
 
 ## 3. Use Cases
 
-<b>U1.</b> As a Connexion customer, I want to be able to create a profile containing information about me so that similar people can find me.
+<b>U1.</b> As a Connexion customer, I want to be able to create a user profile. The benefit of this is being able to get matched
+            with and connect with other users
 
-<b>U2.</b> As a Connexion customer, I want to be able to update my profile information so that it best reflects any changes.
+<b>U2.</b> As a Connexion customer, I want to be able to update my profile information. The benefit of this is that any changes
+            in the user's information can be reflected in their profile.
 
 <b>U3.</b> As a Connexion customer, I want to be able to view a list of the most compatible users within a certain 
-           distance from me and that I have not previously connected with so that I can meet new people with similar interests.
+           distance from me and that I have not previously connected. The benefit of this is that the user will be able to
+            connect with new users who are local. 
 
-<b>U4.</b> As a Connexion customer, I want to be able to send connection invitations to other users so that I can initiate new connections.
+<b>U4.</b> As a Connexion customer, I want to be able to view a list of all the most compatible users that I have not
+           previously connected with. The benefit of this is that the user will be able to see all possible connections.
 
-<b>U5.</b> As a Connexion customer, I want to be able to receive connection invitations from other users so that they can initiate new connections with              me.
+<b>U5.</b> As a Connexion customer, I want to be able to send connection invitations to other users. The benefit of this is
+           being able to initiate new connections with other users.
 
-<b>U6.</b> As a Connexion customer, I want to be able to send and receive private messages so that I can communicate with other users.
+<b>U6.</b> As a Connexion customer, I want to be able to receive connection invitations from other users. The benefit of this
+           is that others can initiate new connections with the user.
 
-<b>7.</b> As a Connexion customer, I want to be able to delete private messages so that my inbox is more manageable.
+<b>U7.</b> As a Connexion customer, I want to be able to send and receive private messages. The benefit of this is being able
+           to communicate with users
 
-<b>U8.</b> As a Connexion customer, I want to be able to block specific users from contacting me so that I can prevent unwanted contact.
+<b>U8.</b> As a Connexion customer, I want to be able to delete private messages. The benefit of this is that the inbox will
+          be more manageable.
 
-<b>U9.</b> As a Connexion customer, I want to have the option to delete my profile so that I can remove my information when I no longer wish to use
-           this service.
+<b>U9.</b> As a Connexion customer, I want to be able to block specific users from contacting me. The benefit of this is that
+           it prevents unwanted contact.
  
 
 ---
@@ -68,7 +76,7 @@ _Clarify which parts of the problem you intend to solve. It helps reviewers know
 * Sending/receiving connection invitations
 * invitations to connect expiring after 24 hours
 * returning a list of most compatible users that have not been previously connected with and that have not been 
-  declined an invitation to connect
+  declined, or themselves declined, an invitation to connect
 * returning a list of most compatible users based on the user's current location
 
 ---
