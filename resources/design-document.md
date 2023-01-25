@@ -17,31 +17,33 @@ _List the most important questions you have about your design, or things that yo
  you might like help working through._
 
 1. Should users be filtered by their set location or by their current location?
-2. How should the issue of blank "about me" sections be dealt with?
-3. 
+2. How should the issues of a user not wanting to use their location be dealt with?
+3. How should the issue of blank "about me" sections be dealt with?
+ 
 
 ---
 
 ## 3. Use Cases
 
-<b>U1.</b> As a Connexion customer, I want to be able to create a profile containing information about me.
+<b>U1.</b> As a Connexion customer, I want to be able to create a profile containing information about me so that similar people can find me.
 
-<b>U2.</b> As a Connexion customer, I want to be able to update my profile information.
+<b>U2.</b> As a Connexion customer, I want to be able to update my profile information so that it best reflects any changes.
 
 <b>U3.</b> As a Connexion customer, I want to be able to view a list of the most compatible users within a certain 
-           distance from me and that I have not previously connected with.
+           distance from me and that I have not previously connected with so that I can meet new people with similar interests.
 
-<b>U4.</b> As a Connexion customer, I want to be able to send connection invitations to other users.
+<b>U4.</b> As a Connexion customer, I want to be able to send connection invitations to other users so that I can initiate new connections.
 
-<b>U5.</b> As a Connexion customer, I want to be able to receive connection invitations from other users.
+<b>U5.</b> As a Connexion customer, I want to be able to receive connection invitations from other users so that they can initiate new connections with              me.
 
-<b>U6.</b> As a Connexion customer, I want to be able to send and receive private messages.
+<b>U6.</b> As a Connexion customer, I want to be able to send and receive private messages so that I can communicate with other users.
 
-<b>7.</b> As a Connexion customer, I want to be able to delete private messages.
+<b>7.</b> As a Connexion customer, I want to be able to delete private messages so that my inbox is more manageable.
 
-<b>U8.</b> As a Connexion customer, I want to be able to block specific users from contacting me.
+<b>U8.</b> As a Connexion customer, I want to be able to block specific users from contacting me so that I can prevent unwanted contact.
 
-<b>U9.</b> As a Connexion customer, I want to have the option to delete my profile.
+<b>U9.</b> As a Connexion customer, I want to have the option to delete my profile so that I can remove my information when I no longer wish to use
+           this service.
  
 
 ---
