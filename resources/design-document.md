@@ -240,8 +240,19 @@ connections // stringSet
 ```
 messageId // string
 dateTimeSent // string
-sentBy // string [partition key]
-receivedBy // string [sort key]
+sentBy // string 
+receivedBy // string [partition key]
+messageContent // string
+readStatus // boolean
+```
+
+### 7.3. `GET_EMAILS_FROM_USER_INDEX`
+
+```
+messageId // string
+dateTimeSent // string
+sentBy // string [sort key]
+receivedBy // string [partition key]
 messageContent // string
 readStatus // boolean
 ```
@@ -251,6 +262,8 @@ readStatus // boolean
 # 8. Class Diagram
 ![...](images/ClassDiagram.png)
 ---
+
+
 # 9. Pages
 
 

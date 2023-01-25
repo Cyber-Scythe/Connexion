@@ -443,6 +443,21 @@ Resources:
       BillingMode: "PAY_PER_REQUEST"
       TableName: "inbox"
 
+GlobalSecondaryIndexes:
+  - IndexName: GET_EMAILS_FROM_USER_INDEX
+KeySchema:
+  - AttributeName: receivedBy
+    KeyType: HASH
+  - AttributeName: sentBy
+    KeyType: RANGE
+Projection:
+NonKeyAttributes:
+  - messageId
+  - dateTimeSent
+  - messageContent
+  - readStatus
+ProjectionType: INCLUDE
+
 #-----------------------------------------------------
 # The outputs defined below will be printed
 #  to the screen after a successful deploy
