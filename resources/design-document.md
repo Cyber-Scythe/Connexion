@@ -256,7 +256,12 @@ messageContent // string
 readStatus // boolean
 ```
 
-### 7.3. `GET_EMAILS_FROM_USER_INDEX`
+### 7.3. `hobbies` 
+```
+hobbyName // string
+```
+
+### 7.4. `GET_EMAILS_FROM_USER_INDEX`
 
 ```
 messageId // string
