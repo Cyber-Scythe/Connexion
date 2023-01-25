@@ -290,10 +290,9 @@ class GetInboxMessagesActivity{
 }
 
 class GetInboxMessagesActivityRequest {
-    -String sentBy
     -String receivedBy
 
-    GetInboxMessagesActivityRequest(String sentBy, String receivedBy)
+    GetInboxMessagesActivityRequest(String receivedBy)
 
     +getSender(): String
     +getRecipient(): String
@@ -302,7 +301,7 @@ class GetInboxMessagesActivityRequest {
 class GetInboxMessagesActivityResult {
     -List<MessageModel> messages
 
-    +GetInboxMessagesActivityResult(String sentBy, String receivedBy)
+    +GetInboxMessagesActivityResult(String receivedBy)
 
     +getMessages(): List<MessageModel>
     +toString(): String
@@ -310,13 +309,44 @@ class GetInboxMessagesActivityResult {
 }
 
 class GetInboxMessagesLambda {
-    String sentBy
     String receivedBy
 
     LambdaResponse handleRequest(AuthenticatedLambdaRequest<GetInboxMessagesActivityRequest>, Context)
 }
 
-class DeleteMessagesActivity{
+class GetMessagesFromUserActivity {
+    MessageDao messageDao
+    
+    handleRequest(GetMessagesFromUserActivityRequest request): GetMessagesFromUserActivityResult
+}
+
+class GetMessagesFromUserActivityRequest {
+    String sentBy
+    String receivedBy
+    
+    GetMessagesFromUserActivityRequest(receivedBy, sentBy)
+    
+    getMessagesFromUser(): List<MessageModel>
+}
+
+class GetMessagesFromUserActivityResult {
+    List<MessageModel> messages
+    
+    GetMessagesFromUserActivityResult(List<MessageModel> messages)
+    
+    List<MessageModel> getMessagesFromUser()
+    String toString()
+    Builder builder()
+    
+}
+
+class GetMessagesFromUserLambda {
+    List<MessageModel> messages
+
+    LambdaResponse handleRequest(AuthenticatedLambdaRequest<GetMessagesFromUserActivityRequest>, Context)
+}
+
+class DeleteMessagesActivity {
     -MessageDao messageDao
 
     +DeleteMessagesActivity((MessageDao messageDao)
@@ -326,7 +356,7 @@ class DeleteMessagesActivity{
 class DeleteMessagesActivityRequest {
     -List<MessageModel> messages
 
-    GetInboxMessagesActivityRequest(List<MessageModel> messages)
+    DeleteMessagesActivityRequest(List<MessageModel> messages)
 
     +getMessages(): List<MessageModel>
 }
