@@ -13,6 +13,10 @@ CreateNewMessageLambda -- CreateNewMessageActivity
 CreateNewMessageActivity -- MessageDao
 GetInboxMessagesLambda -- GetInboxMessagesActivity
 GetInboxMessagesActivity -- MessageDao
+
+GetMessagesFromUserLambda -- GetMessagesFromUserActivity
+GetMessagesFromUserActivity -- MessageDao
+
 DeleteMessagesLambda -- DeleteMessagesActivity
 DeleteMessagesActivity -- MessageDao
 

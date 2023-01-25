@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Music Playlist Service
+  title:  Service
   description: "This is the API definition for the Music Playlist Service."
   version: 1.0.0
 
