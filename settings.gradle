@@ -9,3 +9,4 @@
 
 rootProject.name = 'Connexion'
 include('lib')
+include 'ConnexionServiceLambda'

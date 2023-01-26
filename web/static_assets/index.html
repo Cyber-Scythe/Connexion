@@ -1,32 +1,7 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <script type="text/javascript" src="assets/searchPlaylists.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-</head>
-
-<body class="background">
-    <header class="header" id="header"></header>
-    <div class="card">
-        <h2>Search Playlists</h2>
-        <form class="card-content" id="search-playlists-form">
-            <p class="form-field">
-                <label>Search by name or tag</label>
-                <input type="text" class="validated-field" id="search-criteria" placeholder="smooth-jamz" autofocus>
-                <sub>Search is case-sensitive and tags must match exactly.</sub>
-            </p>
-        </form>
-        <p class="button-group">
-            <a href="#" class="button" id="search-btn">Search</a>
-            <a href="createPlaylist.html" class="button">New Playlist</a>
-        </p>
-    </div>
-    <div class="card hidden" id='search-results-container'>
-        <h3>Results for <span id="search-criteria-display"></span></h3>
-        <div id="search-results-display">
-        </div>
-    </div>
+<body>
+    <h3>Welcome to Connexion!</h3>
+    <p><a href="https://connexion.auth.us-east-2.amazoncognito.com/login?client_id=2k37gko9a2g15hrelkgqcg100i&response_type=code&scope=email+openid+phone&redirect_uri=https://localhost:8000/logged_in.html">Sign-up or Login</a></p>
 </body>
-
 </html>
