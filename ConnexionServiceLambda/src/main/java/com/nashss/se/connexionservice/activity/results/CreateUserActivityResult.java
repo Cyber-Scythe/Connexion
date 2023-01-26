@@ -1,5 +1,7 @@
 package com.nashss.se.connexionservice.activity.results;
 
+import com.nashss.se.connexionservice.models.UserModel;
+
 public class CreateUserActivityResult {
     private final UserModel user;
 
@@ -13,7 +15,7 @@ public class CreateUserActivityResult {
 
     @Override
     public String toString() {
-        return "CreateUserActivityResults{" +
+        return "CreateUserActivityResult{" +
                 "user=" + user +
                 '}';
     }

@@ -1,9 +1,10 @@
 package com.nashss.se.connexionservice.lambda;
 
-import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.nashss.se.connexionservice.activity.requests.CreateUserActivityRequest;
 import com.nashss.se.connexionservice.activity.results.CreateUserActivityResult;
+
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
 
 
 public class CreateUserLambda
@@ -18,8 +19,10 @@ public class CreateUserLambda
                             CreateUserActivityRequest.builder()
                                     .withName(unauthenticatedRequest.getName())
                                     .withEmail(unauthenticatedRequest.getEmail())
+                                    .withBirthdate(claims.get("birthdate"))
                                     .withCity(claims.get("city"))
                                     .withState(claims.get("state"))
+                                    .withPersonalityType(claims.get("personalityType"))
                                     .build());
                 },
                 (request, serviceComponent) ->

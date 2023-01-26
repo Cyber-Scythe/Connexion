@@ -224,7 +224,7 @@ Resources:
     Properties:
       Role: !GetAtt AccessRole.Arn
       CodeUri: ConnexionServiceLambda
-      Handler: com.nashss.se.connexionservice.lambda.LoginLambda::handleRequest
+      Handler: com.nashss.se.connexionservice.lambda.CreateUserLambda::handleRequest
       Runtime: java11
       Architectures:
         - x86_64
@@ -250,11 +250,7 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
-        - AttributeName: "id"
-          AttributeType: "S"
         - AttributeName: "email"
-          AttributeType: "S"
-        - AttributeName: "password"
           AttributeType: "S"
         - AttributeName: "name"
           AttributeType: "S"
@@ -280,7 +276,7 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
-        - AttributeName: "id"
+        - AttributeName: "messageId"
           AttributeType: "S"
         - AttributeName: "sentBy"
           AttributeType: "S"
