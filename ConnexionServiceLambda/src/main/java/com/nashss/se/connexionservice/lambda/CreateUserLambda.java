@@ -6,6 +6,9 @@ import com.nashss.se.connexionservice.activity.results.CreateUserActivityResult;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 
+import javax.management.InvalidAttributeValueException;
+import java.util.List;
+
 
 public class CreateUserLambda
         extends LambdaActivityRunner<CreateUserActivityRequest, CreateUserActivityResult>
@@ -15,6 +18,10 @@ public class CreateUserLambda
         return super.runActivity(
                 () -> {
                     CreateUserActivityRequest unauthenticatedRequest = input.fromBody(CreateUserActivityRequest.class);
+
+                    List<String> hobbies = input.fromBody(CreateUserActivityRequest.class).getHobbies();
+                    List<String> connections = input.fromBody(CreateUserActivityRequest.class).getConnections();
+
                     return input.fromUserClaims(claims ->
                             CreateUserActivityRequest.builder()
                                     .withName(unauthenticatedRequest.getName())
@@ -23,10 +30,18 @@ public class CreateUserLambda
                                     .withCity(claims.get("city"))
                                     .withState(claims.get("state"))
                                     .withPersonalityType(claims.get("personalityType"))
+                                    .withHobbies(hobbies)
+                                    .withConnections(connections)
                                     .build());
                 },
                 (request, serviceComponent) ->
-                        serviceComponent.provideCreateUserActivity().handleRequest(request)
+                {
+                    try {
+                        return serviceComponent.provideCreateUserActivity().handleRequest(request);
+                    } catch (InvalidAttributeValueException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
         );
     }
 }

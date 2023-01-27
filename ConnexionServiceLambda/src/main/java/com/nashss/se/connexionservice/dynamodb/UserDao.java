@@ -1,8 +1,6 @@
 package com.nashss.se.connexionservice.dynamodb;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.nashss.se.connexionservice.dynamodb.models.User;
 import com.nashss.se.connexionservice.exceptions.UserNotFoundException;
 import com.nashss.se.connexionservice.metrics.MetricsConstants;
@@ -42,10 +40,10 @@ public class UserDao {
         User user = this.dynamoDbMapper.load(User.class, email);
 
         if (user == null) {
-            metricsPublisher.addCount(MetricsConstants.GETPLAYLIST_PLAYLISTNOTFOUND_COUNT, 1);
+            metricsPublisher.addCount(MetricsConstants.GETUSER_USERNOTFOUND_COUNT, 1);
             throw new UserNotFoundException("Could not find user with email " + email);
         }
-        metricsPublisher.addCount(MetricsConstants.GETPLAYLIST_PLAYLISTNOTFOUND_COUNT, 0);
+        metricsPublisher.addCount(MetricsConstants.GETUSER_USERNOTFOUND_COUNT, 0);
         return user;
     }
 

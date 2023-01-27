@@ -1,16 +1,18 @@
 package com.nashss.se.connexionservice.exceptions;
 
 /**
- * Exception to throw when a given user is not found in the database.
+ * General exception covering cases where an attribute is invalid.
+ *
+ * For example, formatting/validation errors, or if the attribute is being modified
+ * when it should not.
  */
-public class UserNotFoundException extends RuntimeException {
-
-    private static final long serialVersionUID = -912326717789387971L; //  GENERATE NEW ID!
+public class InvalidAttributeException extends RuntimeException {
+    private static final long serialVersionUID = -7534807710372458849L; // GENERATE NEW ID!
 
     /**
      * Exception with no message or cause.
      */
-    public UserNotFoundException() {
+    public InvalidAttributeException() {
         super();
     }
 
@@ -18,7 +20,7 @@ public class UserNotFoundException extends RuntimeException {
      * Exception with a message, but no cause.
      * @param message A descriptive message for this exception.
      */
-    public UserNotFoundException(String message) {
+    public InvalidAttributeException(String message) {
         super(message);
     }
 
@@ -26,7 +28,7 @@ public class UserNotFoundException extends RuntimeException {
      * Exception with no message, but with a cause.
      * @param cause The original throwable resulting in this exception.
      */
-    public UserNotFoundException(Throwable cause) {
+    public InvalidAttributeException(Throwable cause) {
         super(cause);
     }
 
@@ -35,7 +37,7 @@ public class UserNotFoundException extends RuntimeException {
      * @param message A descriptive message for this exception.
      * @param cause The original throwable resulting in this exception.
      */
-    public UserNotFoundException(String message, Throwable cause) {
+    public InvalidAttributeException(String message, Throwable cause) {
         super(message, cause);
     }
 }

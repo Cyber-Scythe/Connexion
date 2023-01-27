@@ -219,7 +219,7 @@ Resources:
   # Lambda Functions Configuration
   #-----------------------------------------------------
 
-  LoginLambda:
+  CreateUserLambda:
     Type: AWS::Serverless::Function
     Properties:
       Role: !GetAtt AccessRole.Arn
@@ -236,8 +236,8 @@ Resources:
         ConnexionService:
           Type: Api
           Properties:
-            Path: /home/{userId} # UPDATE THIS PATH
-            Method: get
+            Path: /home/{userId}/edit-profile # UPDATE THIS PATH
+            Method: post
             Auth:
               Authorizer: 'NONE'
 

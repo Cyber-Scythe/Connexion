@@ -1,16 +1,18 @@
 package com.nashss.se.connexionservice.exceptions;
 
-/**
- * Exception to throw when a given user is not found in the database.
- */
-public class UserNotFoundException extends RuntimeException {
+import javax.naming.directory.InvalidAttributesException;
 
-    private static final long serialVersionUID = -912326717789387971L; //  GENERATE NEW ID!
+/**
+ * Exception to throw when a provided value has invalid attribute values.
+ */
+public class InvalidAttributeValueException extends InvalidAttributesException {
+
+    private static final long serialVersionUID = 8007453316698012851L; // GENERATE NEW ID!
 
     /**
      * Exception with no message or cause.
      */
-    public UserNotFoundException() {
+    public InvalidAttributeValueException() {
         super();
     }
 
@@ -18,7 +20,7 @@ public class UserNotFoundException extends RuntimeException {
      * Exception with a message, but no cause.
      * @param message A descriptive message for this exception.
      */
-    public UserNotFoundException(String message) {
+    public InvalidAttributeValueException(String message) {
         super(message);
     }
 
@@ -26,8 +28,8 @@ public class UserNotFoundException extends RuntimeException {
      * Exception with no message, but with a cause.
      * @param cause The original throwable resulting in this exception.
      */
-    public UserNotFoundException(Throwable cause) {
-        super(cause);
+    public InvalidAttributeValueException(Throwable cause) {
+        super(cause.toString());
     }
 
     /**
@@ -35,7 +37,7 @@ public class UserNotFoundException extends RuntimeException {
      * @param message A descriptive message for this exception.
      * @param cause The original throwable resulting in this exception.
      */
-    public UserNotFoundException(String message, Throwable cause) {
-        super(message, cause);
+    public InvalidAttributeValueException(String message, Throwable cause) {
+        super(message);
     }
 }
