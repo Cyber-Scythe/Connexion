@@ -1,6 +1,7 @@
 import axios from "axios";
 import BindingClass from "../util/bindingClass";
 import Authenticator from "./authenticator";
+import uuidv4 from "uuidv4";
 
 /**
  * Client to call the MusicPlaylistService.
@@ -15,7 +16,7 @@ export default class ConnexionClient extends BindingClass {
     constructor(props = {}) {
         super();
 
-        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getPlaylist', 'getPlaylistSongs', 'createPlaylist'];
+        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'createUserProfile', 'getPlaylist', 'getPlaylistSongs', 'createPlaylist'];
         this.bindClassMethods(methodsToBind, this);
 
         this.authenticator = new Authenticator();;
@@ -72,10 +73,10 @@ export default class ConnexionClient extends BindingClass {
     }
 
     /**
-     * Gets the playlist for the given ID.
-     * @param id Unique identifier for a playlist
+     * Gets the profile for the given user ID.
+     * @param id Unique identifier for a profile
      * @param errorCallback (Optional) A function to execute if the call fails.
-     * @returns The playlist's metadata.
+     * @returns The profile's metadata.
      */
     async getPlaylist(id, errorCallback) {
         try {
@@ -109,6 +110,9 @@ export default class ConnexionClient extends BindingClass {
      * @returns The playlist that has been created.
      */
     async createPlaylist(name, tags, errorCallback) {
+
+
+
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can create playlists.");
             const response = await this.axiosClient.post(`playlists`, {
@@ -124,6 +128,38 @@ export default class ConnexionClient extends BindingClass {
             this.handleError(error, errorCallback)
         }
     }
+
+    /**
+     * Create a new user profile owned by the current user.
+     * @param email: The email address of the profile to create.
+     * @param name: The name of the user the profile belongs to.
+     * @param birthdate: The birthdate of the user
+     * @param location: The location of the user
+     * @param personalityType: The personality type of the user
+     * @param hobbies: The hobbies of the user
+     */
+     async createUserProfile(email, firstName, lastName, birthdate, location, personalityType, hobbies, errorCallback) {
+
+        const uuidv4 = require("uuid/v4")
+        const userId = uuidv4();
+
+        try {
+            const token = await this.getTokenOrThrow("Only authenticated users can create a profile.");
+            const response = await this.axiosClient.post(`${userId}`, {
+                email: email,
+                firstName: firstName,
+                lastName: lastName,
+                location: location,
+                personalityType: personalityType,
+                hobbies: hobbies
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            return response.data.userId;
+        }
+     }
 
     /**
      * Add a song to a playlist.
