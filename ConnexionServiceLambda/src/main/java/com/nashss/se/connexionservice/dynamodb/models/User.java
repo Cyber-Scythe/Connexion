@@ -3,14 +3,11 @@ package com.nashss.se.connexionservice.dynamodb.models;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import static com.nashss.se.connexionservice.utils.CollectionUtils.copyToList;
 import static com.nashss.se.connexionservice.utils.CollectionUtils.copyToSet;
 
 /**

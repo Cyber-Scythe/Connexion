@@ -1,9 +1,6 @@
 package com.nashss.se.connexionservice.models;
 
-import java.util.List;
 import java.util.Objects;
-
-import static com.nashss.se.connexionservice.utils.CollectionUtils.copyToList;
 
 public class MessageModel {
     private final String messageId;

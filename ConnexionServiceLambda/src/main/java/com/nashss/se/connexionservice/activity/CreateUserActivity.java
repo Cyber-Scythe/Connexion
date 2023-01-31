@@ -6,13 +6,10 @@ import com.nashss.se.connexionservice.converters.ModelConverter;
 import com.nashss.se.connexionservice.dynamodb.UserDao;
 import com.nashss.se.connexionservice.dynamodb.models.User;
 import com.nashss.se.connexionservice.models.UserModel;
-import com.nashss.se.connexionservice.utils.ConnexionServiceUtils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashSet;
-import java.util.Set;
 import javax.inject.Inject;
 import javax.management.InvalidAttributeValueException;
 
@@ -53,29 +50,9 @@ public class CreateUserActivity {
 
         log.info("Received CreateUserActivityRequest {}", createUserActivityRequest);
 
-        if (!ConnexionServiceUtils.isValidString(createUserActivityRequest.getName())) {
-            throw new InvalidAttributeValueException("User's name [" + createUserActivityRequest.getName() +
-                    "] contains illegal characters");
-        }
-
-        Set<String> hobbies = null;
-        if (createUserActivityRequest.getHobbies() != null) {
-            hobbies = new HashSet<>(createUserActivityRequest.getHobbies());
-        }
-
-        Set<String> connections = null;
-        if (createUserActivityRequest.getConnections() != null) {
-            connections = new HashSet<>(createUserActivityRequest.getConnections());
-        }
-
         User newUser = new User();
-        newUser.setName(createUserActivityRequest.getName());
         newUser.setEmail(createUserActivityRequest.getEmail());
-        newUser.setCity(createUserActivityRequest.getCity());
-        newUser.setState(createUserActivityRequest.getState());
-        newUser.setPersonalityType(createUserActivityRequest.getPersonalityType());
-        newUser.setHobbies(hobbies);
-        newUser.setConnections(connections);
+
 
         userDao.saveUser(newUser);
 

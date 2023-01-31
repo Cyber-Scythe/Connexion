@@ -5,11 +5,8 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
-import static com.nashss.se.connexionservice.utils.CollectionUtils.copyToSet;
 
 /**
  * Represents a record in the inbox table.

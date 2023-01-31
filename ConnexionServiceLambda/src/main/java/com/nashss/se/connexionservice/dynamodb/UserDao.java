@@ -19,9 +19,9 @@ public class UserDao {
     private final MetricsPublisher metricsPublisher;
 
     /**
-     * Instantiates a PlaylistDao object.
+     * Instantiates a UserDao object.
      *
-     * @param dynamoDbMapper   the {@link DynamoDBMapper} used to interact with the playlists table
+     * @param dynamoDbMapper   the {@link DynamoDBMapper} used to interact with the users table
      * @param metricsPublisher the {@link MetricsPublisher} used to record metrics.
      */
     @Inject

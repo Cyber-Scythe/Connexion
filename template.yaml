@@ -48,7 +48,7 @@ Resources:
   #-----------------------------------------------------
   # Cognito Configuration for user management
   #-----------------------------------------------------
-  
+
   UserPool:
     Type: AWS::Cognito::UserPool
     Properties:
@@ -58,7 +58,7 @@ Resources:
             Priority: 1
       UsernameAttributes:
         - email
-      UsernameConfiguration: 
+      UsernameConfiguration:
         CaseSensitive: false
       AutoVerifiedAttributes:
         - email
@@ -80,14 +80,14 @@ Resources:
       AllowedOAuthFlowsUserPoolClient: true
       CallbackURLs:
         - !If
-            - DeployCloudFront
-            - !Sub "https://${CloudfrontDistribution.DomainName}"
-            - http://localhost:8000
+          - DeployCloudFront
+          - !Sub "https://${CloudfrontDistribution.DomainName}"
+          - http://localhost:8000/logged_in.html
       LogoutURLs:
         - !If
-            - DeployCloudFront
-            - !Sub "https://${CloudfrontDistribution.DomainName}"
-            - http://localhost:8000
+          - DeployCloudFront
+          - !Sub "https://${CloudfrontDistribution.DomainName}"
+          - http://localhost:8000/logged_out.html
       AllowedOAuthFlows:
         - code
         - implicit
@@ -118,7 +118,7 @@ Resources:
       CloudFrontOriginAccessIdentityConfig:
         Comment: 'Serverless frontend website'
 
-  CloudFrontDistribution:
+  CloudfrontDistribution:
     Type: "AWS::CloudFront::Distribution"
     Condition: DeployCloudFront
     Properties:
@@ -179,8 +179,8 @@ Resources:
         - 'arn:aws:iam::aws:policy/service-role/AWSLambdaRole'
         - 'arn:aws:iam::aws:policy/AWSLambdaExecute'
       AssumeRolePolicyDocument:
-        Version: "2012-10-17" 
-        Statement: 
+        Version: "2012-10-17"
+        Statement:
           - Effect: Allow
             Principal:
               Service:
@@ -192,28 +192,28 @@ Resources:
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
-            - Effect: Allow
-              Action:
-                - logs:CreateLogGroup
-                - logs:CreateLogStream
-                - logs:PutLogEvents
-                - cloudwatch:PutMetricData
-              Resource: '*'
-        - PolicyName: 'AccessUsersTable'
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                  - cloudwatch:PutMetricData
+                Resource: '*'
+        - PolicyName: 'AccessPlaylistsTable'
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
-            - Effect: Allow
-              Action: dynamodb:*
-              Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/users"
-                
-        - PolicyName: 'AccessInboxTable'
+              - Effect: Allow
+                Action: dynamodb:*
+                Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/playlists"
+
+        - PolicyName: 'AccessAlbumTracksTable'
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
-            - Effect: Allow
-              Action: dynamodb:*
-              Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/inbox"
+              - Effect: Allow
+                Action: dynamodb:*
+                Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/album_tracks"
 
   #-----------------------------------------------------
   # Lambda Functions Configuration
@@ -236,7 +236,7 @@ Resources:
         ConnexionService:
           Type: Api
           Properties:
-            Path: /home/{userId}/edit-profile # UPDATE THIS PATH
+            Path: /home/{userId} # UPDATE THIS PATH
             Method: post
             Auth:
               Authorizer: 'NONE'
@@ -245,27 +245,27 @@ Resources:
   #-----------------------------------------------------
   # DynamoDB Configuration
   #-----------------------------------------------------
-  
+
   UsersTable:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
         - AttributeName: "email"
           AttributeType: "S"
-        - AttributeName: "name"
-          AttributeType: "S"
-        - AttributeName: "birthdate"
-          AttributeType: "S"
-        - AttributeName: "location"
-          AttributeType: "S"
-        - AttributeName: "personalityType"
-          AttributeType: "S"
-        - AttributeName: "hobbies"
-          AttributeType: "SS"
-        - AttributeName: "profilePicture"
-          AttributeType: "S"
-        - AttributeName: "connections"
-          AttributeType: "SS"
+#        - AttributeName: "name"
+#          AttributeType: "S"
+#        - AttributeName: "birthdate"
+#          AttributeType: "S"
+#        - AttributeName: "location"
+#          AttributeType: "S"
+#        - AttributeName: "personalityType"
+#          AttributeType: "S"
+#        - AttributeName: "hobbies"
+#          AttributeType: "SS"
+#        - AttributeName: "profilePicture"
+#          AttributeType: "S"
+#        - AttributeName: "connections"
+#          AttributeType: "SS"
       KeySchema:
         - AttributeName: "email"
           KeyType: "HASH"
@@ -276,40 +276,46 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
-        - AttributeName: "messageId"
-          AttributeType: "S"
+#        - AttributeName: "messageId"
+#          AttributeType: "S"
         - AttributeName: "sentBy"
           AttributeType: "S"
         - AttributeName: "receivedBy"
           AttributeType: "S"
         - AttributeName: "dateTimeSent"
           AttributeType: "S"
-        - AttributeName: "messageContent"
-          AttributeType: "S"
-        - AttributeName: "readStatus"
-          AttributeType: "BOOL"
+#        - AttributeName: "messageContent"
+#          AttributeType: "S"
+#        - AttributeName: "readStatus"
+#          AttributeType: "BOOL"
       KeySchema:
         - AttributeName: "sentBy"
           KeyType: "HASH"
-        - AttributeName: "receivedBy"
+        - AttributeName: "dateTimeSent"
           KeyType: "RANGE"
       BillingMode: "PAY_PER_REQUEST"
       TableName: "inbox"
+      GlobalSecondaryIndexes:
+        - IndexName: "EmailsSentAndReceivedIndex"
+          KeySchema:
+            - AttributeName: "receivedBy"
+              KeyType: "HASH"
+            - AttributeName: "sentBy"
+              KeyType: "RANGE"
+          Projection:
+            ProjectionType: "ALL"
 
-GlobalSecondaryIndexes:
-  - IndexName: GET_EMAILS_FROM_USER_INDEX
-KeySchema:
-  - AttributeName: receivedBy
-    KeyType: HASH
-  - AttributeName: sentBy
-    KeyType: RANGE
-Projection:
-NonKeyAttributes:
-  - messageId
-  - dateTimeSent
-  - messageContent
-  - readStatus
-ProjectionType: INCLUDE
+  HobbiesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: "hobbyName"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "hobbyName"
+          KeyType: "HASH"
+      BillingMode: "PAY_PER_REQUEST"
+      TableName: "hobbies"
 
 #-----------------------------------------------------
 # The outputs defined below will be printed
@@ -340,5 +346,3 @@ Outputs:
     Description: "The URL of the deployed front-end application (COGNITO_REDIRECT_SIGNOUT)."
     Value: !Sub "https://${CloudfrontDistribution.DomainName}"
     Condition: DeployCloudFront
-
-
