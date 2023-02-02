@@ -8,6 +8,7 @@ import static com.nashss.se.connexionservice.utils.CollectionUtils.copyToList;
 public class UserModel {
     private final String name;
     private final String email;
+    private final String id;
     private final String birthdate;
     private final String city;
     private final String state;
@@ -17,6 +18,7 @@ public class UserModel {
 
     private UserModel(String name,
                       String email,
+                      String id,
                       String birthdate,
                       String city,
                       String state,
@@ -26,6 +28,7 @@ public class UserModel {
 
         this.name = name;
         this.email = email;
+        this.id = id;
         this.birthdate = birthdate;
         this.city = city;
         this.state = state;
@@ -42,6 +45,7 @@ public class UserModel {
         return email;
     }
 
+    public String getId() { return id; }
     public String getBirthdate() { return birthdate; }
     public String getCity() {
         return city;
@@ -70,6 +74,7 @@ public class UserModel {
 
         return Objects.equals(name, that.name) &&
                 Objects.equals(email, that.email) &&
+                Objects.equals(id, that.id) &&
                 Objects.equals(birthdate, that.birthdate) &&
                 Objects.equals(city, that.city) &&
                 Objects.equals(state, that.state) &&
@@ -80,7 +85,7 @@ public class UserModel {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, email, birthdate, city, state, personalityType, hobbies, connections);
+        return Objects.hash(name, email, id, birthdate, city, state, personalityType, hobbies, connections);
     }
 
     //CHECKSTYLE:OFF:Builder
@@ -92,6 +97,8 @@ public class UserModel {
         return name;
     }
     public String getUserEmail() { return email; }
+
+    public String getUserId() { return id; }
     public String getUserCity() { return city; }
     public String getUserState() { return state ;}
     public String getUserPersonalityType() { return personalityType; }
@@ -102,6 +109,7 @@ public class UserModel {
     public static class Builder {
         private String name;
         private String email;
+        private String id;
         private String birthdate;
         private String city;
         private String state;
@@ -116,6 +124,11 @@ public class UserModel {
 
         public Builder withEmail(String email) {
             this.email = email;
+            return this;
+        }
+
+        public Builder withId(String id) {
+            this.id = id;
             return this;
         }
 
@@ -153,6 +166,7 @@ public class UserModel {
         public UserModel build() {
             return new UserModel(name,
                                 email,
+                                id,
                                 birthdate,
                                 city,
                                 state,

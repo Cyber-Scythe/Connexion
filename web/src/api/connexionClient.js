@@ -1,7 +1,7 @@
 import axios from "axios";
 import BindingClass from "../util/bindingClass";
 import Authenticator from "./authenticator";
-
+import SearchPlaylists from "../pages/searchPlaylists"
 
 /**
  * Client to call the MusicPlaylistService.
@@ -16,7 +16,7 @@ export default class ConnexionClient extends BindingClass {
     constructor(props = {}) {
         super();
 
-        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'loadUserProfile','getPlaylist', 'getPlaylistSongs', 'createPlaylist'];
+        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getProfile', 'loadUserProfile','getPlaylist', 'getPlaylistSongs', 'createPlaylist'];
         this.bindClassMethods(methodsToBind, this);
 
         this.authenticator = new Authenticator();;
@@ -80,8 +80,19 @@ export default class ConnexionClient extends BindingClass {
      * @returns the user's metadata.
      */
      async loadUserProfile(email, errorCallback) {
-        const email = this.client.get(`email`);
-        window.location.href = `/profile.html?id=${email}`;
+         try {
+            const response = await this.axiosClient.get(`index/dashboard`);
+
+            const userData = response.data.user;
+            populateProfile(userData);
+
+         } catch (error) {
+            this.handleError(error, errorCallback)
+         }
+
+        //const email = this.client.get(`email`);
+        //const id =
+        //window.location.href = `/profile.html?id=${email}`;
 
         }
      }
@@ -95,8 +106,8 @@ export default class ConnexionClient extends BindingClass {
      */
     async getProfile(email, errorCallback) {
         try {
-            const response = await this.axiosClient.get(`index/${email}`);
-            return response.data.profile;
+            const response = await this.axiosClient.get(`index/${id}`);
+            return response.data.user;
         } catch (error) {
             this.handleError(error, errorCallback)
         }

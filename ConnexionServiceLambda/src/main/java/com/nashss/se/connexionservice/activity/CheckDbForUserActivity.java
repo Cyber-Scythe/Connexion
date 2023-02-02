@@ -1,9 +1,7 @@
 package com.nashss.se.connexionservice.activity;
 
 import com.nashss.se.connexionservice.activity.requests.CheckDbForUserActivityRequest;
-import com.nashss.se.connexionservice.activity.requests.CreateUserActivityRequest;
 import com.nashss.se.connexionservice.activity.results.CheckDbForUserActivityResult;
-import com.nashss.se.connexionservice.activity.results.CreateUserActivityResult;
 import com.nashss.se.connexionservice.converters.ModelConverter;
 import com.nashss.se.connexionservice.dynamodb.UserDao;
 import com.nashss.se.connexionservice.dynamodb.models.User;
@@ -12,7 +10,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
-import javax.management.InvalidAttributeValueException;
 
 /**
  * Implementation of the CheckDbForUserActivity for the Connexion's CreatePlaylist API.
@@ -52,9 +49,12 @@ public class CheckDbForUserActivity {
         log.info("Received CreateUserActivityRequest {}", checkDbForUserActivityRequest);
 
 
-        User searchUser = userDao.getUser(checkDbForUserActivityRequest.getEmail());
+        User searchUser = userDao.getUser(checkDbForUserActivityRequest.getEmail(),
+                                          checkDbForUserActivityRequest.getName(),
+                                          checkDbForUserActivityRequest.getId());
 
         UserModel userModel = new ModelConverter().toUserModel(searchUser);
+
         return CheckDbForUserActivityResult.builder()
                .withUser(userModel)
                 .build();

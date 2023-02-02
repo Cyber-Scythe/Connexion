@@ -24,6 +24,7 @@ public UserModel toUserModel(User user) {
     return UserModel.builder()
             .withName(user.getName())
             .withEmail(user.getEmail())
+            .withId(user.getId())
             .withBirthdate(user.getBirthdate())
             .withCity(user.getCity())
             .withState(user.getState())

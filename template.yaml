@@ -238,16 +238,14 @@ Resources:
           Properties:
             Path: /index # UPDATE THIS PATH
             Method: get
-            Auth:
-              Authorizer: 'NONE'
 
 
-  CreateUserLambda:
+  GetUserProfileLambda:
     Type: AWS::Serverless::Function
     Properties:
       Role: !GetAtt AccessRole.Arn
       CodeUri: ConnexionServiceLambda
-      Handler: com.nashss.se.connexionservice.lambda.CreateUserLambda::handleRequest
+      Handler: com.nashss.se.connexionservice.lambda.GetUserProfileLambda::handleRequest
       Runtime: java11
       Architectures:
         - x86_64
@@ -259,10 +257,9 @@ Resources:
         ConnexionService:
           Type: Api
           Properties:
-            Path: /index/{userId} # UPDATE THIS PATH
+            Path: index/dashboard # UPDATE THIS PATH
             Method: post
-            Auth:
-              Authorizer: 'NONE'
+
 
 
   #-----------------------------------------------------
@@ -278,6 +275,8 @@ Resources:
 #        - AttributeName: "id"
 #          AttributeType: "S"
 #        - AttributeName: "name"
+#          AttributeType: "S"
+#        - AttributeName: "id"
 #          AttributeType: "S"
 #        - AttributeName: "birthdate"
 #          AttributeType: "S"

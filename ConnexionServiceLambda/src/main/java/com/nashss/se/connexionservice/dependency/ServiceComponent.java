@@ -1,7 +1,7 @@
 package com.nashss.se.connexionservice.dependency;
 
 import com.nashss.se.connexionservice.activity.CheckDbForUserActivity;
-import com.nashss.se.connexionservice.activity.CreateUserActivity;
+import com.nashss.se.connexionservice.activity.GetUserProfileActivity;
 import dagger.Component;
 
 import javax.inject.Singleton;
@@ -21,13 +21,6 @@ public interface ServiceComponent {
 
     /**
      * Provides the relevant activity.
-     * @return CreateUserActivity
-     */
-    CreateUserActivity provideCreateUserActivity();
-
-
-    /**
-     * Provides the relevant activity.
      * @return CheckDbForUserActivity
      */
     CheckDbForUserActivity provideCheckDbForUserActivity();
@@ -37,7 +30,7 @@ public interface ServiceComponent {
      * Provides the relevant activity.
      * @return GetPlaylistActivity
      */
-   // GetPlaylistActivity provideGetPlaylistActivity();
+    GetUserProfileActivity provideGetUserProfileActivity();
 
     /**
      * Provides the relevant activity.

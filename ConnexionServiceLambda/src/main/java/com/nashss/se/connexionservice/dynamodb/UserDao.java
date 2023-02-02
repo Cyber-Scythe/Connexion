@@ -3,7 +3,6 @@ package com.nashss.se.connexionservice.dynamodb;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.nashss.se.connexionservice.dynamodb.models.User;
 import com.nashss.se.connexionservice.metrics.MetricsConstants;
 import com.nashss.se.connexionservice.metrics.MetricsPublisher;
@@ -13,7 +12,6 @@ import javax.inject.Singleton;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 
 /**
@@ -42,14 +40,14 @@ public class UserDao {
      * @param email the User email
      * @return the stored User, or if null create a new user and save it.
      */
-    public User getUser(String email) {
+    public User getUser(String email, String name, String id) {
         User user = this.dynamoDbMapper.load(User.class, email);
 
         if (user == null) {
-            String id = UUID.randomUUID().toString();
 
             User newUser = new User();
             newUser.setEmail(email);
+            newUser.setName(name);
             newUser.setId(id);
 
             saveUser(newUser);
@@ -59,6 +57,11 @@ public class UserDao {
             metricsPublisher.addCount(MetricsConstants.GETUSER_USERNOTFOUND_COUNT, 0);
             return user;
         }
+    }
+
+    public User getUser(String email) {
+        User user = this.dynamoDbMapper.load(User.class, email);
+        return user;
     }
 
     /**

@@ -29,7 +29,7 @@ class SearchPlaylists extends BindingClass {
     constructor() {
         super();
 
-        this.bindClassMethods(['mount', 'viewProfile', 'displaySearchResults', 'getHTMLForSearchResults'], this);
+        this.bindClassMethods(['mount', 'populateProfile', 'viewProfile', 'displaySearchResults', 'getHTMLForSearchResults'], this);
 
         // Create a enw datastore with an initial "empty" state.
         this.dataStore = new DataStore(EMPTY_DATASTORE_STATE);
@@ -56,6 +56,28 @@ class SearchPlaylists extends BindingClass {
         this.client = new ConnexionClient();
     }
 
+    /**
+    *
+    *
+    *
+    */
+    async populateProfile(userData) {
+        document.getElementById('user-name').innerHTML = userData.name;
+        document.getElementById('age').innerHTML = function calculate_age(dob) {
+                                                       var diff_ms = Date.now() - userData.birthdate;
+                                                       var age_dt = new Date(diff_ms);
+
+                                                       return Math.abs(age_dt.getUTCFullYear() - 1970);
+                                                   }
+        document.getElementById('user-personality-type').innerHTML = userData.personalityType;
+
+        const city = userData.city;
+        const state = userData.state;
+        const location = city + ", " + state;
+
+        document.getElementById('user-location').innerHTML = location;
+        document.getElementById('hobbies').innerHTML = userData.hobbies;
+    }
 
 
     /**
@@ -90,8 +112,7 @@ class SearchPlaylists extends BindingClass {
     /**
      * Pulls search results from the datastore and displays them on the html page.
      */
-    displayProfile() {
-
+    displaySearchResults() {
         const searchCriteria = this.dataStore.get(SEARCH_CRITERIA_KEY);
         const searchResults = this.dataStore.get(SEARCH_RESULTS_KEY);
 

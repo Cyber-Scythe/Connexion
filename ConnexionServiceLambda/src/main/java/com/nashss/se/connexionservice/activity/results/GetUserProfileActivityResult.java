@@ -2,10 +2,10 @@ package com.nashss.se.connexionservice.activity.results;
 
 import com.nashss.se.connexionservice.models.UserModel;
 
-public class CreateUserActivityResult {
+public class GetUserProfileActivityResult {
     private final UserModel user;
 
-    private CreateUserActivityResult(UserModel user) {
+    private GetUserProfileActivityResult(UserModel user) {
         this.user = user;
     }
 
@@ -15,7 +15,7 @@ public class CreateUserActivityResult {
 
     @Override
     public String toString() {
-        return "CreateUserActivityResult{" +
+        return "GetUserProfileActivityResult{" +
                 "user=" + user +
                 '}';
     }
@@ -33,8 +33,8 @@ public class CreateUserActivityResult {
             return this;
         }
 
-        public CreateUserActivityResult build() {
-            return new CreateUserActivityResult(user);
+        public GetUserProfileActivityResult build() {
+            return new GetUserProfileActivityResult(user);
         }
     }
 }

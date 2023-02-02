@@ -8,6 +8,6 @@ architecture = "x86_64"
 handler = "com.nashss.se.connexionservice.lambda.CreateUserLambda::handleRequest"
 manifest_hash = ""
 packagetype = "Zip"
-functions = ["CheckDbForUserLambda", "CreateUserLambda"]
+functions = ["CheckDbForUserLambda", "GetUserProfileLambda"]
 
 [layer_build_definitions]

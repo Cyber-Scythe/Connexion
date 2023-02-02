@@ -25,8 +25,7 @@ class ViewProfile extends BindingClass {
      */
     async clientLoaded() {
         const urlParams = new URLSearchParams(window.location.search);
-        const userId = urlParams.get('user-id');
-        document.getElementById('input-email');
+        const email = urlParams.get('email');
 
         const profile = await this.client.getProfile(email);
         this.dataStore.set('profile', profile);
@@ -36,32 +35,41 @@ class ViewProfile extends BindingClass {
      * Add the header to the page and load the ConnexionClient.
      */
     mount() {
-        document.getElementById('add-song').addEventListener('click', this.addSong);
-
+        document.getElementById('drp-dwn-1').addEventListener('click', this.getInbox);
+        document.getElementById('drp-dwn-2').addEventListener('click', this.getConnexions);
         //this.header.addHeaderToPage();
 
         this.client = new ConnexionClient();
         this.clientLoaded();
     }
 
+    async getInbox() {
+
+    }
+
+    async getConnexions() {
+
+    }
+
     /**
      * When the playlist is updated in the datastore, update the playlist metadata on the page.
      */
-    addPlaylistToPage() {
-        const playlist = this.dataStore.get('playlist');
-        if (playlist == null) {
+    addProfileInfoToPage() {
+        const profile = this.dataStore.get('profile');
+        if (profile == null) {
             return;
         }
 
-        document.getElementById('playlist-name').innerText = playlist.name;
-        document.getElementById('playlist-owner').innerText = playlist.customerName;
+        document.getElementById('user-name').innerText = profile.name;
+        document.getElementById('user-age').innerText = profile.birthdate;
+        document.getElementById('user-personality-type').innerText = profile.personalityType;
 
-        let tagHtml = '';
-        let tag;
-        for (tag of playlist.tags) {
-            tagHtml += '<div class="tag">' + tag + '</div>';
-        }
-        document.getElementById('tags').innerHTML = tagHtml;
+        const location = profile.city + ", " + profile.state;
+        document.getElementById('user-location').innerText = location;
+        document.getElementById('hobbies').innerText = profile.hobbies;
+
+       // Code to get profile picture from S3 bucket and set it as value
+       // of 'profile-picture'
     }
 
     /**

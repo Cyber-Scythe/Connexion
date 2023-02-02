@@ -16,6 +16,8 @@ public class CheckDbForUserLambda extends LambdaActivityRunner<CheckDbForUserAct
                     return input.fromUserClaims(claims ->
                             CheckDbForUserActivityRequest.builder()
                                     .withEmail(claims.get("email"))
+                                    .withName(claims.get("name"))
+                                    .withId(claims.get("sub"))
                                     .build());
                 },
                 (request, serviceComponent) ->

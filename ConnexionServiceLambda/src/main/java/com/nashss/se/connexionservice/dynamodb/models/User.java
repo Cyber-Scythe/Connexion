@@ -5,9 +5,11 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import static com.nashss.se.connexionservice.utils.CollectionUtils.copyToList;
 import static com.nashss.se.connexionservice.utils.CollectionUtils.copyToSet;
 
 /**
@@ -22,8 +24,8 @@ public class User {
     private String city;
     private String state;
     private String personalityType;
-    private Set<String> hobbies;
-    private Set<String> connections;
+    private List<String> hobbies;
+    private List<String> connections;
 
     @DynamoDBAttribute(attributeName = "id")
     public String getId() { return id; }
@@ -86,7 +88,7 @@ public class User {
      * @return Set of hobbies for this user
      */
     @DynamoDBAttribute(attributeName = "hobbies")
-    public Set<String> getHobbies() {
+    public List<String> getHobbies() {
         // normally, we would prefer to return an empty Set if there are no
         // tags, but DynamoDB doesn't represent empty Sets...needs to be null
         // instead
@@ -94,7 +96,7 @@ public class User {
             return null;
         }
 
-        return new HashSet<>(hobbies);
+        return copyToList(hobbies);
     }
 
     /**
@@ -102,15 +104,15 @@ public class User {
      *
      * @param hobbies Set of hobbies for this user
      */
-    public void setHobbies(Set<String> hobbies) {
+    public void setHobbies(List<String> hobbies) {
         // see comment in getTags()
         if (null == hobbies) {
             this.hobbies = null;
         } else {
-            this.hobbies = new HashSet<>(hobbies);
+            this.hobbies = copyToList(hobbies);
         }
 
-        this.hobbies = copyToSet(hobbies);
+        this.hobbies = copyToList(hobbies);
     }
 
     /**
@@ -119,7 +121,7 @@ public class User {
      * @return Set of connections for this user
      */
     @DynamoDBAttribute(attributeName = "connections")
-    public Set<String> getConnections() {
+    public List<String> getConnections() {
         // normally, we would prefer to return an empty Set if there are no
         // tags, but DynamoDB doesn't represent empty Sets...needs to be null
         // instead
@@ -127,7 +129,7 @@ public class User {
             return null;
         }
 
-        return new HashSet<>(connections);
+        return copyToList(connections);
     }
 
     /**
@@ -135,15 +137,15 @@ public class User {
      *
      * @param connections Set of connections for this playlist
      */
-    public void setConnections(Set<String> connections) {
+    public void setConnections(List<String> connections) {
         // see comment in getTags()
         if (null == connections) {
             this.connections = null;
         } else {
-            this.connections = new HashSet<>(connections);
+            this.connections = copyToList(connections);
         }
 
-        this.connections = copyToSet(connections);
+        this.connections = copyToList(connections);
     }
 
     @Override

@@ -1,3 +1,25 @@
+import ConnexionClient from '../api/connexionClient';
+import Header from '../components/header';
+import BindingClass from "../util/bindingClass";
+import DataStore from "../util/DataStore";
+
+
+/**
+ * Logic needed for the view profile page of the website.
+ */
+class userProfile extends BindingClass {
+    constructor() {
+        super();
+
+        this.bindClassMethods(['mount', 'populateProfile','viewProfile', 'displaySearchResults', 'getHTMLForSearchResults'], this);
+
+        // Create a enw datastore with an initial "empty" state.
+        this.dataStore = new DataStore(EMPTY_DATASTORE_STATE);
+        this.header = new Header(this.dataStore);
+        this.dataStore.addChangeListener(this.editProfile);
+        console.log("userProfile constructor");
+    }
+
   /**
       * Method to run when the edit profile save button is pressed. Call the ConnexionService to create the
       * profile.
