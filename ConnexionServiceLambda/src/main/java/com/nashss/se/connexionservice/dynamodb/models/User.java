@@ -15,6 +15,7 @@ import static com.nashss.se.connexionservice.utils.CollectionUtils.copyToSet;
  */
 @DynamoDBTable(tableName = "users")
 public class User {
+    private String id;
     private String name;
     private String email;
     private String birthdate;
@@ -24,7 +25,11 @@ public class User {
     private Set<String> hobbies;
     private Set<String> connections;
 
-    @DynamoDBHashKey(attributeName = "userName")
+    @DynamoDBAttribute(attributeName = "id")
+    public String getId() { return id; }
+
+    public void setId(String id) { this.id = id; }
+    @DynamoDBAttribute(attributeName = "userName")
     public String getName() {
         return name;
     }
@@ -34,7 +39,7 @@ public class User {
     }
 
     // "name" is a reserved word in DDB, so the attribute in the table is called "playlistName".
-    @DynamoDBAttribute(attributeName = "email")
+    @DynamoDBHashKey(attributeName = "email")
     public String getEmail() {
         return email;
     }

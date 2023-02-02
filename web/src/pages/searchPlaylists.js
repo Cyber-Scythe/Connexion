@@ -1,4 +1,4 @@
-import MusicPlaylistClient from '../api/musicPlaylistClient';
+import ConnexionClient from '../api/connexionClient';
 import Header from '../components/header';
 import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
@@ -23,13 +23,13 @@ const EMPTY_DATASTORE_STATE = {
 
 
 /**
- * Logic needed for the view playlist page of the website.
+ * Logic needed for the view profile page of the website.
  */
 class SearchPlaylists extends BindingClass {
     constructor() {
         super();
 
-        this.bindClassMethods(['mount', 'search', 'displaySearchResults', 'getHTMLForSearchResults'], this);
+        this.bindClassMethods(['mount', 'viewProfile', 'displaySearchResults', 'getHTMLForSearchResults'], this);
 
         // Create a enw datastore with an initial "empty" state.
         this.dataStore = new DataStore(EMPTY_DATASTORE_STATE);
@@ -43,13 +43,20 @@ class SearchPlaylists extends BindingClass {
      */
     mount() {
         // Wire up the form's 'submit' event and the button's 'click' event to the search method.
-        document.getElementById('search-playlists-form').addEventListener('submit', this.search);
-        document.getElementById('search-btn').addEventListener('click', this.search);
+        //document.getElementById('search-playlists-form').addEventListener('submit', this.search);
+        //document.getElementById('search-btn').addEventListener('click', this.search);
 
         this.header.addHeaderToPage();
 
-        this.client = new MusicPlaylistClient();
+        this.dataStore = new DataStore();
+        this.dataStore.addChangeListener(this.editProfile);
+        this.dataStore.addChangeListener(this.viewInbox);
+        this.dataStore.addChangeListener(this.viewConnexions);
+
+        this.client = new ConnexionClient();
     }
+
+
 
     /**
      * Uses the client to perform the search, 
@@ -60,7 +67,7 @@ class SearchPlaylists extends BindingClass {
         // Prevent submitting the from from reloading the page.
         evt.preventDefault();
 
-        const searchCriteria = document.getElementById('search-criteria').value;
+       // const searchCriteria = document.getElementById('search-criteria').value;
         const previousSearchCriteria = this.dataStore.get(SEARCH_CRITERIA_KEY);
 
         // If the user didn't change the search criteria, do nothing
@@ -83,13 +90,14 @@ class SearchPlaylists extends BindingClass {
     /**
      * Pulls search results from the datastore and displays them on the html page.
      */
-    displaySearchResults() {
+    displayProfile() {
+
         const searchCriteria = this.dataStore.get(SEARCH_CRITERIA_KEY);
         const searchResults = this.dataStore.get(SEARCH_RESULTS_KEY);
 
-        const searchResultsContainer = document.getElementById('search-results-container');
-        const searchCriteriaDisplay = document.getElementById('search-criteria-display');
-        const searchResultsDisplay = document.getElementById('search-results-display');
+//        const searchResultsContainer = document.getElementById('search-results-container');
+//        const searchCriteriaDisplay = document.getElementById('search-criteria-display');
+//        const searchResultsDisplay = document.getElementById('search-results-display');
 
         if (searchCriteria === '') {
             searchResultsContainer.classList.add('hidden');

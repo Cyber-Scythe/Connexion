@@ -1,10 +1,10 @@
 import axios from "axios";
 import BindingClass from "../util/bindingClass";
 import Authenticator from "./authenticator";
-import { uuid } from 'uuid';
+
 
 /**
- * Client to call the ConnexionService.
+ * Client to call the MusicPlaylistService.
  *
  * This could be a great place to explore Mixins. Currently the client is being loaded multiple times on each page,
  * which we could avoid using inheritance or Mixins.
@@ -16,7 +16,7 @@ export default class ConnexionClient extends BindingClass {
     constructor(props = {}) {
         super();
 
-        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'createUserProfile', 'getPlaylist', 'getPlaylistSongs', 'createPlaylist'];
+        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'loadUserProfile','getPlaylist', 'getPlaylistSongs', 'createPlaylist'];
         this.bindClassMethods(methodsToBind, this);
 
         this.authenticator = new Authenticator();;
@@ -72,15 +72,30 @@ export default class ConnexionClient extends BindingClass {
         return await this.authenticator.getUserToken();
     }
 
+
     /**
-     * Gets the profile for the given user ID.
-     * @param id Unique identifier for a profile
-     * @param errorCallback (Optional) A function to execute if the call fails.
-     * @returns The profile's metadata.
+     * Checks to see if user is new or existing
+     * @param email Email address associated with user
+     * @param errorCallBack (Optional) A function to execute if the call fails.
+     * @returns the user's metadata.
      */
-    async getProfile(userId, errorCallback) {
+     async loadUserProfile(email, errorCallback) {
+        const email = this.client.get(`email`);
+        window.location.href = `/profile.html?id=${email}`;
+
+        }
+     }
+
+
+    /**
+     * Gets the playlist for the given ID.
+     * @param id Unique identifier for a playlist
+     * @param errorCallback (Optional) A function to execute if the call fails.
+     * @returns The playlist's metadata.
+     */
+    async getProfile(email, errorCallback) {
         try {
-            const response = await this.axiosClient.get(`home/${userId}`);
+            const response = await this.axiosClient.get(`index/${email}`);
             return response.data.profile;
         } catch (error) {
             this.handleError(error, errorCallback)
@@ -103,58 +118,49 @@ export default class ConnexionClient extends BindingClass {
     }
 
     /**
-     * Create a new user profile owned by the current user.
-     * all information fields will be empty until the user
-     * edits their profile.
-     * @param email: The email address of the profile to create.
+     * Create a new playlist owned by the current user.
+     * @param name The name of the playlist to create.
+     * @param tags Metadata tags to associate with a playlist.
+     * @param errorCallback (Optional) A function to execute if the call fails.
+     * @returns The playlist that has been created.
      */
-     async createUserProfile(email, errorCallback) {
-
-        const { uuid } = require('uuid');
-        const userId = uuid();
-
-
-        const token = await this.getTokenOrThrow("Only authenticated users can create a profile.");
-        const response = await this.axiosClient.post(`${userId}`, {
-            userId: userId,
-            email: email
-        }, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-       });
-            return response.data.userId;
-        }
-
-    /**
-     * Edit the user profile.
-     * @param id The id of the profile to edit.
-     * @param email The email of the user who owns the profile.
-     * @param firstName The first name of the profile owner
-     * @param lastName The last name of the profile owner
-     * @param location The location of the profile owner
-     * @param birthdate The birthdate of the profile owner
-     * @param personalityType The personality type of the profile owner
-     * @param hobbies The hobbies of the profile owner.
-     * @returns The updated user profile.
-     */
-    async editUserProfile(email, firstName, lastName, location, birthdate, personalityType, hobbies, errorCallback) {
+    async createPlaylist(name, tags, errorCallback) {
         try {
-            const token = await this.getTokenOrThrow("Only authenticated users can add a song to a playlist.");
-            const response = await this.axiosClient.post(`home/${userId}/edit-profile`, {
-                email: email,
-                firstName: firstName,
-                lastName: lastName,
-                location: location,
-                birthdate: birthdate,
-                personalityType: personalityType,
-                hobbies: hobbies
+            const token = await this.getTokenOrThrow("Only authenticated users can create playlists.");
+            const response = await this.axiosClient.post(`playlists`, {
+                name: name,
+                tags: tags
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-            return response.data.profile;
+            return response.data.playlist;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+        }
+    }
+
+    /**
+     * Add a song to a playlist.
+     * @param id The id of the playlist to add a song to.
+     * @param asin The asin that uniquely identifies the album.
+     * @param trackNumber The track number of the song on the album.
+     * @returns The list of songs on a playlist.
+     */
+    async addSongToPlaylist(id, asin, trackNumber, errorCallback) {
+        try {
+            const token = await this.getTokenOrThrow("Only authenticated users can add a song to a playlist.");
+            const response = await this.axiosClient.post(`playlists/${id}/songs`, {
+                id: id,
+                asin: asin,
+                trackNumber: trackNumber
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            return response.data.songList;
         } catch (error) {
             this.handleError(error, errorCallback)
         }

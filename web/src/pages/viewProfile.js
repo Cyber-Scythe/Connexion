@@ -6,15 +6,18 @@ import DataStore from "../util/DataStore";
 /**
  * Logic needed for the view playlist page of the website.
  */
-class ViewPlaylist extends BindingClass {
+class ViewProfile extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['clientLoaded', 'mount', 'addPlaylistToPage', 'addSongsToPage', 'addSong'], this);
+        this.bindClassMethods(['clientLoaded', 'mount', 'editProfile', 'viewInbox', 'viewMatches'], this);
+
         this.dataStore = new DataStore();
-        this.dataStore.addChangeListener(this.addPlaylistToPage);
-        this.dataStore.addChangeListener(this.addSongsToPage);
+        this.dataStore.addChangeListener(this.editProfile);
+        this.dataStore.addChangeListener(this.viewInbox);
+
         this.header = new Header(this.dataStore);
-        console.log("viewplaylist constructor");
+
+        console.log("viewProfile constructor");
     }
 
     /**
@@ -22,22 +25,20 @@ class ViewPlaylist extends BindingClass {
      */
     async clientLoaded() {
         const urlParams = new URLSearchParams(window.location.search);
-        const playlistId = urlParams.get('id');
-        document.getElementById('playlist-name').innerText = "Loading Playlist ...";
-        const playlist = await this.client.getPlaylist(playlistId);
-        this.dataStore.set('playlist', playlist);
-        document.getElementById('songs').innerText = "(loading songs...)";
-        const songs = await this.client.getPlaylistSongs(playlistId);
-        this.dataStore.set('songs', songs);
+        const userId = urlParams.get('user-id');
+        document.getElementById('input-email');
+
+        const profile = await this.client.getProfile(email);
+        this.dataStore.set('profile', profile);
     }
 
     /**
-     * Add the header to the page and load the MusicPlaylistClient.
+     * Add the header to the page and load the ConnexionClient.
      */
     mount() {
         document.getElementById('add-song').addEventListener('click', this.addSong);
 
-        this.header.addHeaderToPage();
+        //this.header.addHeaderToPage();
 
         this.client = new ConnexionClient();
         this.clientLoaded();
@@ -108,7 +109,7 @@ class ViewPlaylist extends BindingClass {
 
         const songList = await this.client.addSongToPlaylist(playlistId, asin, trackNumber, (error) => {
             errorMessageDisplay.innerText = `Error: ${error.message}`;
-            errorMessageDisplay.classList.remove('hidden');           
+            errorMessageDisplay.classList.remove('hidden');
         });
 
         this.dataStore.set('songs', songList);

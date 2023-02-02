@@ -1,5 +1,6 @@
 package com.nashss.se.connexionservice.dependency;
 
+import com.nashss.se.connexionservice.activity.CheckDbForUserActivity;
 import com.nashss.se.connexionservice.activity.CreateUserActivity;
 import dagger.Component;
 
@@ -23,6 +24,14 @@ public interface ServiceComponent {
      * @return CreateUserActivity
      */
     CreateUserActivity provideCreateUserActivity();
+
+
+    /**
+     * Provides the relevant activity.
+     * @return CheckDbForUserActivity
+     */
+    CheckDbForUserActivity provideCheckDbForUserActivity();
+
 
     /**
      * Provides the relevant activity.

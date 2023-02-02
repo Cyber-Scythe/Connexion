@@ -23,10 +23,10 @@ module.exports = {
     usedExports: true
   },
   entry: {
-    createUserProfile: path.resolve(__dirname, 'src', 'pages', 'createUserProfile.js')
-    //createPlaylist: path.resolve(__dirname, 'src', 'pages', 'createPlaylist.js'),
-    //viewPlaylist: path.resolve(__dirname, 'src', 'pages', 'viewPlaylist.js'),
-    //searchPlaylists: path.resolve(__dirname, 'src', 'pages', 'searchPlaylists.js'),
+    createUserProfile: path.resolve(__dirname, 'src', 'pages', 'createUserProfile.js'),
+    createPlaylist: path.resolve(__dirname, 'src', 'pages', 'createPlaylist.js'),
+    viewPlaylist: path.resolve(__dirname, 'src', 'pages', 'viewPlaylist.js'),
+    searchPlaylists: path.resolve(__dirname, 'src', 'pages', 'searchPlaylists.js'),
   },
   output: {
     path: path.resolve(__dirname, 'build', 'assets'),
