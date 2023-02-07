@@ -37,8 +37,8 @@ class ViewProfile extends BindingClass {
     mount() {
         document.getElementById('drp-dwn-1').addEventListener('click', this.getInbox);
         document.getElementById('drp-dwn-2').addEventListener('click', this.getConnexions);
-        //this.header.addHeaderToPage();
 
+        this.header.addHeaderToPage();
         this.client = new ConnexionClient();
         this.clientLoaded();
     }

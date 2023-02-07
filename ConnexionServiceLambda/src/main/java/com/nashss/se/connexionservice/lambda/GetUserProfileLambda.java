@@ -9,21 +9,21 @@ import org.apache.logging.log4j.Logger;
 
 public class GetUserProfileLambda
           extends LambdaActivityRunner<GetUserProfileActivityRequest, GetUserProfileActivityResult>
-          implements RequestHandler<LambdaRequest<GetUserProfileActivityRequest>, LambdaResponse> {
+          implements RequestHandler<AuthenticatedLambdaRequest<GetUserProfileActivityRequest>, LambdaResponse> {
 
         private final Logger log = LogManager.getLogger();
 
         @Override
-        public LambdaResponse handleRequest(LambdaRequest<GetUserProfileActivityRequest> input, Context context) {
+        public LambdaResponse handleRequest(AuthenticatedLambdaRequest<GetUserProfileActivityRequest> input, Context context) {
             log.info("handleRequest");
 
             return super.runActivity(
                     () -> input.fromPath(path ->
                             GetUserProfileActivityRequest.builder()
-                                    .withEmail(path.get("email"))
+                                    .withId(path.get("id"))
                                     .build()),
                     (request, serviceComponent) ->
                             serviceComponent.provideGetUserProfileActivity().handleRequest(request)
             );
-    }
+        }
 }

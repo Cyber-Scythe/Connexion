@@ -41,7 +41,7 @@ public class UserDao {
      * @return the stored User, or if null create a new user and save it.
      */
     public User getUser(String email, String name, String id) {
-        User user = this.dynamoDbMapper.load(User.class, email);
+        User user = this.dynamoDbMapper.load(User.class, id);
 
         if (user == null) {
 
@@ -59,16 +59,14 @@ public class UserDao {
         }
     }
 
-    public User getUser(String email) {
-        User user = this.dynamoDbMapper.load(User.class, email);
-        return user;
+    public User getUser(String id) {
+        return this.dynamoDbMapper.load(User.class, id);
     }
 
     /**
      * Saves (creates or updates) the given user.
      *
      * @param user The user to save
-     * @return The User object that was saved
      */
     public User saveUser(User user) {
         this.dynamoDbMapper.save(user);

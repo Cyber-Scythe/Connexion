@@ -1,0 +1,50 @@
+<div class="container">
+    <div class="row inbox-wrapper">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-3 email-aside border-lg-right">
+                            <div class="aside-content">
+                                <div class="aside-header">
+                                    <button class="navbar-toggle" data-target=".aside-nav" data-toggle="collapse" type="button"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg></span></button>
+                                    <span class="title">Inbox</span>
+                                </div>
+                                <div class="aside-compose"><a class="button" id="compose-button" href=#>Compose Email</a></div>
+                                <div class="aside-nav collapse">
+                                    <ul class="nav">
+                                        <li class="active" id="inbox"><a href="../../../demo_1/pages/email/inbox.html"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-inbox"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg></span>Inbox<span class="badge badge-danger-muted text-white font-weight-bold float-right">2</span></a></li>
+                                        <li><a href="#"><span class="icon" id="sent-messages"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></span>Sent Mail</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-9 email-content">
+                            <div class="email-head">
+                                <div class="email-head-sender d-flex align-items-center justify-content-between flex-wrap">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar">
+                                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Avatar" class="rounded-circle user-avatar-md" id="profile-picture">
+                                        </div>
+                                        <div class="sender d-flex align-items-center">
+                                            <a href="#" id="sender-name">John Doe</a> <span>to</span><a href="#" id="recipient-name">me</a>
+                                            <div class="actions dropdown">
+                                                <a class="icon" href="#" data-toggle="dropdown"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+                                                <div class="dropdown-menu" role="menu">
+                                                    <a class="dropdown-item text-danger" href="#">Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="date" id="date-sent">Nov 20, 11:20</div>
+                                </div>
+                            </div>
+                            <div class="email-body" id="email-content">Email Body
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

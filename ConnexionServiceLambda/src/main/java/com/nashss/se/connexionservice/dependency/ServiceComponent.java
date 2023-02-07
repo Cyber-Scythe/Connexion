@@ -2,6 +2,7 @@ package com.nashss.se.connexionservice.dependency;
 
 import com.nashss.se.connexionservice.activity.CheckDbForUserActivity;
 import com.nashss.se.connexionservice.activity.GetUserProfileActivity;
+import com.nashss.se.connexionservice.activity.UpdateUserProfileActivity;
 import dagger.Component;
 
 import javax.inject.Singleton;
@@ -36,7 +37,7 @@ public interface ServiceComponent {
      * Provides the relevant activity.
      * @return GetPlaylistActivity
      */
-   // SearchPlaylistsActivity provideSearchPlaylistsActivity();
+    UpdateUserProfileActivity provideUpdateUserProfileActivity();
 
     /**
      * Provides the relevant activity.

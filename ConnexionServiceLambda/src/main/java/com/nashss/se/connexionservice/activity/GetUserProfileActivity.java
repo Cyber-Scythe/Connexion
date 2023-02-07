@@ -43,11 +43,8 @@ public class GetUserProfileActivity {
     public GetUserProfileActivityResult handleRequest(final GetUserProfileActivityRequest getUserProfileActivityRequest) {
         log.info("Received GetPlaylistRequest {}", getUserProfileActivityRequest);
 
-        String requestedEmail = getUserProfileActivityRequest.getEmail();
-        String requestedName = getUserProfileActivityRequest.getName();
         String requestedId = getUserProfileActivityRequest.getId();
-
-        User user = userDao.getUser(requestedEmail, requestedName, requestedId);
+        User user = userDao.getUser(requestedId);
         UserModel userModel = new ModelConverter().toUserModel(user);
 
         return GetUserProfileActivityResult.builder()

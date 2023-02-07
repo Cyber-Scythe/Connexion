@@ -29,6 +29,7 @@ public class CheckDbForUserActivityRequest {
         return "CheckDbForUserActivityRequest{" +
                 ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
+                ", id='" + id + '\'' +
                 '}';
     }
 

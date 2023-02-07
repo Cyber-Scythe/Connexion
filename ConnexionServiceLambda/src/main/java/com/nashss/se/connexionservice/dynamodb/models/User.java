@@ -27,7 +27,7 @@ public class User {
     private List<String> hobbies;
     private List<String> connections;
 
-    @DynamoDBAttribute(attributeName = "id")
+    @DynamoDBHashKey(attributeName = "id")
     public String getId() { return id; }
 
     public void setId(String id) { this.id = id; }
@@ -41,7 +41,7 @@ public class User {
     }
 
     // "name" is a reserved word in DDB, so the attribute in the table is called "playlistName".
-    @DynamoDBHashKey(attributeName = "email")
+    @DynamoDBAttribute(attributeName = "email")
     public String getEmail() {
         return email;
     }
