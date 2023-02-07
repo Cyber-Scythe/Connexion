@@ -2,7 +2,6 @@ package com.nashss.se.connexionservice.lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.nashss.se.connexionservice.activity.requests.CheckDbForUserActivityRequest;
 import com.nashss.se.connexionservice.activity.requests.GetUserProfileActivityRequest;
 import com.nashss.se.connexionservice.activity.results.GetUserProfileActivityResult;
 import org.apache.logging.log4j.LogManager;
@@ -16,16 +15,13 @@ public class GetUserProfileLambda
 
         @Override
         public LambdaResponse handleRequest(AuthenticatedLambdaRequest<GetUserProfileActivityRequest> input, Context context) {
+            log.info("handleRequest");
+
             return super.runActivity(
-                    () -> {
-                        // CheckDbForUserActivityRequest unauthenticatedRequest = input.fromBody(CheckDbForUserActivityRequest.class);
-                        return input.fromUserClaims(claims ->
-                                GetUserProfileActivityRequest.builder()
-                                        .withEmail(claims.get("email"))
-                                        .withName(claims.get("name"))
-                                        .withId(claims.get("sub"))
-                                        .build());
-                    },
+                    () -> input.fromPath(path ->
+                            GetUserProfileActivityRequest.builder()
+                                    .withId(path.get("id"))
+                                    .build()),
                     (request, serviceComponent) ->
                             serviceComponent.provideGetUserProfileActivity().handleRequest(request)
             );

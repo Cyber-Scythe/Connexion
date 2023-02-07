@@ -257,7 +257,7 @@ Resources:
         ConnexionService:
           Type: Api
           Properties:
-            Path: /dashboard
+            Path: /index/{id}/dashboard
             Method: get
 
 
@@ -278,7 +278,7 @@ Resources:
         ConnexionService:
           Type: Api
           Properties:
-            Path: /index
+            Path: /index/{id}
             Method: post
 
   #-----------------------------------------------------
