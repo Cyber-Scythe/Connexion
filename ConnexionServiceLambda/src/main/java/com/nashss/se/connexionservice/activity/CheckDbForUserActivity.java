@@ -49,9 +49,9 @@ public class CheckDbForUserActivity {
         log.info("Received CreateUserActivityRequest {}", checkDbForUserActivityRequest);
 
 
-        User searchUser = userDao.getUser(checkDbForUserActivityRequest.getEmail(),
-                                          checkDbForUserActivityRequest.getName(),
-                                          checkDbForUserActivityRequest.getId());
+        User searchUser = userDao.getOrMakeNewUser(checkDbForUserActivityRequest.getEmail(),
+                                                  checkDbForUserActivityRequest.getName(),
+                                                  checkDbForUserActivityRequest.getId());
 
         UserModel userModel = new ModelConverter().toUserModel(searchUser);
 

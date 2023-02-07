@@ -99,6 +99,8 @@ public class UserModel {
     public String getUserEmail() { return email; }
 
     public String getUserId() { return id; }
+
+    public String getUserBirthdate() { return birthdate; }
     public String getUserCity() { return city; }
     public String getUserState() { return state ;}
     public String getUserPersonalityType() { return personalityType; }
