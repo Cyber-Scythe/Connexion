@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+    <script type="text/javascript" src="assets/userDashboard.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
+<body class="background">
+<header class="header" id="header">
+    <div class="dropdown">
+        <button class="dropbtn">Navigation</button>
+        <div class="dropdown-content">
+            <a id="drp-dwn-1" href="#">Inbox</a>
+            <a id="drp-dwn-2" href="#">Connexions</a>
+        </div>
+    </div>
+</header>
+<div class="main-content">
+    <div class="container mt-7">
+        <!-- Table -->
+        <div class="row">
+            <div class="col-xl-8 m-auto order-xl-2 mb-5 mb-xl-0">
+                <div class="card card-profile shadow">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-3 order-lg-2">
+                            <div class="card-profile-image" id="profile-picture">
+                                <a href="#">
+                                    <img src="web/src/images/profile-picture.png" class="rounded-circle">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+                        <div class="row justify-content-right">
+                            <div class="d-flex justify-content-center">
+                                <button id="edit-profile-btn" src="web/src/images/edit-profile.png", class="btn btn-sm btn-default float-right">
+                                    <i class="fa fa-edit-profile"></i> Edit Profile</button>
+                                    <script type="text/javascript">
+                                        document.getElementById("edit-profile-btn").onclick = function () {
+                                            location.href = "http://localhost:8000/assets/editProfile.js";
+                                        };
+                                    </script>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body pt-0 pt-md-4">
+                        <div class="text-center">
+                            <h3 id="user-name">User's name
+                                <span class="font-weight-light" id="user-age">, age</span>
+                            </h3>
+                            <div class="h5 font-weight-300">
+                                <i class="ni location_pin mr-2" id="user-personality-type">personality type</i>
+                            </div>
+                            <div class="h5 font-weight-300">
+                                <i class="ni location_pin mr-2" id="user-location">user's location</i>
+                            </div>
+
+                            <hr class="my-4">
+                            <div class="card card-profile shadow">
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-3 order-lg-2">
+                                        <div class="table">
+                                            <h4>Hobbies</h4>
+                                            <div class="hobbies-boxed" id="hobbies-boxes">
+                                                This text is enclosed in a box.
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

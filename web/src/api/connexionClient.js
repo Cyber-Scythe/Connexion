@@ -2,8 +2,9 @@ import axios from "axios";
 import BindingClass from "../util/bindingClass";
 import Authenticator from "./authenticator";
 
+
 /**
- * Client to call the MusicPlaylistService.
+ * Client to call the ConnexionService.
  *
  * This could be a great place to explore Mixins. Currently the client is being loaded multiple times on each page,
  * which we could avoid using inheritance or Mixins.
@@ -15,10 +16,10 @@ export default class ConnexionClient extends BindingClass {
     constructor(props = {}) {
         super();
 
-        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getPlaylist', 'getPlaylistSongs', 'createPlaylist'];
+        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getProfile', 'getPlaylistSongs', 'createPlaylist'];
         this.bindClassMethods(methodsToBind, this);
 
-        this.authenticator = new Authenticator();;
+        this.authenticator = new Authenticator();
         this.props = props;
 
         axios.defaults.baseURL = process.env.API_BASE_URL;
@@ -71,16 +72,41 @@ export default class ConnexionClient extends BindingClass {
         return await this.authenticator.getUserToken();
     }
 
+
     /**
-     * Gets the playlist for the given ID.
-     * @param id Unique identifier for a playlist
-     * @param errorCallback (Optional) A function to execute if the call fails.
-     * @returns The playlist's metadata.
+     * Checks to see if user is new or existing
+     * @param email Email address associated with user
+     * @param errorCallBack (Optional) A function to execute if the call fails.
+     * @returns the user's metadata.
      */
-    async getPlaylist(id, errorCallback) {
+     async loadUserProfile(id, errorCallback) {
+         try {
+            const response = await this.axiosClient.get(`/index/${id}/dashboard`);
+
+            const userData = response.data.user;
+            populateDashboard(userData);
+
+         } catch (error) {
+            this.handleError(error, errorCallback)
+         }
+
+        const userId = this.client.get(`id`);
+        window.location.href = 'index/' + userId +'/dashboard.html';
+        //window.location.href = '/results.html?categoryId=' + categoryId + '';
+    }
+
+
+    /**
+     * Gets the user for the given ID.
+     * @param id Unique identifier for a user
+     * @param errorCallback (Optional) A function to execute if the call fails.
+     * @returns The user's metadata.
+     */
+    async getProfile(id, errorCallback) {
         try {
-            const response = await this.axiosClient.get(`playlists/${id}`);
-            return response.data.playlist;
+            const response = await this.axiosClient.get(`index/${id}/dashboard`);
+            const userData = response.data.user;
+            populateDashboard(userData);
         } catch (error) {
             this.handleError(error, errorCallback)
         }
@@ -132,41 +158,20 @@ export default class ConnexionClient extends BindingClass {
      * @param trackNumber The track number of the song on the album.
      * @returns The list of songs on a playlist.
      */
-    async addSongToPlaylist(id, asin, trackNumber, errorCallback) {
+    async updateUserProfile(id, errorCallback) {
         try {
-            const token = await this.getTokenOrThrow("Only authenticated users can add a song to a playlist.");
-            const response = await this.axiosClient.post(`playlists/${id}/songs`, {
+            const token = await this.getTokenOrThrow("Only authenticated users can edit their profile.");
+            const response = await this.axiosClient.post(`index/${id}`, {
                 id: id,
-                asin: asin,
-                trackNumber: trackNumber
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-            return response.data.songList;
+            return response.data.userData;
         } catch (error) {
             this.handleError(error, errorCallback)
         }
-    }
-
-    /**
-     * Search for a soong.
-     * @param criteria A string containing search criteria to pass to the API.
-     * @returns The playlists that match the search criteria.
-     */
-    async search(criteria, errorCallback) {
-        try {
-            const queryParams = new URLSearchParams({ q: criteria })
-            const queryString = queryParams.toString();
-
-            const response = await this.axiosClient.get(`playlists/search?${queryString}`);
-
-            return response.data.playlists;
-        } catch (error) {
-            this.handleError(error, errorCallback)
-        }
-
     }
 
     /**

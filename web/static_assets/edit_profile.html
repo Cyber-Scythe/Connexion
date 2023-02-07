@@ -1,0 +1,122 @@
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Dashboard Builder</title>
+  <script type="text/javascript" src="assets/editProfile.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://demos.creative-tim.com/soft-ui-dashboard/assets/css/nucleo-icons.css">
+  <link rel="stylesheet" href="https://demos.creative-tim.com/soft-ui-dashboard/assets/css/nucleo-svg.css">
+  <link rel="stylesheet" href="https://demos.creative-tim.com/soft-ui-dashboard/assets/css/soft-ui-dashboard.min.css?v=1.0.2">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+  <link rel="stylesheet" type="text/css" href="./assets/css/loopple/loopple.css">
+</head>
+
+<body class="g-sidenav-show">
+<div class="main-content" id="panel">
+  <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 mt-3 shadow-none border-radius-xl" id="navbarTop">
+    <div class="container-fluid py-1 px-3">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+          <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
+          <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Dashboard</li>
+        </ol>
+        <h6 class="font-weight-bolder mb-0">Dashboard</h6>
+      </nav>
+      <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+        <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+        </div>
+          <li class="nav-item px-3 d-flex align-items-center">
+            <a href="javascript:;" class="nav-link text-body p-0">
+              <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer" aria-hidden="true"></i>
+            </a>
+          </li>
+          <li class="nav-item dropdown pe-2 d-flex align-items-center">
+            <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa fa-bell cursor-pointer" aria-hidden="true"></i>
+            </a>
+            <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container-fluid pt-3">
+    <div class="card mb-4">
+      <div class="card-header">
+        <div class="row align-items-center">
+          <div class="col-8">
+            <h6 class="mb-0">Edit profile </h6>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <form>
+          <h6 class="heading-small text-muted mb-4">User information</h6>
+          <div>
+            <form id="fs-profile-picture" accept-charset="utf-8"
+                  action="https://formspree.io/xzbjawgz/FORM_ID"
+                  method="POST"
+                  enctype="multipart/form-data">
+            </form>
+            <div class="form-group">
+              <label for="fs-profile-picture"> Your photo:</label>
+              <input type="file" name="upload">
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-email">Email address</label>
+                  <input type="email" id="input-email" class="form-control" placeholder="name@example.com">
+                </div>
+              </div>
+            </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-last-name">Name</label>
+                  <input type="text" id="input-last-name" class="form-control" placeholder="last name">
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-birthdate">Birthdate</label>
+                  <input type="text" id="input-birthdate" class="form-control" placeholder="birthdate">
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-city">City</label>
+                  <input type="text" id="input-city" class="form-control" placeholder="city">
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-state">State</label>
+                  <input type="text" id="input-state" class="form-control" placeholder="state">
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-personality-type">Personality Type</label>
+                  <input type="text" id="input-personality-type" class="form-control" placeholder="personality type">
+                </div>
+              </div>
+            </div>
+          <hr class="horizontal dark my-4">
+          <!-- Description -->
+          <h6 class="heading-small text-muted mb-4">About me</h6>
+          <div>
+          </div>
+          <div class="form-group">
+            <label class="form-control-label">Hobbies</label>
+            <textarea rows="4" class="form-control" placeholder="Hobbies"></textarea>
+            <div class="btn btn-sm btn-default float-center">
+              <button id="edit-profile-btn" src="web/src/images/edit-profile.png">
+                <i class="fa fa-edit-profile"></i>Save Changes</button>
+            </div>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+</body>
