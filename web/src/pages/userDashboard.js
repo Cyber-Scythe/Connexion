@@ -2,6 +2,8 @@ import ConnexionClient from '../api/connexionClient';
 import Header from '../components/header';
 import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
+import Authenticator from '../api/authenticator';
+
 
 /**
  * Logic needed for the view profile page of the website.
@@ -14,6 +16,7 @@ class UserDashboard extends BindingClass {
 
         // Create a new datastore
         this.dataStore = new DataStore();
+        this.authenticator = new Authenticator();
         this.header = new Header(this.dataStore);
 
         console.log("userDashboard constructor");
@@ -24,10 +27,9 @@ class UserDashboard extends BindingClass {
      * Once the client is loaded, get the user metadata.
      */
      async clientLoaded() {
-        const userData = await this.client.loadUserProfile((errorCallback) => {
-                               console.log("error")});
+        const urlParams = new URLSearchParams(window.location.search);
 
-        this.dataStore.set('userData', userData);
+        //console.log("url pathname: " + id);
     }
 
     /**
@@ -35,11 +37,11 @@ class UserDashboard extends BindingClass {
      */
      mount() {
         // Wire up the form's 'submit' event and the button's 'click' event to the search method.
-        //document.getElementById('edit-profile-btn').addEventListener('click', this.editProfile);
+        document.getElementById('edit-profile-btn').addEventListener('click', this.editProfile);
 
         this.header.addHeaderToPage();
 
-       // this.dataStore.addChangeListener(this.editProfile);
+        //this.dataStore.addChangeListener(this.editProfile);
        // this.dataStore.addChangeListener(this.viewInbox);
        // this.dataStore.addChangeListener(this.viewConnexions);
 
@@ -55,28 +57,28 @@ class UserDashboard extends BindingClass {
     async populateDashboard(userData) {
         console.log("populateDashboard");
 
+       // const user = this.dataStore.get('userData');
+                if (user == null) {
+                    return;
+                }
 
-        if (userData == null) {
-            return;
-        }
-
-        document.getElementById('user-name').innerHTML = userData.name;
+        document.getElementById('user-name').innerHTML = user.name;
         document.getElementById('user-age').innerHTML = function calculate_age(dob) {
-                                                       const userBDay = Date.parse(userData.birthdate);
+                                                       const userBDay = Date.parse(user.birthdate);
                                                        var diff_ms = Date.now() - userBDay;
                                                        var age_dt = new Date(diff_ms);
 
                                                        return Math.abs(age_dt.getUTCFullYear() - 1970);
-                                                   };
+                                                   }
 
-        document.getElementById('user-personality-type').innerHTML = userData.personalityType;
+        document.getElementById('user-personality-type').innerHTML = user.personalityType;
 
-        const city = userData.city;
-        const state = userData.state;
+        const city = user.city;
+        const state = user.state;
         const location = city + ", " + state;
 
         document.getElementById('user-location').innerHTML = location;
-        document.getElementById('hobbies-boxes').innerHTML = userData.hobbies;
+        document.getElementById('hobbies-boxes').innerHTML = user.hobbies;
     }
 
    /*

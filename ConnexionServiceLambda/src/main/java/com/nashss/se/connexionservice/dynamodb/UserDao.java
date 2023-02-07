@@ -40,7 +40,7 @@ public class UserDao {
      * @param email the User email
      * @return the stored User, or if null create a new user and save it.
      */
-    public User getOrMakeNewUser(String email, String name, String id) {
+    public User getUser(String email, String name, String id) {
         User user = this.dynamoDbMapper.load(User.class, id);
 
         if (user == null) {

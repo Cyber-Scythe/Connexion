@@ -16,7 +16,7 @@ export default class ConnexionClient extends BindingClass {
     constructor(props = {}) {
         super();
 
-        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'loadUserProfile', 'logout', 'getProfile', 'getPlaylistSongs', 'createPlaylist'];
+        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getProfile', 'getPlaylistSongs', 'createPlaylist'];
         this.bindClassMethods(methodsToBind, this);
 
         this.authenticator = new Authenticator();
@@ -79,19 +79,20 @@ export default class ConnexionClient extends BindingClass {
      * @param errorCallBack (Optional) A function to execute if the call fails.
      * @returns the user's metadata.
      */
-     async loadUserProfile(errorCallback) {
-      try {
-            const token = await this.getTokenOrThrow("Only authenticated users can create playlists.");
-            const response = await this.axiosClient.get(`/dashboard`, {
-                     headers: {
-                         Authorization: `Bearer ${token}`
-                     }
-                 });
+     async loadUserProfile(id, errorCallback) {
+         try {
+            const response = await this.axiosClient.get(`/index/${id}/dashboard`);
 
-                 return response.data.user;
-             } catch (error) {
-                 this.handleError(error, errorCallback)
-             }
+            const userData = response.data.user;
+            populateDashboard(userData);
+
+         } catch (error) {
+            this.handleError(error, errorCallback)
+         }
+
+        const userId = this.client.get(`id`);
+        window.location.href = 'index/' + userId +'/dashboard.html';
+        //window.location.href = '/results.html?categoryId=' + categoryId + '';
     }
 
 
@@ -103,8 +104,7 @@ export default class ConnexionClient extends BindingClass {
      */
     async getProfile(id, errorCallback) {
         try {
-            const response = await this.axiosClient.get(`index/${id}/dashboard`,
-            );
+            const response = await this.axiosClient.get(`index/${id}/dashboard`);
             const userData = response.data.user;
             populateDashboard(userData);
         } catch (error) {
@@ -158,10 +158,12 @@ export default class ConnexionClient extends BindingClass {
      * @param trackNumber The track number of the song on the album.
      * @returns The list of songs on a playlist.
      */
-    async updateUserProfile(errorCallback) {
+    async updateUserProfile(id, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can edit their profile.");
-            const response = await this.axiosClient.post(`/index`, {
+            const response = await this.axiosClient.post(`index/${id}`, {
+                id: id,
+            }, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
