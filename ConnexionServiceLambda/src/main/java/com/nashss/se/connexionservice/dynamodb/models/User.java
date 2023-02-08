@@ -20,7 +20,7 @@ public class User {
     private String id;
     private String name;
     private String email;
-    private String birthdate;
+    private int age;
     private String city;
     private String state;
     private String personalityType;
@@ -50,13 +50,13 @@ public class User {
         this.email = email;
     }
 
-    @DynamoDBAttribute(attributeName = "birthdate")
-    public String getBirthdate() {
-        return birthdate;
+    @DynamoDBAttribute(attributeName = "age")
+    public int getAge() {
+        return age;
     }
 
-    public void setBirthdate(String birthdate) {
-        this.birthdate = birthdate;
+    public void setAge(int age) {
+        this.age = age;
     }
 
     @DynamoDBAttribute(attributeName = "city")
@@ -161,7 +161,7 @@ public class User {
         User user = (User) o;
         return name.equals(user.name) &&
                 email.equals(user.email) &&
-                birthdate.equals(user.birthdate) &&
+                age == user.age &&
                 city.equals(user.city) &&
                 state.equals(user.state) &&
                 Objects.equals(hobbies, user.hobbies) &&
@@ -170,7 +170,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, email, birthdate, city, state,
+        return Objects.hash(name, email, age, city, state,
                             personalityType, hobbies, connections);
     }
 

@@ -54,16 +54,17 @@ public class UpdateUserProfileActivity {
 
         User user = userDao.getUser(updateUserProfileActivityRequest.getId());
 
+        user.setId(updateUserProfileActivityRequest.getId());
         user.setName(updateUserProfileActivityRequest.getName());
         user.setEmail(updateUserProfileActivityRequest.getEmail());
         user.setPersonalityType(updateUserProfileActivityRequest.getPersonalityType());
-        user.setBirthdate(updateUserProfileActivityRequest.getBirthdate());
+        user.setAge(updateUserProfileActivityRequest.getAge());
         user.setCity(updateUserProfileActivityRequest.getCity());
         user.setState(updateUserProfileActivityRequest.getState());
         user.setHobbies(updateUserProfileActivityRequest.getHobbies());
         user.setConnections(updateUserProfileActivityRequest.getConnections());
 
-        user = userDao.saveUser(user);
+        userDao.saveUser(user);
 
         return UpdateUserProfileActivityResult.builder()
                 .withUser(new ModelConverter().toUserModel(user))

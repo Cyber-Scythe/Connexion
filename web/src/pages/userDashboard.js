@@ -2,8 +2,6 @@ import ConnexionClient from '../api/connexionClient';
 import Header from '../components/header';
 import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
-import Authenticator from '../api/authenticator';
-
 
 /**
  * Logic needed for the view profile page of the website.
@@ -16,7 +14,6 @@ class UserDashboard extends BindingClass {
 
         // Create a new datastore
         this.dataStore = new DataStore();
-        this.authenticator = new Authenticator();
         this.header = new Header(this.dataStore);
 
         console.log("userDashboard constructor");
@@ -27,9 +24,14 @@ class UserDashboard extends BindingClass {
      * Once the client is loaded, get the user metadata.
      */
      async clientLoaded() {
-        const urlParams = new URLSearchParams(window.location.search);
 
-        //console.log("url pathname: " + id);
+        const user = await this.client.getProfile((error) => {
+                          console.log(`Error: ${error.message}`);
+                          });
+        console.log("user: ", user);
+         this.dataStore.set('user', user);
+
+         this.populateDashboard();
     }
 
     /**
@@ -41,10 +43,6 @@ class UserDashboard extends BindingClass {
 
         this.header.addHeaderToPage();
 
-        //this.dataStore.addChangeListener(this.editProfile);
-       // this.dataStore.addChangeListener(this.viewInbox);
-       // this.dataStore.addChangeListener(this.viewConnexions);
-
         this.client = new ConnexionClient();
         this.clientLoaded();
     }
@@ -54,22 +52,17 @@ class UserDashboard extends BindingClass {
     *
     *
     */
-    async populateDashboard(userData) {
+    populateDashboard() {
         console.log("populateDashboard");
 
-       // const user = this.dataStore.get('userData');
-                if (user == null) {
-                    return;
-                }
+       const user = this.dataStore.get('user');
+
+       if (user == null) {
+            return;
+       }
 
         document.getElementById('user-name').innerHTML = user.name;
-        document.getElementById('user-age').innerHTML = function calculate_age(dob) {
-                                                       const userBDay = Date.parse(user.birthdate);
-                                                       var diff_ms = Date.now() - userBDay;
-                                                       var age_dt = new Date(diff_ms);
-
-                                                       return Math.abs(age_dt.getUTCFullYear() - 1970);
-                                                   }
+        document.getElementById('user-age').innerHTML = ", " + user.age;
 
         document.getElementById('user-personality-type').innerHTML = user.personalityType;
 

@@ -9,7 +9,7 @@ public class UserModel {
     private final String name;
     private final String email;
     private final String id;
-    private final String birthdate;
+    private final int age;
     private final String city;
     private final String state;
     private final String personalityType;
@@ -19,7 +19,7 @@ public class UserModel {
     private UserModel(String name,
                       String email,
                       String id,
-                      String birthdate,
+                      int age,
                       String city,
                       String state,
                       String personalityType,
@@ -29,7 +29,7 @@ public class UserModel {
         this.name = name;
         this.email = email;
         this.id = id;
-        this.birthdate = birthdate;
+        this.age = age;
         this.city = city;
         this.state = state;
         this.personalityType = personalityType;
@@ -46,7 +46,7 @@ public class UserModel {
     }
 
     public String getId() { return id; }
-    public String getBirthdate() { return birthdate; }
+    public int getAge() { return age; }
     public String getCity() {
         return city;
     }
@@ -75,7 +75,7 @@ public class UserModel {
         return Objects.equals(name, that.name) &&
                 Objects.equals(email, that.email) &&
                 Objects.equals(id, that.id) &&
-                Objects.equals(birthdate, that.birthdate) &&
+                Objects.equals(age, that.age) &&
                 Objects.equals(city, that.city) &&
                 Objects.equals(state, that.state) &&
                 Objects.equals(personalityType, that.personalityType) &&
@@ -85,7 +85,7 @@ public class UserModel {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, email, id, birthdate, city, state, personalityType, hobbies, connections);
+        return Objects.hash(name, email, id, age, city, state, personalityType, hobbies, connections);
     }
 
     //CHECKSTYLE:OFF:Builder
@@ -97,12 +97,11 @@ public class UserModel {
         return name;
     }
     public String getUserEmail() { return email; }
-
+    public int getUserAge() { return age; }
     public String getUserId() { return id; }
     public String getUserCity() { return city; }
     public String getUserState() { return state ;}
     public String getUserPersonalityType() { return personalityType; }
-
     public List<String> getUserHobbies() { return hobbies; }
     public List<String> getUserConnections() { return connections; }
 
@@ -110,7 +109,7 @@ public class UserModel {
         private String name;
         private String email;
         private String id;
-        private String birthdate;
+        private int age;
         private String city;
         private String state;
         private String personalityType;
@@ -132,8 +131,8 @@ public class UserModel {
             return this;
         }
 
-        public Builder withBirthdate(String birthdate) {
-            this.birthdate = birthdate;
+        public Builder withAge(int age) {
+            this.age = age;
             return this;
         }
 
@@ -167,7 +166,7 @@ public class UserModel {
             return new UserModel(name,
                                 email,
                                 id,
-                                birthdate,
+                                age,
                                 city,
                                 state,
                                 personalityType,

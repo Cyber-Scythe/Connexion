@@ -74,42 +74,24 @@ export default class ConnexionClient extends BindingClass {
 
 
     /**
-     * Checks to see if user is new or existing
-     * @param email Email address associated with user
-     * @param errorCallBack (Optional) A function to execute if the call fails.
-     * @returns the user's metadata.
-     */
-     async loadUserProfile(id, errorCallback) {
-         try {
-            const response = await this.axiosClient.get(`/index/${id}/dashboard`);
-
-            const userData = response.data.user;
-            populateDashboard(userData);
-
-         } catch (error) {
-            this.handleError(error, errorCallback)
-         }
-
-        const userId = this.client.get(`id`);
-        window.location.href = 'index/' + userId +'/dashboard.html';
-        //window.location.href = '/results.html?categoryId=' + categoryId + '';
-    }
-
-
-    /**
      * Gets the user for the given ID.
      * @param id Unique identifier for a user
      * @param errorCallback (Optional) A function to execute if the call fails.
      * @returns The user's metadata.
      */
-    async getProfile(id, errorCallback) {
-        try {
-            const response = await this.axiosClient.get(`index/${id}/dashboard`);
-            const userData = response.data.user;
-            populateDashboard(userData);
-        } catch (error) {
-            this.handleError(error, errorCallback)
-        }
+    async getProfile(errorCallback) {
+     try {
+          const token = await this.getTokenOrThrow("Only authenticated users can view dashboard");
+          const response = await this.axiosClient.get(`/dashboard`, {
+                headers: {
+                  Authorization: `Bearer ${token}`
+                }
+            });
+         return response.data.user;
+
+       } catch (error) {
+         this.handleError(error, errorCallback)
+       }
     }
 
     /**
@@ -158,12 +140,18 @@ export default class ConnexionClient extends BindingClass {
      * @param trackNumber The track number of the song on the album.
      * @returns The list of songs on a playlist.
      */
-    async updateUserProfile(id, errorCallback) {
+    async updateUserProfile(name, birthdate, city, state, personalityType, hobbies, connections, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can edit their profile.");
-            const response = await this.axiosClient.post(`index/${id}`, {
-                id: id,
-            }, {
+            const response = await this.axiosClient.post(`/index`, {
+                name: name,
+                birthdate: birthdate,
+                city: city,
+                state: state,
+                personalityType: personalityType,
+                hobbies: hobbies,
+                connections: connections
+            },{
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
