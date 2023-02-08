@@ -6,7 +6,7 @@ public class UpdateUserProfileActivityRequest {
     private final String email;
     private final String name;
     private final String id;
-    private final String birthdate;
+    private final int age;
     private final String city;
     private final String state;
     private final String personalityType;
@@ -16,7 +16,7 @@ public class UpdateUserProfileActivityRequest {
     private UpdateUserProfileActivityRequest(String email,
                                               String name,
                                               String id,
-                                              String birthdate,
+                                              int age,
                                               String city,
                                               String state,
                                               String personalityType,
@@ -25,7 +25,7 @@ public class UpdateUserProfileActivityRequest {
         this.email = email;
         this.name = name;
         this.id = id;
-        this.birthdate = birthdate;
+        this.age = age;
         this.city = city;
         this.state = state;
         this.personalityType = personalityType;
@@ -38,7 +38,7 @@ public class UpdateUserProfileActivityRequest {
     }
     public String getName() { return name; }
     public String getId() { return id; }
-    public String getBirthdate() { return birthdate; }
+    public int getAge() { return age; }
     public String getCity() { return city; }
     public String getState() { return state; }
     public String getPersonalityType() { return personalityType; }
@@ -51,7 +51,7 @@ public class UpdateUserProfileActivityRequest {
                 "email='" + email + '\'' +
                 "name='" + name + '\'' +
                 "id='" + id + '\'' +
-                "birthdate='" + birthdate + '\'' +
+                "age='" + age + '\'' +
                 "city='" + city + '\'' +
                 "state='" + state + '\'' +
                 "personalityType='" + personalityType + '\'' +
@@ -69,7 +69,7 @@ public class UpdateUserProfileActivityRequest {
         private String email;
         private String name;
         private String id;
-        private String birthdate;
+        private int age;
         private String city;
         private String state;
         private String personalityType;
@@ -91,8 +91,8 @@ public class UpdateUserProfileActivityRequest {
             return this;
         }
 
-        public Builder withBirthdate(String birthdate) {
-            this.birthdate = birthdate;
+        public Builder withAge(int age) {
+            this.age = age;
             return this;
         }
 
@@ -123,7 +123,7 @@ public class UpdateUserProfileActivityRequest {
 
 
         public UpdateUserProfileActivityRequest build() {
-            return new UpdateUserProfileActivityRequest(email, name, id, birthdate, city, state,
+            return new UpdateUserProfileActivityRequest(id, name, email, age, city, state,
                     personalityType, hobbies, connections);
         }
     }

@@ -20,17 +20,19 @@ public class UpdateUserProfileLambda
     public LambdaResponse handleRequest(AuthenticatedLambdaRequest<UpdateUserProfileActivityRequest> input, Context context) {
         return super.runActivity(
                 () -> {
-                    //UpdateUserProfileActivityRequest unauthenticatedRequest = input.fromBody(UpdateUserProfileActivityRequest.class);
+                    UpdateUserProfileActivityRequest unauthenticatedRequest = input.fromBody(UpdateUserProfileActivityRequest.class);
+
                     return input.fromUserClaims(claims ->
                             UpdateUserProfileActivityRequest.builder()
                                     .withId(claims.get("id"))
+                                    .withName(claims.get("name"))
                                     .withEmail(claims.get("email"))
-                                    .withBirthdate(claims.get("birthdate"))
-                                    .withCity(claims.get("city"))
-                                    .withState(claims.get("state"))
-                                    .withPersonalityType(claims.get("personalityType"))
-                                    .withHobbies(Collections.singletonList(claims.get("hobbies")))
-                                    .withConnections(Collections.singletonList(claims.get("connections")))
+                                    .withAge(unauthenticatedRequest.getAge())
+                                    .withCity(unauthenticatedRequest.getCity())
+                                    .withState(unauthenticatedRequest.getState())
+                                    .withPersonalityType(unauthenticatedRequest.getPersonalityType())
+                                    .withHobbies(unauthenticatedRequest.getHobbies())
+                                    .withConnections(unauthenticatedRequest.getConnections())
                                     .build());
                 },
                 (request, serviceComponent) ->

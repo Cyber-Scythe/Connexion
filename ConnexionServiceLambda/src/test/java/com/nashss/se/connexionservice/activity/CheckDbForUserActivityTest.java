@@ -33,7 +33,7 @@ public class CheckDbForUserActivityTest {
         String expectedId = "expectedId";
         String expectedName = "expectedName";
         String expectedEmail = "expectedEmail";
-        String expectedBirthdate = "expectedBDay";
+        int expectedAge = 32;
         String expectedCity = "expectedCity";
         String expectedState = "expectedState";
         String expectedPersonalityType = "expectedType";
@@ -44,7 +44,7 @@ public class CheckDbForUserActivityTest {
         user.setId(expectedId);
         user.setName(expectedName);
         user.setEmail(expectedEmail);
-        user.setBirthdate(expectedBirthdate);
+        user.setAge(expectedAge);
         user.setCity(expectedCity);
         user.setState(expectedState);
         user.setPersonalityType(expectedPersonalityType);
@@ -64,7 +64,7 @@ public class CheckDbForUserActivityTest {
         assertEquals(expectedId, result.getUser().getId());
         assertEquals(expectedName, result.getUser().getName());
         assertEquals(expectedEmail, result.getUser().getEmail());
-        assertEquals(expectedBirthdate, result.getUser().getBirthdate());
+        assertEquals(expectedAge, result.getUser().getAge());
         assertEquals(expectedCity, result.getUser().getCity());
         assertEquals(expectedState, result.getUser().getState());
         assertEquals(expectedPersonalityType, result.getUser().getPersonalityType());
