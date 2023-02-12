@@ -3,7 +3,11 @@ package com.nashss.se.connexionservice.dynamodb.models;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
+import com.nashss.se.connexionservice.converters.StringConverter;
+import org.apache.logging.log4j.core.config.plugins.convert.TypeConverters;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -16,7 +20,7 @@ import static com.nashss.se.connexionservice.utils.CollectionUtils.copyToSet;
  * Represents a record in the users table.
  */
 @DynamoDBTable(tableName = "users")
-public class User {
+public class User implements Serializable {
     private String id;
     private String name;
     private String email;
@@ -27,10 +31,49 @@ public class User {
     private List<String> hobbies;
     private List<String> connections;
 
+    /**
+     * Empty constructor for Category POJO.
+     */
+    public User() {
+    }
+
+    /**
+     * Constructor with parameters for User POJO.
+     * @param id for user ID
+     * @param name the user's name
+     * @param email email address of user
+     * @param age user's age
+     * @param city city the user lives in
+     * @param state state the user lives in
+     * @param personalityType user's personality type
+     * @param hobbies list of user's hobbies
+     * @param connections list of user's connections
+     */
+    public User(String id,
+                String name,
+                String email,
+                int age,
+                String city,
+                String state,
+                String personalityType,
+                List<String> hobbies,
+                List<String> connections) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.age = age;
+        this.city = city;
+        this.state = state;
+        this.personalityType = personalityType;
+        this.hobbies = hobbies;
+        this.connections = connections;
+    }
     @DynamoDBHashKey(attributeName = "id")
     public String getId() { return id; }
 
     public void setId(String id) { this.id = id; }
+
+    // "name" is a reserved word in DDB, so the attribute in the table is called "userName".
     @DynamoDBAttribute(attributeName = "userName")
     public String getName() {
         return name;
@@ -40,7 +83,6 @@ public class User {
         this.name = name;
     }
 
-    // "name" is a reserved word in DDB, so the attribute in the table is called "playlistName".
     @DynamoDBAttribute(attributeName = "email")
     public String getEmail() {
         return email;
@@ -87,10 +129,11 @@ public class User {
      *
      * @return Set of hobbies for this user
      */
+    //@DynamoDBTypeConverted(converter = StringConverter.class)
     @DynamoDBAttribute(attributeName = "hobbies")
     public List<String> getHobbies() {
         // normally, we would prefer to return an empty Set if there are no
-        // tags, but DynamoDB doesn't represent empty Sets...needs to be null
+        // hobbies, but DynamoDB doesn't represent empty Sets...needs to be null
         // instead
         if (null == hobbies) {
             return null;
@@ -105,7 +148,7 @@ public class User {
      * @param hobbies Set of hobbies for this user
      */
     public void setHobbies(List<String> hobbies) {
-        // see comment in getTags()
+
         if (null == hobbies) {
             this.hobbies = null;
         } else {
@@ -120,6 +163,7 @@ public class User {
      *
      * @return Set of connections for this user
      */
+    //@DynamoDBTypeConverted(converter = StringConverter.class)
     @DynamoDBAttribute(attributeName = "connections")
     public List<String> getConnections() {
         // normally, we would prefer to return an empty Set if there are no
@@ -159,7 +203,8 @@ public class User {
         }
 
         User user = (User) o;
-        return name.equals(user.name) &&
+        return id.equals(user.id) &&
+                name.equals(user.name) &&
                 email.equals(user.email) &&
                 age == user.age &&
                 city.equals(user.city) &&
@@ -170,7 +215,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, email, age, city, state,
+        return Objects.hash(id, name, email, age, city, state,
                             personalityType, hobbies, connections);
     }
 

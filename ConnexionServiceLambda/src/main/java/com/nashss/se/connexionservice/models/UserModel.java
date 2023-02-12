@@ -16,7 +16,8 @@ public class UserModel {
     private final List<String> hobbies;
     private final List<String> connections;
 
-    private UserModel(String name,
+
+    public UserModel(String name,
                       String email,
                       String id,
                       int age,

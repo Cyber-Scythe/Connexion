@@ -24,8 +24,8 @@ public class UpdateUserProfileLambda
 
                     return input.fromUserClaims(claims ->
                             UpdateUserProfileActivityRequest.builder()
-                                    .withId(claims.get("id"))
-                                    .withName(claims.get("name"))
+                                    .withId(claims.get("sub"))
+                                    .withName(unauthenticatedRequest.getName())
                                     .withEmail(claims.get("email"))
                                     .withAge(unauthenticatedRequest.getAge())
                                     .withCity(unauthenticatedRequest.getCity())

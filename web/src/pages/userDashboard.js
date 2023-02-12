@@ -31,7 +31,13 @@ class UserDashboard extends BindingClass {
         console.log("user: ", user);
          this.dataStore.set('user', user);
 
-         this.populateDashboard();
+        const hobbies = await this.client.getHobbiesList((error) => {
+            console.log(`Error: ${error.message}`)
+            });
+        console.log('hobbies: ', hobbies);
+        this.dataStore.set('hobbies', hobbies);
+
+        this.populateDashboard();
     }
 
     /**
@@ -39,7 +45,7 @@ class UserDashboard extends BindingClass {
      */
      mount() {
         // Wire up the form's 'submit' event and the button's 'click' event to the search method.
-        document.getElementById('edit-profile-btn').addEventListener('click', this.editProfile);
+        //document.getElementById('edit-profile-btn').addEventListener('click', this.editProfile);
 
         this.header.addHeaderToPage();
 
@@ -61,6 +67,8 @@ class UserDashboard extends BindingClass {
             return;
        }
 
+        console.log("name: " + user.name);
+
         document.getElementById('user-name').innerHTML = user.name;
         document.getElementById('user-age').innerHTML = ", " + user.age;
 
@@ -71,37 +79,7 @@ class UserDashboard extends BindingClass {
         const location = city + ", " + state;
 
         document.getElementById('user-location').innerHTML = location;
-        document.getElementById('hobbies-boxes').innerHTML = user.hobbies;
-    }
-
-   /*
-    *
-    *
-    */
-    async editUserProfile() {
-        const user = this.dataStore.get('userData');
-                if (user == null) {
-                    return;
-                }
-
-
-         var username = document.getElementById('user-name').innerHTML.value;
-         var age = document.getElementById('age').innerHTML.value;
-         var personalityType = document.getElementById('user-personality-type').innerHTML.value;
-         var location = document.getElementById('user-location').innerHTML.value;
-         var cityStop = location.indexOf(", ");
-         var city = location.substring(0, cityStop);
-         var end = location.length();
-         var State = location.substring(cityStop, end);
-         var hobbies = document.getElementById('hobbies').innerHTML.value;
-
-
-         const updatedProfile = await this.client.updateUserProfile(userData.id, (error) => {
-                    errorMessageDisplay.innerText = `Error: ${error.message}`;
-                    errorMessageDisplay.classList.remove('hidden');
-                });
-
-                this.dataStore.set('userData', updatedProfile);
+        document.getElementById('hobbies-list').innerHTML = user.hobbies;
     }
 }
 

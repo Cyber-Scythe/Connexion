@@ -41,7 +41,7 @@ public class GetUserProfileActivity {
      * @return getUserProfileActivityResult result object containing the API defined {@link UserModel}
      */
     public GetUserProfileActivityResult handleRequest(final GetUserProfileActivityRequest getUserProfileActivityRequest) {
-        log.info("Received GetPlaylistRequest {}", getUserProfileActivityRequest);
+        log.info("Received GetUserProfileActivityRequest {}", getUserProfileActivityRequest);
 
         String requestedId = getUserProfileActivityRequest.getId();
         User user = userDao.getUser(requestedId);

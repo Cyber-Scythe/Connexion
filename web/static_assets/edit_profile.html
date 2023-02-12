@@ -2,25 +2,28 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Dashboard Builder</title>
-  <script type="text/javascript" src="assets/editProfile.js" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="assets/editUserProfile.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://demos.creative-tim.com/soft-ui-dashboard/assets/css/nucleo-icons.css">
   <link rel="stylesheet" href="https://demos.creative-tim.com/soft-ui-dashboard/assets/css/nucleo-svg.css">
   <link rel="stylesheet" href="https://demos.creative-tim.com/soft-ui-dashboard/assets/css/soft-ui-dashboard.min.css?v=1.0.2">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
-  <link rel="stylesheet" type="text/css" href="./assets/css/loopple/loopple.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
 <body class="g-sidenav-show">
+<header class="header" id="header">
+  <div class="dropdown">
+    <button class="dropbtn">Navigation</button>
+    <div class="dropdown-content" id="dropdown-content">
+      <a id="drp-dwn-1" href="#">Messages</a>
+      <a id="drp-dwn-2" href="#">Connexions</a>
+      <a id="drp-dwn-3" href="/view_profile.html">Profile</a>
+    </div>
+  </div>
+</header>
 <div class="main-content" id="panel">
   <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 mt-3 shadow-none border-radius-xl" id="navbarTop">
     <div class="container-fluid py-1 px-3">
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-          <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
-          <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Dashboard</li>
-        </ol>
-        <h6 class="font-weight-bolder mb-0">Dashboard</h6>
-      </nav>
       <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
         <div class="ms-md-auto pe-md-3 d-flex align-items-center">
         </div>
@@ -72,14 +75,14 @@
             </div>
               <div class="col-lg-6">
                 <div class="form-group">
-                  <label class="form-control-label" for="input-last-name">Name</label>
-                  <input type="text" id="input-last-name" class="form-control" placeholder="name">
+                  <label class="form-control-label" for="input-name">Name</label>
+                  <input type="text" id="input-name" class="form-control" placeholder="name">
                 </div>
               </div>
               <div class="col-lg-6">
                 <div class="form-group">
-                  <label class="form-control-label" for="input-birthdate">Age</label>
-                  <input type="text" id="input-birthdate" class="form-control" placeholder="age">
+                  <label class="form-control-label" for="input-age">Age</label>
+                  <input type="text" id="input-age" class="form-control" placeholder="age">
                 </div>
               </div>
               <div class="col-lg-6">
@@ -108,16 +111,23 @@
           <h6 class="heading-small text-muted mb-4">About me</h6>
           <div>
           </div>
-          <div class="form-group">
-            <label class="form-control-label">Hobbies</label>
-            <textarea rows="4" class="form-control" placeholder="Hobbies"></textarea>
-            <div class="message-btn">
-              <button id="message-btn" src="web/src/images/edit-profile.png">
-                <i class="fa fa-edit-profile"></i>Save Changes</button>
-            </div>
+          <h7 class="heading-small text-muted mb-4">Hobbies</h7>
+          <div class = "card">
+          <div class="table">
+            <thead id="table-head" label="Hobbies">
+            </thead>
+          <table class="hobbies-table">
+            <tbody>
+            <ul id="hobbies-list"></ul>
+            </tbody>
+          </table>
           </div>
-      </form>
     </div>
+          <div class="btn">
+            <button id="edit-btn" src="web/src/images/edit-profile.png">
+              <i class="fa fa-edit-profile"></i>Save Changes</button>
+          </div>
+      </div>
   </div>
 </div>
 </div>

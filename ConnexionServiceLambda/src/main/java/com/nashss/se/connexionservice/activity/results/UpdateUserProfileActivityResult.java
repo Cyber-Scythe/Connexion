@@ -1,11 +1,12 @@
 package com.nashss.se.connexionservice.activity.results;
 
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import com.nashss.se.connexionservice.models.UserModel;
 
 public class UpdateUserProfileActivityResult {
     private final UserModel user;
 
-    private UpdateUserProfileActivityResult(UserModel user) {
+    public UpdateUserProfileActivityResult(UserModel user) {
         this.user = user;
     }
 

@@ -16,7 +16,7 @@ export default class ConnexionClient extends BindingClass {
     constructor(props = {}) {
         super();
 
-        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getProfile', 'getPlaylistSongs', 'createPlaylist'];
+        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getProfile', 'getHobbiesList', 'createPlaylist'];
         this.bindClassMethods(methodsToBind, this);
 
         this.authenticator = new Authenticator();
@@ -95,18 +95,22 @@ export default class ConnexionClient extends BindingClass {
     }
 
     /**
-     * Get the songs on a given playlist by the playlist's identifier.
-     * @param id Unique identifier for a playlist
+     * Get the hobbies from DB.
      * @param errorCallback (Optional) A function to execute if the call fails.
-     * @returns The list of songs on a playlist.
+     * @returns The list of hobbies.
      */
-    async getPlaylistSongs(id, errorCallback) {
-        try {
-            const response = await this.axiosClient.get(`playlists/${id}/songs`);
-            return response.data.songList;
-        } catch (error) {
-            this.handleError(error, errorCallback)
-        }
+    async getHobbiesList(errorCallback) {
+       try {
+           const token = await this.getTokenOrThrow("Only authenticated users can retrieve hobbies from db.");
+           const response = await this.axiosClient.get(`/index/hobbies`, {
+                       headers: {
+                           Authorization: `Bearer ${token}`
+                       }
+                   });
+                   return response.data.hobbies;
+               } catch (error) {
+                   this.handleError(error, errorCallback)
+               }
     }
 
     /**
@@ -140,12 +144,12 @@ export default class ConnexionClient extends BindingClass {
      * @param trackNumber The track number of the song on the album.
      * @returns The list of songs on a playlist.
      */
-    async updateUserProfile(name, birthdate, city, state, personalityType, hobbies, connections, errorCallback) {
+    async updateUserProfile(name, age, city, state, personalityType, hobbies, connections, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can edit their profile.");
             const response = await this.axiosClient.post(`/index`, {
                 name: name,
-                birthdate: birthdate,
+                age: age,
                 city: city,
                 state: state,
                 personalityType: personalityType,

@@ -50,7 +50,7 @@ public class UpdateUserProfileActivity {
      * @return updateUserProfileActivityResult result object containing the API defined {@link UserModel}
      */
     public UpdateUserProfileActivityResult handleRequest(final UpdateUserProfileActivityRequest updateUserProfileActivityRequest) {
-        log.info("Received UpdatePlaylistRequest {}", updateUserProfileActivityRequest);
+        log.info("Received UpdateUserProfileActivityRequest {}", updateUserProfileActivityRequest);
 
         User user = userDao.getUser(updateUserProfileActivityRequest.getId());
 

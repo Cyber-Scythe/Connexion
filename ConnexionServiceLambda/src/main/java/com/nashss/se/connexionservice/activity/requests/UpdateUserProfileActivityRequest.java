@@ -1,7 +1,11 @@
 package com.nashss.se.connexionservice.activity.requests;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 import java.util.List;
 
+@JsonDeserialize(builder = UpdateUserProfileActivityRequest.Builder.class)
 public class UpdateUserProfileActivityRequest {
     private final String email;
     private final String name;
@@ -13,7 +17,8 @@ public class UpdateUserProfileActivityRequest {
     private final List<String> hobbies;
     private final List<String> connections;
 
-    private UpdateUserProfileActivityRequest(String email,
+
+    public UpdateUserProfileActivityRequest(String email,
                                               String name,
                                               String id,
                                               int age,
@@ -60,11 +65,13 @@ public class UpdateUserProfileActivityRequest {
                 '}';
     }
 
+
     //CHECKSTYLE:OFF:Builder
     public static Builder builder() {
         return new Builder();
     }
 
+    @JsonPOJOBuilder
     public static class Builder {
         private String email;
         private String name;
@@ -123,7 +130,7 @@ public class UpdateUserProfileActivityRequest {
 
 
         public UpdateUserProfileActivityRequest build() {
-            return new UpdateUserProfileActivityRequest(id, name, email, age, city, state,
+            return new UpdateUserProfileActivityRequest(email, name, id, age, city, state,
                     personalityType, hobbies, connections);
         }
     }
