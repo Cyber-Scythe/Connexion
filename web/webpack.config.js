@@ -29,6 +29,7 @@ module.exports = {
     searchPlaylists: path.resolve(__dirname, 'src', 'pages', 'searchPlaylists.js'),
     userDashboard: path.resolve(__dirname, 'src', 'pages', 'userDashboard.js'),
     editUserProfile: path.resolve(__dirname, 'src', 'pages', 'editUserProfile.js'),
+    inbox: path.resolve(__dirname, 'src', 'pages', 'inbox.js'),
 
   },
   output: {

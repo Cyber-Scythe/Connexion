@@ -3,7 +3,7 @@
 
 <head>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
-    <script type="text/javascript" src="assets/searchPlaylists.js"></script>
+    <script type="text/javascript" src="assets/viewProfile.js"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
@@ -14,9 +14,9 @@
     <div class="dropdown">
         <button class="dropbtn">Navigation</button>
         <div class="dropdown-content">
-            <a id="drp-dwn-1" href="#">Messages</a>
-            <a id="drp-dwn-2" href="#">Connexions</a>
-            <a id="drp-dwn-3" href="#">Edit Profile</a>
+            <a id="drp-dwn-1" href="/inbox.html">Messages</a>
+            <a id="drp-dwn-2" href="/view_connexions.html">Connexions</a>
+            <a id="drp-dwn-3" href="/dashboard.html">Dashboard</a>
         </div>
     </div>
 </header>
@@ -28,23 +28,26 @@
                     <div class="card card-profile shadow">
                         <div class="row justify-content-center">
                             <div class="col-lg-3 order-lg-2">
-                                <div class="card-profile-image" id="profile-picture">
-                                    <a href="#">
-                                        <img src="web/src/images/profile-picture.png" class="rounded-circle">
+                                <div class="card-profile-image" id="profile-picture-div">
+                                    <a href="/view_profile.html">
+                                        <img id="profile-picture" src="images/alien.png" class="rounded-circle">
                                     </a>
                                 </div>
                             </div>
                         </div>
+                        <br>
                         <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
                             <div class="row justify-content-center">
                                 <div class="d-flex justify-content-center">
-                                    <a href="#" class="message-btn">Message</a>
+                                    <a href="/compose_message.html" class="message-btn">Message</a>
                                 </div>
                             </div>
                         </div>
+                        <br>
                         <div class="card-body pt-0 pt-md-4">
                             <div class="text-center">
-                                <h3 id="user-name">User's name
+                                <h3>
+                                    <span id="user-name"></span>
                                     <span class="font-weight-light" id="user-age">, age</span>
                                 </h3>
                                 <div class="h5 font-weight-300">
@@ -68,9 +71,9 @@
                                                     </tbody>
                                                 </table>
                                             </div>
-                                            </div>
                                         </div>
                                     </div>
+                                </div>
                                 </div>
                             </div>
                         </div>

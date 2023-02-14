@@ -16,6 +16,7 @@ class EditUserProfile extends BindingClass {
         // Create a new datastore
         this.dataStore = new DataStore();
         this.header = new Header(this.dataStore);
+        this.dataStore.addChangeListener(this.redirectToViewProfile);
 
         console.log("editUserProfile constructor");
     }
@@ -26,6 +27,7 @@ class EditUserProfile extends BindingClass {
      */
      async clientLoaded() {
         console.log("clientLoaded method");
+
 
         const hobbies = await this.client.getHobbiesList((error) => {
             console.log(`Error: ${error.message}`)
@@ -41,7 +43,7 @@ class EditUserProfile extends BindingClass {
      */
      mount() {
         // Wire up the form's 'submit' event and the button's 'click' event to the search method.
-        document.getElementById('edit-btn').addEventListener('click', this.updateProfile);
+        document.getElementById('save-btn').addEventListener('click', this.updateProfile);
 
         this.header.addHeaderToPage();
 
@@ -49,7 +51,11 @@ class EditUserProfile extends BindingClass {
         this.clientLoaded();
     }
 
-
+  /**
+   *
+   *
+   *
+   **/
    populateHobbiesList() {
         const jsonHobbyList = this.dataStore.get('hobbies');
 
@@ -87,15 +93,14 @@ class EditUserProfile extends BindingClass {
     }
 
    /*
-    *
-    *
+    * Updates a user's profile information when the save button is clicked
     */
     async updateProfile(evt) {
-         var username = document.getElementById('input-name').innerHTML.value;
-         var age = document.getElementById('input-age').innerHTML.value;
-         var personalityType = document.getElementById('input-personality-type').innerHTML.value;
-         var city = document.getElementById('input-city').innerHTML.value;
-         var state = document.getElementById('input-state').innerHTML.value;
+         var username = document.getElementById('input-name').value;
+         var age = document.getElementById('input-age').value;
+         var personalityType = document.getElementById('input-personality-type').value;
+         var city = document.getElementById('input-city').value;
+         var state = document.getElementById('input-state').value;
          var connections = null;
 
          const hobbyList = this.dataStore.get('hobbies');
@@ -103,15 +108,6 @@ class EditUserProfile extends BindingClass {
          if (hobbyList.length == 0) {
                     document.getElementById("hobbies-list").innerHTML = "Return list is empty."
          }
-
-//         for (var i = 0; i < hobbyList.length; i++) {
-//
-//            var hobby = hobbyList[i];
-//
-//            if (hobby != null) {
-//                document.getElementById("hobbies-list").innerHTML += "<br>"+ hobby;
-//            }
-//         }
 
         var userHobbies = [];
 
@@ -121,45 +117,32 @@ class EditUserProfile extends BindingClass {
             if(checkbox.checked) {
                 console.log("Checked box");
                 userHobbies.push(checkbox.value);
+                console.log("Type: ", checkbox.value.type);
             }
             console.log("Unchecked box");
          }
 
-         var listOfHobbies = [];
-         userHobbies.forEach(function(entry) {
-                                         var singleObj = {};
-                                         singleObj['type'] = 'String';
-                                         singleObj['value'] = entry;
-                                         listOfHobbies.push(singleObj);
-                                     });
-
         console.log("userHobbies: ", userHobbies);
-        console.log("listOfHobbies: ", listOfHobbies);
 
-        const profile =  await this.client.updateUserProfile(username, age, city, state, personalityType, listOfHobbies, connections, (error) => {
+        const profile =  await this.client.updateUserProfile(username, age, city, state, personalityType, userHobbies, connections, (error) => {
 //                    errorMessageDisplay.innerText = `Error: ${error.message}`;
 //                    errorMessageDisplay.classList.remove('hidden');
                       console.log("Error: " + error.message);
                 });
-
+        console.log("Profile: ", profile);
         this.dataStore.set('profile', profile);
     }
 
     /**
      * When the profile is updated in the datastore, redirect to the view playlist page.
      */
-     async redirectToViewProfile() {
-        const user = await this.client.getProfile((error) => {
-                                  console.log(`Error: ${error.message}`);
-                                  });
-        console.log("user: ", user);
-        this.dataStore.set('user', user);
+      redirectToViewProfile() {
+        const profile = this.dataStore.get('profile');
 
-        if (user != null) {
-            window.location.href = `/view_profile.html?id=${user.id}`;
+        if (profile != null) {
+            window.location.href = `/view_profile.html?id=${profile.id}`;
         }
-     }
-
+      }
 }
 
 /**

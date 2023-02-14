@@ -38,7 +38,8 @@ public class CheckDbForUserActivityTest {
         String expectedState = "expectedState";
         String expectedPersonalityType = "expectedType";
         List<String> expectedHobbies = List.of("hobbies");
-        List<String> expectedConnections = List.of("connections");
+
+        List<User> expectedConnexions = null;
 
         User user = new User();
         user.setId(expectedId);
@@ -49,7 +50,7 @@ public class CheckDbForUserActivityTest {
         user.setState(expectedState);
         user.setPersonalityType(expectedPersonalityType);
         user.setHobbies(expectedHobbies);
-        user.setConnections(expectedConnections);
+        user.setConnexions(expectedConnexions);
 
         when(userDao.getUser(expectedId)).thenReturn(user);
 
@@ -69,6 +70,6 @@ public class CheckDbForUserActivityTest {
         assertEquals(expectedState, result.getUser().getState());
         assertEquals(expectedPersonalityType, result.getUser().getPersonalityType());
         assertEquals(expectedHobbies, result.getUser().getHobbies());
-        assertEquals(expectedConnections, result.getUser().getConnections());
+        assertEquals(expectedConnexions, result.getUser().getConnexions());
     }
 }

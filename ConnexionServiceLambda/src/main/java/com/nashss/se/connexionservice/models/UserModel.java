@@ -1,5 +1,7 @@
 package com.nashss.se.connexionservice.models;
 
+import com.nashss.se.connexionservice.dynamodb.models.User;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -14,7 +16,7 @@ public class UserModel {
     private final String state;
     private final String personalityType;
     private final List<String> hobbies;
-    private final List<String> connections;
+    private final List<User> connexions;
 
 
     public UserModel(String name,
@@ -25,7 +27,7 @@ public class UserModel {
                       String state,
                       String personalityType,
                       List<String> hobbies,
-                      List<String> connections) {
+                      List<User> connexions) {
 
         this.name = name;
         this.email = email;
@@ -35,7 +37,7 @@ public class UserModel {
         this.state = state;
         this.personalityType = personalityType;
         this.hobbies = hobbies;
-        this.connections = connections;
+        this.connexions = connexions;
     }
 
     public String getName() {
@@ -60,7 +62,7 @@ public class UserModel {
     public List<String> getHobbies() {
         return copyToList(hobbies);
     }
-    public List<String> getConnections() { return copyToList(connections); }
+    public List<User> getConnexions() { return copyToList(connexions); }
 
     @Override
     public boolean equals(Object o) {
@@ -81,12 +83,12 @@ public class UserModel {
                 Objects.equals(state, that.state) &&
                 Objects.equals(personalityType, that.personalityType) &&
                 Objects.equals(hobbies, that.hobbies) &&
-                Objects.equals(connections, that.connections);
+                Objects.equals(connexions, that.connexions);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, email, id, age, city, state, personalityType, hobbies, connections);
+        return Objects.hash(name, email, id, age, city, state, personalityType, hobbies, connexions);
     }
 
     //CHECKSTYLE:OFF:Builder
@@ -104,7 +106,7 @@ public class UserModel {
     public String getUserState() { return state ;}
     public String getUserPersonalityType() { return personalityType; }
     public List<String> getUserHobbies() { return hobbies; }
-    public List<String> getUserConnections() { return connections; }
+    public List<User> getUserConnexions() { return connexions; }
 
     public static class Builder {
         private String name;
@@ -115,7 +117,7 @@ public class UserModel {
         private String state;
         private String personalityType;
         private List<String> hobbies;
-        private List<String> connections;
+        private List<User> connexions;
 
         public Builder withName(String name) {
             this.name = name;
@@ -157,9 +159,9 @@ public class UserModel {
             return this;
         }
 
-        public Builder withConnections(List<String> connections) {
+        public Builder withConnexions(List<User> connexions) {
 
-            this.connections = copyToList(connections);
+            this.connexions = copyToList(connexions);
             return this;
         }
 
@@ -172,7 +174,7 @@ public class UserModel {
                                 state,
                                 personalityType,
                                 hobbies,
-                                connections);
+                                connexions);
         }
     }
 }

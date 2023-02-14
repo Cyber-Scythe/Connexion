@@ -144,7 +144,11 @@
     height: 0;
   }
 
-  h2,
+  h2 {
+    margin-top: 0;
+    margin-bottom: .5rem;
+    color: #fff
+    }
   h3,
   h5 {
     margin-top: 0;
@@ -309,6 +313,7 @@
   h2,
   .h2 {
     font-size: 1.25rem;
+    color: #ffffff
   }
 
   h3,
