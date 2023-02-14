@@ -1,6 +1,7 @@
 package com.nashss.se.connexionservice.dependency;
 
 import com.nashss.se.connexionservice.activity.CheckDbForUserActivity;
+import com.nashss.se.connexionservice.activity.GetHobbiesFromDbActivity;
 import com.nashss.se.connexionservice.activity.GetUserProfileActivity;
 import com.nashss.se.connexionservice.activity.UpdateUserProfileActivity;
 import dagger.Component;
@@ -43,7 +44,7 @@ public interface ServiceComponent {
      * Provides the relevant activity.
      * @return GetPlaylistSongsActivity
      */
-   // GetPlaylistSongsActivity provideGetPlaylistSongsActivity();
+    GetHobbiesFromDbActivity provideGetHobbiesFromDbActivity();
 
     /**
      * Provides the relevant activity.

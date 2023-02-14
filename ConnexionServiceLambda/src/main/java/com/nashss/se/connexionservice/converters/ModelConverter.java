@@ -30,6 +30,7 @@ public UserModel toUserModel(User user) {
             .withState(user.getState())
             .withPersonalityType(user.getPersonalityType())
             .withHobbies(hobbies)
+            .withConnections(user.getConnections())
             .build();
 }
 
@@ -56,7 +57,7 @@ public UserModel toUserModel(User user) {
      * @param users The Users to convert to UserModels
      * @return The converted list of UserModels
      */
-    public List<UserModel> toPlaylistModelList(List<User> users) {
+    public List<UserModel> toUserModelList(List<User> users) {
         List<UserModel> userModels = new ArrayList<>();
 
         for (User user : users) {

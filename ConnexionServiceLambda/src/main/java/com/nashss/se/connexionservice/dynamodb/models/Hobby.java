@@ -9,21 +9,15 @@ import java.util.Objects;
 public class Hobby {
     private String hobby;
 
-    /**
-     * Empty constructor for Hobby POJO.
-     */
     public Hobby() {
+
     }
 
-    /**
-     * Non-empty constructor for Hobby POJO.
-     * @param hobby hobby parameter
-     */
     public Hobby(String hobby) {
         this.hobby = hobby;
     }
 
-    @DynamoDBHashKey(attributeName = "hobby")
+    @DynamoDBHashKey(attributeName = "hobbyName")
     public String getHobby() {
 
         return hobby;

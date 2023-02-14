@@ -1,5 +1,8 @@
 package com.nashss.se.connexionservice.activity;
 
+import com.nashss.se.connexionservice.activity.requests.GetHobbiesFromDbActivityRequest;
+import com.nashss.se.connexionservice.activity.requests.GetUserProfileActivityRequest;
+import com.nashss.se.connexionservice.activity.results.GetHobbiesFromDbActivityResult;
 import com.nashss.se.connexionservice.dynamodb.HobbyDao;
 import com.nashss.se.connexionservice.dynamodb.models.Hobby;
 import org.apache.logging.log4j.LogManager;
@@ -37,7 +40,7 @@ public class GetHobbiesFromDbActivity {
      *
      * @return GetHobbiesFromDbActivityResult result object
      */
-    public GetHobbiesFromDbActivityResult handleRequest() {
+    public GetHobbiesFromDbActivityResult handleRequest(final GetHobbiesFromDbActivityRequest getHobbiesFromDbActivityRequest) {
         log.info("Inside GetCategoriesResult handleRequest");
 
         List<Hobby> hobbies = hobbyDao.getHobbies();
@@ -46,7 +49,7 @@ public class GetHobbiesFromDbActivity {
         for (Hobby hobby : hobbies) {
             hobbiesList.add(hobby.getHobby());
         }
-        return GetHobbiesFromDbResult.builder()
+        return GetHobbiesFromDbActivityResult.builder()
                 .withHobbies(hobbiesList)
                 .build();
     }
