@@ -2,8 +2,11 @@ package com.nashss.se.connexionservice.activity.requests;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import com.nashss.se.connexionservice.dynamodb.models.User;
 
 import java.util.List;
+
+import static com.nashss.se.connexionservice.utils.CollectionUtils.copyToList;
 
 @JsonDeserialize(builder = UpdateUserProfileActivityRequest.Builder.class)
 public class UpdateUserProfileActivityRequest {
@@ -15,7 +18,7 @@ public class UpdateUserProfileActivityRequest {
     private final String state;
     private final String personalityType;
     private final List<String> hobbies;
-    private final List<String> connections;
+    private final List<User> connexions;
 
 
     public UpdateUserProfileActivityRequest(String email,
@@ -26,7 +29,7 @@ public class UpdateUserProfileActivityRequest {
                                               String state,
                                               String personalityType,
                                               List<String> hobbies,
-                                              List<String> connections) {
+                                              List<User> connexions) {
         this.email = email;
         this.name = name;
         this.id = id;
@@ -35,7 +38,7 @@ public class UpdateUserProfileActivityRequest {
         this.state = state;
         this.personalityType = personalityType;
         this.hobbies = hobbies;
-        this.connections = connections;
+        this.connexions = connexions;
     }
 
     public String getEmail() {
@@ -47,8 +50,8 @@ public class UpdateUserProfileActivityRequest {
     public String getCity() { return city; }
     public String getState() { return state; }
     public String getPersonalityType() { return personalityType; }
-    public List<String> getHobbies() { return List.copyOf(hobbies); }
-    public List<String> getConnections() { return List.copyOf(connections); }
+    public List<String> getHobbies() { return copyToList(hobbies); }
+    public List<User> getConnexions() { return copyToList(connexions); }
 
     @Override
     public String toString() {
@@ -61,7 +64,7 @@ public class UpdateUserProfileActivityRequest {
                 "state='" + state + '\'' +
                 "personalityType='" + personalityType + '\'' +
                 "hobbies='" + hobbies + '\'' +
-                "connections='" + connections + '\'' +
+                "connexions='" + connexions + '\'' +
                 '}';
     }
 
@@ -81,7 +84,7 @@ public class UpdateUserProfileActivityRequest {
         private String state;
         private String personalityType;
         private List<String> hobbies;
-        private List<String> connections;
+        private List<User> connexions;
 
         public Builder withEmail(String email) {
             this.email = email;
@@ -119,19 +122,19 @@ public class UpdateUserProfileActivityRequest {
         }
 
         public Builder withHobbies(List<String> hobbies) {
-            this.hobbies = hobbies;
+            this.hobbies = copyToList(hobbies);
             return this;
         }
 
-        public Builder withConnections(List<String> connections) {
-            this.connections = connections;
+        public Builder withConnexions(List<User> connexions) {
+            this.connexions = copyToList(connexions);
             return this;
         }
 
 
         public UpdateUserProfileActivityRequest build() {
             return new UpdateUserProfileActivityRequest(email, name, id, age, city, state,
-                    personalityType, hobbies, connections);
+                    personalityType, hobbies, connexions);
         }
     }
 }

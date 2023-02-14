@@ -2,6 +2,7 @@ package com.nashss.se.connexionservice.lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.nashss.se.connexionservice.activity.requests.GetUserProfileActivityRequest;
 import com.nashss.se.connexionservice.activity.requests.UpdateUserProfileActivityRequest;
 import com.nashss.se.connexionservice.activity.results.UpdateUserProfileActivityResult;
@@ -32,7 +33,7 @@ public class UpdateUserProfileLambda
                                     .withState(unauthenticatedRequest.getState())
                                     .withPersonalityType(unauthenticatedRequest.getPersonalityType())
                                     .withHobbies(unauthenticatedRequest.getHobbies())
-                                    .withConnections(unauthenticatedRequest.getConnections())
+                                    .withConnexions(unauthenticatedRequest.getConnexions())
                                     .build());
                 },
                 (request, serviceComponent) ->

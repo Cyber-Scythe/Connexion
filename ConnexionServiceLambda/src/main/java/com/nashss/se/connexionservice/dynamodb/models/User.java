@@ -1,9 +1,6 @@
 package com.nashss.se.connexionservice.dynamodb.models;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import com.nashss.se.connexionservice.converters.StringConverter;
 import org.apache.logging.log4j.core.config.plugins.convert.TypeConverters;
 
@@ -21,6 +18,7 @@ import static com.nashss.se.connexionservice.utils.CollectionUtils.copyToSet;
  */
 @DynamoDBTable(tableName = "users")
 public class User implements Serializable {
+    public static final String PERSONALITY_TYPE_INDEX = "PersonalityTypeIndex";
     private String id;
     private String name;
     private String email;
@@ -29,7 +27,7 @@ public class User implements Serializable {
     private String state;
     private String personalityType;
     private List<String> hobbies;
-    private List<String> connections;
+    private List<User> connexions;
 
     /**
      * Empty constructor for Category POJO.
@@ -47,7 +45,7 @@ public class User implements Serializable {
      * @param state state the user lives in
      * @param personalityType user's personality type
      * @param hobbies list of user's hobbies
-     * @param connections list of user's connections
+     * @param connexions list of user's connexions
      */
     public User(String id,
                 String name,
@@ -57,7 +55,7 @@ public class User implements Serializable {
                 String state,
                 String personalityType,
                 List<String> hobbies,
-                List<String> connections) {
+                List<User> connexions) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -66,7 +64,7 @@ public class User implements Serializable {
         this.state = state;
         this.personalityType = personalityType;
         this.hobbies = hobbies;
-        this.connections = connections;
+        this.connexions = connexions;
     }
     @DynamoDBHashKey(attributeName = "id")
     public String getId() { return id; }
@@ -119,7 +117,8 @@ public class User implements Serializable {
         this.state = state;
     }
 
-    @DynamoDBAttribute(attributeName = "personalityType")
+    @DynamoDBIndexHashKey(globalSecondaryIndexName = PERSONALITY_TYPE_INDEX,
+            attributeName = "personalityType")
     public String getPersonalityType() { return personalityType; }
 
     public void setPersonalityType(String personalityType) { this.personalityType = personalityType; }
@@ -159,37 +158,37 @@ public class User implements Serializable {
     }
 
     /**
-     * Returns the set of connections associated with this User, null if there are none.
+     * Returns the list of connexions associated with this User, null if there are none.
      *
-     * @return Set of connections for this user
+     * @return List of connexions for this user
      */
     //@DynamoDBTypeConverted(converter = StringConverter.class)
-    @DynamoDBAttribute(attributeName = "connections")
-    public List<String> getConnections() {
+    @DynamoDBAttribute(attributeName = "connexions")
+    public List<User> getConnexions() {
         // normally, we would prefer to return an empty Set if there are no
         // tags, but DynamoDB doesn't represent empty Sets...needs to be null
         // instead
-        if (null == connections) {
+        if (null == connexions) {
             return null;
         }
 
-        return copyToList(connections);
+        return copyToList(connexions);
     }
 
     /**
      * Sets the connections for this User as a copy of input, or null if input is null.
      *
-     * @param connections Set of connections for this playlist
+     * @param connexions List of connexions for this user
      */
-    public void setConnections(List<String> connections) {
-        // see comment in getTags()
-        if (null == connections) {
-            this.connections = null;
+    public void setConnexions(List<User> connexions) {
+        // See comment in getConnexions
+        if (null == connexions) {
+            this.connexions = null;
         } else {
-            this.connections = copyToList(connections);
+            this.connexions = copyToList(connexions);
         }
 
-        this.connections = copyToList(connections);
+        this.connexions = copyToList(connexions);
     }
 
     @Override
@@ -210,13 +209,13 @@ public class User implements Serializable {
                 city.equals(user.city) &&
                 state.equals(user.state) &&
                 Objects.equals(hobbies, user.hobbies) &&
-                Objects.equals(connections, user.connections);
+                Objects.equals(connexions, user.connexions);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, name, email, age, city, state,
-                            personalityType, hobbies, connections);
+                            personalityType, hobbies, connexions);
     }
 
 }

@@ -59,7 +59,7 @@ class UserDashboard extends BindingClass {
     *
     */
     populateDashboard() {
-        console.log("populateDashboard");
+       console.log("populateDashboard");
 
        const user = this.dataStore.get('user');
 

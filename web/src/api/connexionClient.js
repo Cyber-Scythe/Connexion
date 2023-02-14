@@ -16,7 +16,7 @@ export default class ConnexionClient extends BindingClass {
     constructor(props = {}) {
         super();
 
-        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getProfile', 'getHobbiesList', 'createPlaylist'];
+        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getProfile', 'getHobbiesList', 'getMessages', 'getConnexions'];
         this.bindClassMethods(methodsToBind, this);
 
         this.authenticator = new Authenticator();
@@ -81,8 +81,8 @@ export default class ConnexionClient extends BindingClass {
      */
     async getProfile(errorCallback) {
      try {
-          const token = await this.getTokenOrThrow("Only authenticated users can view dashboard");
-          const response = await this.axiosClient.get(`/dashboard`, {
+          const token = await this.getTokenOrThrow("Only authenticated users can view profiles");
+          const response = await this.axiosClient.get(`/index`, {
                 headers: {
                   Authorization: `Bearer ${token}`
                 }
@@ -114,24 +114,19 @@ export default class ConnexionClient extends BindingClass {
     }
 
     /**
-     * Create a new playlist owned by the current user.
-     * @param name The name of the playlist to create.
-     * @param tags Metadata tags to associate with a playlist.
+     * Get connexions for the current user.
      * @param errorCallback (Optional) A function to execute if the call fails.
-     * @returns The playlist that has been created.
+     * @returns List of connexions for the user.
      */
-    async createPlaylist(name, tags, errorCallback) {
+    async getConnexions(errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can create playlists.");
-            const response = await this.axiosClient.post(`playlists`, {
-                name: name,
-                tags: tags
-            }, {
+            const response = await this.axiosClient.post(`/connexions`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-            return response.data.playlist;
+            return response.data.connexions;
         } catch (error) {
             this.handleError(error, errorCallback)
         }
@@ -160,11 +155,33 @@ export default class ConnexionClient extends BindingClass {
                     Authorization: `Bearer ${token}`
                 }
             });
-            return response.data.userData;
+            return response.data.user;
         } catch (error) {
             this.handleError(error, errorCallback)
         }
     }
+
+    /**
+     * Add a song to a playlist.
+     * @param id The id of the playlist to add a song to.
+     * @param asin The asin that uniquely identifies the album.
+     * @param trackNumber The track number of the song on the album.
+     * @returns The list of songs on a playlist.
+     */
+     async getMessages(errorCallback) {
+         try {
+                 const token = await this.getTokenOrThrow("Only authenticated users can view inbox.");
+                 const response = await this.axiosClient.get(`/inbox`, {
+                     headers: {
+                         Authorization: `Bearer ${token}`
+                     }
+                 });
+                 return response.data.user;
+             } catch (error) {
+                 this.handleError(error, errorCallback)
+             }
+     }
+
 
     /**
      * Helper method to log the error and run any error functions.

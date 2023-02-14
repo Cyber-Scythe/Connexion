@@ -1,6 +1,7 @@
 package com.nashss.se.connexionservice.dynamodb;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.nashss.se.connexionservice.dynamodb.models.User;
@@ -73,53 +74,88 @@ public class UserDao {
         return user;
     }
 
+
     /**
-     * Perform a search (via a "scan") of the Users table for users matching the given criteria.
-     *
-     * Both "email" and "name" attributes are searched.
-     * The criteria are an array of Strings. Each element of the array is search individually.
-     * ALL elements of the criteria array must appear in the playlistName or the tags (or both).
-     * Searches are CASE SENSITIVE.
-     *
-     * @param criteria an array of String containing search criteria.
+     * Perform a search ("via a scan") of the users table
+     * @return a List of all User objects in the table
+     */
+     public List<User> getAllConnexions() {
+         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
+         List<User> scanResult = dynamoDbMapper.scan(User.class, scanExpression);
+         System.out.println("ScanResult: " + scanResult);
+
+         return scanResult;
+     }
+
+
+    /**
+     * Perform a search (via a "scan") of the users table for users matching the given criteria.
+     * "personalityType" attribute is searched.
      * @return a List of User objects that match the search criteria.
      */
-    public List<User> searchUsers(String[] criteria) {
-        DynamoDBScanExpression dynamoDBScanExpression = new DynamoDBScanExpression();
+    public List<User> getConnexions(List<String> personalityTypes) {
+        Map<String, AttributeValue> valueMap = new HashMap<>();
 
-        if (criteria.length > 0) {
-            Map<String, AttributeValue> valueMap = new HashMap<>();
-            String valueMapNamePrefix = ":c";
+        if (personalityTypes.isEmpty()) {
 
-            StringBuilder nameFilterExpression = new StringBuilder();
-            StringBuilder tagsFilterExpression = new StringBuilder();
-
-            for (int i = 0; i < criteria.length; i++) {
-                valueMap.put(valueMapNamePrefix + i,
-                        new AttributeValue().withS(criteria[i]));
-                nameFilterExpression.append(
-                        filterExpressionPart("email", valueMapNamePrefix, i));
-                tagsFilterExpression.append(
-                        filterExpressionPart("name", valueMapNamePrefix, i));
-            }
-
-            dynamoDBScanExpression.setExpressionAttributeValues(valueMap);
-            dynamoDBScanExpression.setFilterExpression(
-                    "(" + nameFilterExpression + ") or (" + tagsFilterExpression + ")");
+             getAllConnexions();
         }
 
-        return this.dynamoDbMapper.scan(User.class, dynamoDBScanExpression);
+        for (int i = 0; i < personalityTypes.size(); i++) {
+            valueMap.put(":personalityType" + i, new AttributeValue().withS(personalityTypes.get(i)));
+        }
+
+        DynamoDBQueryExpression<User> queryExpression = new DynamoDBQueryExpression<User>()
+                .withIndexName("PersonalityTypeIndex")
+                .withConsistentRead(false)
+                .withKeyConditionExpression("personalityType = :personalityType0 or personalityType = :personalityType1 " +
+                        "or personalityType = :personalityType2 or personalityType = :personalityType3 or personalityType " +
+                        "= :personalityType4 or personalityType = :personalityType5")
+                .withExpressionAttributeValues(valueMap);
+
+        return dynamoDbMapper.query(User.class, queryExpression);
     }
 
-    private StringBuilder filterExpressionPart(String target, String valueMapNamePrefix, int position) {
-        String possiblyAnd = position == 0 ? "" : "and ";
-        return new StringBuilder()
-                .append(possiblyAnd)
-                .append("contains(")
-                .append(target)
-                .append(", ")
-                .append(valueMapNamePrefix).append(position)
-                .append(") ");
+    public List<String> getCompatiblePersonalityTypes(String personalityType) {
+
+        if (personalityType != null) {
+            switch (personalityType) {
+                case "ESTP":
+                    return List.of("ISTP", "ESFJ", "ISFJ", "ESTP", "ENFJ", "INFJ");
+                case "ISTP":
+                    return List.of("ESTP", "ESFJ", "ISFJ", "ISTP", "ENFJ", "INFJ");
+                case "ESFP":
+                    return List.of("ISFP", "ESTJ", "ISTJ", "ESFP", "ENTJ", "INFJ");
+                case "ISFP":
+                    return List.of("ESFP", "ESTJ", "ISTJ", "ISFP", "ENTJ", "INTJ");
+                case "ESTJ":
+                    return List.of("ESFP", "ISFP", "ISTJ", "ESTJ", "ENFP", "INFP");
+                case "ISTJ":
+                    return List.of("ESFP", "ISFP", "ESTJ", "ISTJ", "ENFP", "INFP");
+                case "ESFJ":
+                    return List.of("ESTP", "ISTP", "ISFJ", "ESFJ", "ENTP", "INTP");
+                case "ISFJ":
+                    return List.of("ESTP", "ISTP", "ESFJ", "ISFJ", "ENTP", "INTP");
+                case "ENFP":
+                    return List.of("INFP", "ENTJ", "INTJ", "ESTJ", "ISTJ", "ENFP");
+                case "INFP":
+                    return List.of("ENFP", "ENTJ", "INTJ", "ESTJ", "ISTJ", "INFP");
+                case "ENFJ":
+                    return List.of("INFJ", "ENTP", "INTP", "ESTP", "ISTP", "ENFJ");
+                case "INFJ":
+                    return List.of("ENFJ", "ENTP", "INTP", "ESTP", "ISTP", "INFJ");
+                case "ENTP":
+                    return List.of("ENFJ", "INFJ", "INTP", "ESFJ", "ISFJ", "ENTP");
+                case "INTP":
+                    return List.of("ENFJ", "INFJ", "ENTP", "ESFJ", "ISFJ", "INTP");
+                case "ENTJ":
+                    return List.of("ENFP", "INFP", "ENTJ", "ESFP", "ISFP", "ENTJ");
+                case "INTJ":
+                    return List.of("ENFP", "INFP", "ENTJ", "ESFP", "ISFP", "INTJ");
+            }
+        }
+
+        return null;
     }
 }
 
