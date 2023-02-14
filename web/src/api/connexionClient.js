@@ -16,7 +16,7 @@ export default class ConnexionClient extends BindingClass {
     constructor(props = {}) {
         super();
 
-        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getProfile', 'getHobbiesList', 'getMessages', 'getConnexions'];
+        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getProfile', 'updateUserProfile', 'getHobbiesList', 'getMessages', 'getConnexions'];
         this.bindClassMethods(methodsToBind, this);
 
         this.authenticator = new Authenticator();
@@ -94,6 +94,29 @@ export default class ConnexionClient extends BindingClass {
        }
     }
 
+
+    /**
+     * Gets the user for the given ID.
+     * @param id Unique identifier for a user
+     * @param errorCallback (Optional) A function to execute if the call fails.
+     * @returns The user's metadata.
+     */
+    async getConnexionProfile(userId, errorCallback) {
+     try {
+          const token = await this.getTokenOrThrow("Only authenticated users can view profiles");
+          const response = await this.axiosClient.get(`/index/{userId}`,{
+                headers: {
+                  Authorization: `Bearer ${token}`
+                }
+            });
+         return response.data.user;
+
+       } catch (error) {
+         this.handleError(error, errorCallback)
+       }
+    }
+
+
     /**
      * Get the hobbies from DB.
      * @param errorCallback (Optional) A function to execute if the call fails.
@@ -118,10 +141,10 @@ export default class ConnexionClient extends BindingClass {
      * @param errorCallback (Optional) A function to execute if the call fails.
      * @returns List of connexions for the user.
      */
-    async getConnexions(errorCallback) {
+    async getConnexions(personalityType, errorCallback) {
         try {
-            const token = await this.getTokenOrThrow("Only authenticated users can create playlists.");
-            const response = await this.axiosClient.post(`/connexions`, {
+            const token = await this.getTokenOrThrow("Only authenticated users can view connexions.");
+            const response = await this.axiosClient.get(`/connexions/${personalityType}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -133,13 +156,16 @@ export default class ConnexionClient extends BindingClass {
     }
 
     /**
-     * Add a song to a playlist.
-     * @param id The id of the playlist to add a song to.
-     * @param asin The asin that uniquely identifies the album.
-     * @param trackNumber The track number of the song on the album.
+     * Update the user's profile.
+     * @param name The name of the user to add to profile.
+     * @param city The city that the user lives in.
+     * @param state The state that the user lives in.
+     * @param personalityType the personalityType of the user
+     * @hobbies list of the user's hobbies
+     * @connexions list of the user's connexions
      * @returns The list of songs on a playlist.
      */
-    async updateUserProfile(name, age, city, state, personalityType, hobbies, connections, errorCallback) {
+    async updateUserProfile(name, age, city, state, personalityType, hobbies, connexions, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can edit their profile.");
             const response = await this.axiosClient.post(`/index`, {
@@ -149,7 +175,7 @@ export default class ConnexionClient extends BindingClass {
                 state: state,
                 personalityType: personalityType,
                 hobbies: hobbies,
-                connections: connections
+                connexions: connexions
             },{
                 headers: {
                     Authorization: `Bearer ${token}`

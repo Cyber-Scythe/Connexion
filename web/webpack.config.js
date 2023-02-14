@@ -30,6 +30,7 @@ module.exports = {
     userDashboard: path.resolve(__dirname, 'src', 'pages', 'userDashboard.js'),
     editUserProfile: path.resolve(__dirname, 'src', 'pages', 'editUserProfile.js'),
     inbox: path.resolve(__dirname, 'src', 'pages', 'inbox.js'),
+    connexions: path.resolve(__dirname, 'src', 'pages', 'connexions.js'),
 
   },
   output: {

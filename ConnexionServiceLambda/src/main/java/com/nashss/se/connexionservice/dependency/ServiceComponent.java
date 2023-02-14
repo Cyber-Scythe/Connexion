@@ -45,8 +45,14 @@ public interface ServiceComponent {
 
     /**
      * Provides the relevant activity.
-     * @return UpdatePlaylistActivity
+     * @return GetConnexionsActivity
      */
     GetConnexionsActivity provideGetConnexionsActivity();
+
+    /**
+     * Provides the relevant activity.
+     * @return GetConnexionProfileActivity
+     */
+    GetConnexionProfileActivity provideGetConnexionProfileActivity();
 
 }

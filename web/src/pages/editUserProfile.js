@@ -101,7 +101,7 @@ class EditUserProfile extends BindingClass {
          var personalityType = document.getElementById('input-personality-type').value;
          var city = document.getElementById('input-city').value;
          var state = document.getElementById('input-state').value;
-         var connections = null;
+         var connexions = null;
 
          const hobbyList = this.dataStore.get('hobbies');
 
@@ -124,7 +124,7 @@ class EditUserProfile extends BindingClass {
 
         console.log("userHobbies: ", userHobbies);
 
-        const profile =  await this.client.updateUserProfile(username, age, city, state, personalityType, userHobbies, connections, (error) => {
+        const profile =  await this.client.updateUserProfile(username, age, city, state, personalityType, userHobbies, connexions, (error) => {
 //                    errorMessageDisplay.innerText = `Error: ${error.message}`;
 //                    errorMessageDisplay.classList.remove('hidden');
                       console.log("Error: " + error.message);

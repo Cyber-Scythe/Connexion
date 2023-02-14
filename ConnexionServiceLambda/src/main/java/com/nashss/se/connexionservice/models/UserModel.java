@@ -16,7 +16,7 @@ public class UserModel {
     private final String state;
     private final String personalityType;
     private final List<String> hobbies;
-    private final List<User> connexions;
+    private final List<String> connexions;
 
 
     public UserModel(String name,
@@ -27,7 +27,7 @@ public class UserModel {
                       String state,
                       String personalityType,
                       List<String> hobbies,
-                      List<User> connexions) {
+                      List<String> connexions) {
 
         this.name = name;
         this.email = email;
@@ -62,7 +62,7 @@ public class UserModel {
     public List<String> getHobbies() {
         return copyToList(hobbies);
     }
-    public List<User> getConnexions() { return copyToList(connexions); }
+    public List<String> getConnexions() { return copyToList(connexions); }
 
     @Override
     public boolean equals(Object o) {
@@ -106,7 +106,7 @@ public class UserModel {
     public String getUserState() { return state ;}
     public String getUserPersonalityType() { return personalityType; }
     public List<String> getUserHobbies() { return hobbies; }
-    public List<User> getUserConnexions() { return connexions; }
+    public List<String> getUserConnexions() { return connexions; }
 
     public static class Builder {
         private String name;
@@ -117,7 +117,7 @@ public class UserModel {
         private String state;
         private String personalityType;
         private List<String> hobbies;
-        private List<User> connexions;
+        private List<String> connexions;
 
         public Builder withName(String name) {
             this.name = name;
@@ -159,7 +159,7 @@ public class UserModel {
             return this;
         }
 
-        public Builder withConnexions(List<User> connexions) {
+        public Builder withConnexions(List<String> connexions) {
 
             this.connexions = copyToList(connexions);
             return this;
