@@ -16,7 +16,7 @@ export default class ConnexionClient extends BindingClass {
     constructor(props = {}) {
         super();
 
-        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getProfile', 'updateUserProfile', 'getHobbiesList', 'getMessages', 'getConnexions'];
+        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getProfile', 'updateUserProfile', 'getHobbiesList', 'getMessages'];
         this.bindClassMethods(methodsToBind, this);
 
         this.authenticator = new Authenticator();
@@ -104,7 +104,7 @@ export default class ConnexionClient extends BindingClass {
     async getConnexionProfile(userId, errorCallback) {
      try {
           const token = await this.getTokenOrThrow("Only authenticated users can view profiles");
-          const response = await this.axiosClient.get(`/index/{userId}`,{
+          const response = await this.axiosClient.get(`/index/${userId}`,{
                 headers: {
                   Authorization: `Bearer ${token}`
                 }
