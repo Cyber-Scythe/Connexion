@@ -60,7 +60,7 @@ class Connexions extends BindingClass {
 
 
     /**
-     * When the profile is updated in the datastore, update the profile metadata on the page.
+     * When the connexions updated in the datastore, update the connexions metadata on the page.
      */
     async addConnexionsToPage() {
         console.log("addConnexionsToPage");

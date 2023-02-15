@@ -2,16 +2,13 @@ package com.nashss.se.connexionservice.dynamodb.models;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import com.nashss.se.connexionservice.converters.StringConverter;
+import org.apache.commons.lang3.SerializationUtils;
 import org.apache.logging.log4j.core.config.plugins.convert.TypeConverters;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
-import static com.nashss.se.connexionservice.utils.CollectionUtils.copyToList;
-import static com.nashss.se.connexionservice.utils.CollectionUtils.copyToSet;
+import static com.nashss.se.connexionservice.utils.CollectionUtils.*;
 
 /**
  * Represents a record in the users table.
@@ -45,7 +42,7 @@ public class User implements Serializable {
      * @param state state the user lives in
      * @param personalityType user's personality type
      * @param hobbies list of user's hobbies
-     * @param connexions list of user's connexions
+     * @param connexions List of user's connexions
      */
     public User(String id,
                 String name,
@@ -170,13 +167,13 @@ public class User implements Serializable {
             return null;
         }
 
-        return copyToList(connexions);
+        return connexions;
     }
 
     /**
      * Sets the connexions for this User as a copy of input, or null if input is null.
      *
-     * @param connexions List of connexions for this user
+     * @param connexions HashMap of connexions for this user
      */
     public void setConnexions(List<String> connexions) {
         // See comment in getConnexions

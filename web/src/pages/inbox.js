@@ -9,7 +9,7 @@ import DataStore from "../util/DataStore";
 class Inbox extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['clientLoaded', 'mount', 'getMessages'], this);
+        this.bindClassMethods(['clientLoaded', 'mount', 'populateInbox'], this);
 
         this.dataStore = new DataStore();
         this.header = new Header(this.dataStore);
@@ -21,88 +21,114 @@ class Inbox extends BindingClass {
      * Once the client is loaded, get the inbox metadata.
      */
     async clientLoaded() {
-        // Api call to get all inbox messages
-        const inbox = await this.client.getMessages((error) => {
+        console.log("inside clientLoaded()");
+
+        const inbox = await this.client.getAllMessages((error) => {
             errorMessageDisplay.innerText = `Error: ${error.message}`;
             errorMessageDisplay.classList.remove('hidden');
             });
 
         // set the dataStore
         this.dataStore.set('inbox', inbox);
+
+        this.populateInbox();
     }
 
     /**
      * Add the header to the page and load the ConnexionClient.
      */
     mount() {
-//        document.getElementById('drp-dwn-1').addEventListener('click', this.getConnexions);
-//        document.getElementById('drp-dwn-2').addEventListener('click', this.editProfile);
-
         this.header.addHeaderToPage();
         this.client = new ConnexionClient();
         this.clientLoaded();
     }
 
-    async getInbox() {
-        const messages = this.dataStore.get('messages');
+    async populateInbox() {
+        const messages = this.dataStore.get('inbox');
 
-        if (messages == null) {
-            document.getElementById("message-list").innerHTML = "Inbox is empty."
+        console.log("Messages: ", messages);
+
+        var colDiv = document.getElementById('col-div');
+        colDiv.className = 'col-12 col-lg-5 col-xl-3 border-right';
+
+        if (messages.length == 0) {
+            var emptyInboxDiv = document.createElement('div');
+            emptyInboxDiv.className = 'empty-inbox-card';
+            emptyInboxDiv.id = 'empty-inbox-card'
+
+            var emptyInboxContent = document.createElement('div');
+            emptyInboxContent.className = 'empty-inbox-card__content';
+
+            emptyInboxDiv.appendChild(emptyInboxContent);
+
+            var textDiv = document.createElement('div');
+            textDiv.className = 'row justify-content-center';
+            textDiv.innerText = 'Inbox is empty';
+
+            colDiv.appendChild(emptyInboxDiv);
+
+            emptyInboxContent.appendChild(textDiv);
+
             return;
         }
 
         for (var i = 0; i < messages.length; i++) {
-            var messageListItem = document.createElement('li');
-                            messageListItem.className = 'list-group-item border-0 d-flex align-items-center';
-                            //message.type = 'checkbox';
-                            messageListItem.id = 'message' + i;
-                            messageListItem.name = 'message';
-                            //messageListItem.value = message;
 
-            var div = document.createElement('div');
-            div.className = 'avatar me-3';
-            div.id = 'sender-avatar' + i;
+            var sender = document.createElement('a');
+                            sender.className = 'list-group-item list-group-item-action border-0';
+                            sender.type = 'a';
+                            sender.id = 'sender' + i;
+                            sender.name = 'sender';
+                            //sender.href = '';
 
-            messageListItem.appendChild(div);
+            var div1 = document.createElement('div');
+            div.className = 'badge bg-success float-right';
+            div.id = 'new-msg' + i;
+
+            var div2 = document.createElement('div');
+            div.className = 'd-flex align-items-start';
+            div.id = 'item-start-div';
+
+            sender.appendChild(div1);
+            sender.appendChild(div2);
 
             var senderPic = document.createElement('img');
-            senderPic.className = 'border-radius-lg shadow'
+            senderPic.className = 'rounded-circle mr-1';
             senderPic.id = 'sender-pic' + i;
             senderPic.name = 'sender-pic'
-            //senderPic.value = [S3 bucket of user's picture
+            senderPic.width = 40;
+            senderPic.height = 40;
+            senderPic.src = 'images/alien.png'
 
-            div.appendChild(senderPic);
+            div2.appendChild(senderPic);
 
-            var msgDiv = document.createElement('div');
-            msgDiv.className = 'd-flex align-items-start flex-column justify-content-center';
-            msgDiv.id = 'sender-info' + i;
+            var div3 = document.createElement('div');
+            div.className = 'flex-grow-1 ml-3';
+            div.innerText = messages[i].senderEmail;
 
-            messageListItem.appendChild(msgDiv);
+            div2.appendChild(div3)
 
-            var sender = document.createElement('h6');
-            sender.class = 'mb-0 text-sm';
-            sender.id = 'sender-name' + i;
-            //sender.value = messages[i].senderName;
+            var msgPreviewDiv = document.createElement('div');
+            msgPreviewDiv.className = 'small';
+            msgPreviewDiv.id = 'msg-preview' + i;
+            //msgPreviewDiv.href = 'assets/view_message.html
 
-            var p = document.createElement('p');
-            p.className = 'mb-0 text-xs';
-            p.id = 'msg-preview' + i;
-            // *** A SUB-STRING OF THE MESSAGE CONTENT SHOULD BE STORE IN VALUE HERE
-            //p.value = messages[i].messageContent;
+            var messageContent = messages[i].messageContent;
+            let previewLength = 0;
 
-            msgDiv.appendChild(sender);
-            msgDiv.appendChild(p);
+            if (messageContent.length >= 2) {
+                previewLength = messageContent.length/2
+                previewLength = previewLength.toFixed(0);
+                messagePreviewDiv.innerText = messageContent.substring(0, previewLength);
+            } else {
+                msgPreviewDiv.innerText = messageContent;
+            }
 
-            var a = document.createElement('a');
-            a.className = 'mb-0 text-xs float-right';
-            a.id = 'time-sent' + i;
-            // *** CHECK IF TIME SENT IS < 12AM, IF SO USE DATE HERE ***
-            //a.value = messages[i].timeSent;
+            div3.appendChild(msgPreviewDiv);
 
-            messageListItem.appendChild(a);
+            var br = document.createElement('br');
+            sender.appendChild(br);
         }
-
-
     }
 }
 

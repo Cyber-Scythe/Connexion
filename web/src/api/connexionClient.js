@@ -16,7 +16,7 @@ export default class ConnexionClient extends BindingClass {
     constructor(props = {}) {
         super();
 
-        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getProfile', 'updateUserProfile', 'getHobbiesList', 'getMessages'];
+        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getProfile', 'updateUserProfile', 'getHobbiesList', 'getAllMessages'];
         this.bindClassMethods(methodsToBind, this);
 
         this.authenticator = new Authenticator();
@@ -194,7 +194,7 @@ export default class ConnexionClient extends BindingClass {
      * @param trackNumber The track number of the song on the album.
      * @returns The list of songs on a playlist.
      */
-     async getMessages(errorCallback) {
+     async getAllMessages(errorCallback) {
          try {
                  const token = await this.getTokenOrThrow("Only authenticated users can view inbox.");
                  const response = await this.axiosClient.get(`/inbox`, {
@@ -202,7 +202,7 @@ export default class ConnexionClient extends BindingClass {
                          Authorization: `Bearer ${token}`
                      }
                  });
-                 return response.data.user;
+                 return response.data.messages;
              } catch (error) {
                  this.handleError(error, errorCallback)
              }

@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
 import javax.management.InvalidAttributeValueException;
+import java.util.HashMap;
 import java.util.List;
 
 public class UpdateUserProfileActivity {
@@ -67,7 +68,7 @@ public class UpdateUserProfileActivity {
         List<String> compatiblePersonalityTypes =
                 userDao.getCompatiblePersonalityTypes(updateUserProfileActivityRequest.getPersonalityType());
 
-        List<String> connexions = userDao.getConnexions(compatiblePersonalityTypes);
+        List<String> connexions = userDao.getConnexions(updateUserProfileActivityRequest.getId(), compatiblePersonalityTypes);
         user.setConnexions(connexions);
 
         userDao.saveUser(user);
