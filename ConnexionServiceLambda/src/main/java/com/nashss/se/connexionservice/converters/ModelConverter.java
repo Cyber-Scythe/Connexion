@@ -17,7 +17,7 @@ public class ModelConverter {
      */
      public UserModel toUserModel(User user) {
          List<String> hobbies = null;
-         List<User> connexions = null;
+         List<String> connexions = null;
 
          if (user.getHobbies() != null) {
              hobbies = new ArrayList<>(user.getHobbies());

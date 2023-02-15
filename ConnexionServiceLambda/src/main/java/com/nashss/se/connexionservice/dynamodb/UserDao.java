@@ -1,8 +1,6 @@
 package com.nashss.se.connexionservice.dynamodb;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.nashss.se.connexionservice.dynamodb.models.User;
 import com.nashss.se.connexionservice.metrics.MetricsConstants;
@@ -10,6 +8,7 @@ import com.nashss.se.connexionservice.metrics.MetricsPublisher;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,12 +78,18 @@ public class UserDao {
      * Perform a search ("via a scan") of the users table
      * @return a List of all User objects in the table
      */
-     public List<User> getAllConnexions() {
+     public List<String> getAllConnexions() {
          DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
-         List<User> scanResult = dynamoDbMapper.scan(User.class, scanExpression);
-         System.out.println("ScanResult: " + scanResult);
 
-         return scanResult;
+         List<User> scanResult = dynamoDbMapper.scan(User.class, scanExpression);
+         List<String> connexionsList = new ArrayList<>();
+
+         System.out.println("connexionsList: " + connexionsList);
+
+         for (User user : scanResult) {
+             connexionsList.add(user.getId());
+         }
+         return connexionsList;
      }
 
 
@@ -93,7 +98,8 @@ public class UserDao {
      * "personalityType" attribute is searched.
      * @return a List of User objects that match the search criteria.
      */
-    public List<User> getConnexions(List<String> personalityTypes) {
+    public List<String> getConnexions(List<String> personalityTypes) {
+        List<String> connexions = new ArrayList<>();
         Map<String, AttributeValue> valueMap = new HashMap<>();
 
         if (personalityTypes.isEmpty()) {
@@ -105,15 +111,16 @@ public class UserDao {
             valueMap.put(":personalityType" + i, new AttributeValue().withS(personalityTypes.get(i)));
         }
 
-        DynamoDBQueryExpression<User> queryExpression = new DynamoDBQueryExpression<User>()
-                .withIndexName("PersonalityTypeIndex")
-                .withConsistentRead(false)
-                .withKeyConditionExpression("personalityType = :personalityType0 or personalityType = :personalityType1 " +
-                        "or personalityType = :personalityType2 or personalityType = :personalityType3 or personalityType " +
-                        "= :personalityType4 or personalityType = :personalityType5")
+        DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
+                .withFilterExpression("personalityType = :personalityType0 OR personalityType = :personalityType1 " +
+                        "OR personalityType = :personalityType2 OR personalityType = :personalityType3 OR personalityType " +
+                        "= :personalityType4 OR personalityType = :personalityType5")
                 .withExpressionAttributeValues(valueMap);
-
-        return dynamoDbMapper.query(User.class, queryExpression);
+        PaginatedScanList<User> connexionsList = dynamoDbMapper.scan(User.class, scanExpression);
+        for (User user : connexionsList) {
+            connexions.add(user.getId());
+        }
+        return connexions;
     }
 
     public List<String> getCompatiblePersonalityTypes(String personalityType) {

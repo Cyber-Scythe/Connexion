@@ -3,7 +3,6 @@ package com.nashss.se.connexionservice.activity;
 import com.nashss.se.connexionservice.activity.requests.GetConnexionsActivityRequest;
 import com.nashss.se.connexionservice.activity.results.GetConnexionsActivityResult;
 import com.nashss.se.connexionservice.dynamodb.UserDao;
-import com.nashss.se.connexionservice.dynamodb.models.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -43,7 +42,7 @@ public class GetConnexionsActivity {
         List<String> compatiblePersonalityTypes =
                 userDao.getCompatiblePersonalityTypes(getConnexionsActivityRequest.getPersonalityType());
 
-        List<User> connexions = userDao.getConnexions(compatiblePersonalityTypes);
+        List<String> connexions = userDao.getConnexions(compatiblePersonalityTypes);
 
         return GetConnexionsActivityResult.builder()
                 .withConnexions(connexions)

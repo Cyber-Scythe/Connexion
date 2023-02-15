@@ -19,11 +19,10 @@ public class GetConnexionsLambda
     public LambdaResponse handleRequest(AuthenticatedLambdaRequest<GetConnexionsActivityRequest> input, Context context) {
         return super.runActivity(
                 () -> {
-                    GetConnexionsActivityRequest unauthenticatedRequest = input.fromBody(GetConnexionsActivityRequest.class);
-                    return input.fromUserClaims(claims ->
+                    //GetConnexionsActivityRequest unauthenticatedRequest = input.fromBody(GetConnexionsActivityRequest.class);
+                    return input.fromPath(path ->
                             GetConnexionsActivityRequest.builder()
-                                    .withId(claims.get("sub"))
-                                    .withPersonalityType(unauthenticatedRequest.getPersonalityType())
+                                    .withPersonalityType(path.get("personalityType"))
                                     .build());
                 },
                 (request, serviceComponent) ->

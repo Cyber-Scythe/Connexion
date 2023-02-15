@@ -39,7 +39,7 @@ public class CheckDbForUserActivityTest {
         String expectedPersonalityType = "expectedType";
         List<String> expectedHobbies = List.of("hobbies");
 
-        List<User> expectedConnexions = null;
+        List<String> expectedConnexions = null;
 
         User user = new User();
         user.setId(expectedId);

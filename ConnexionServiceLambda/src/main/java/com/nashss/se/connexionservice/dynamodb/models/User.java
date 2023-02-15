@@ -27,7 +27,7 @@ public class User implements Serializable {
     private String state;
     private String personalityType;
     private List<String> hobbies;
-    private List<User> connexions;
+    private List<String> connexions;
 
     /**
      * Empty constructor for Category POJO.
@@ -55,7 +55,7 @@ public class User implements Serializable {
                 String state,
                 String personalityType,
                 List<String> hobbies,
-                List<User> connexions) {
+                List<String> connexions) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -126,9 +126,8 @@ public class User implements Serializable {
     /**
      * Returns the set of hobbies associated with this User, null if there are none.
      *
-     * @return Set of hobbies for this user
+     * @return List of hobbies for this user
      */
-    //@DynamoDBTypeConverted(converter = StringConverter.class)
     @DynamoDBAttribute(attributeName = "hobbies")
     public List<String> getHobbies() {
         // normally, we would prefer to return an empty Set if there are no
@@ -144,7 +143,7 @@ public class User implements Serializable {
     /**
      * Sets the hobbies for this User as a copy of input, or null if input is null.
      *
-     * @param hobbies Set of hobbies for this user
+     * @param hobbies List of hobbies for this user
      */
     public void setHobbies(List<String> hobbies) {
 
@@ -162,9 +161,8 @@ public class User implements Serializable {
      *
      * @return List of connexions for this user
      */
-    //@DynamoDBTypeConverted(converter = StringConverter.class)
     @DynamoDBAttribute(attributeName = "connexions")
-    public List<User> getConnexions() {
+    public List<String> getConnexions() {
         // normally, we would prefer to return an empty Set if there are no
         // tags, but DynamoDB doesn't represent empty Sets...needs to be null
         // instead
@@ -176,11 +174,11 @@ public class User implements Serializable {
     }
 
     /**
-     * Sets the connections for this User as a copy of input, or null if input is null.
+     * Sets the connexions for this User as a copy of input, or null if input is null.
      *
      * @param connexions List of connexions for this user
      */
-    public void setConnexions(List<User> connexions) {
+    public void setConnexions(List<String> connexions) {
         // See comment in getConnexions
         if (null == connexions) {
             this.connexions = null;

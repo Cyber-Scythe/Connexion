@@ -67,7 +67,7 @@ public class UpdateUserProfileActivity {
         List<String> compatiblePersonalityTypes =
                 userDao.getCompatiblePersonalityTypes(updateUserProfileActivityRequest.getPersonalityType());
 
-        List<User> connexions = userDao.getConnexions(compatiblePersonalityTypes);
+        List<String> connexions = userDao.getConnexions(compatiblePersonalityTypes);
         user.setConnexions(connexions);
 
         userDao.saveUser(user);

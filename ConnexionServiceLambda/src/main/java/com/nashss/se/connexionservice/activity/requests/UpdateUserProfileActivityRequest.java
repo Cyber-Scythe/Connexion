@@ -2,7 +2,6 @@ package com.nashss.se.connexionservice.activity.requests;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import com.nashss.se.connexionservice.dynamodb.models.User;
 
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class UpdateUserProfileActivityRequest {
     private final String state;
     private final String personalityType;
     private final List<String> hobbies;
-    private final List<User> connexions;
+    private final List<String> connexions;
 
 
     public UpdateUserProfileActivityRequest(String email,
@@ -29,7 +28,7 @@ public class UpdateUserProfileActivityRequest {
                                               String state,
                                               String personalityType,
                                               List<String> hobbies,
-                                              List<User> connexions) {
+                                              List<String> connexions) {
         this.email = email;
         this.name = name;
         this.id = id;
@@ -51,7 +50,7 @@ public class UpdateUserProfileActivityRequest {
     public String getState() { return state; }
     public String getPersonalityType() { return personalityType; }
     public List<String> getHobbies() { return copyToList(hobbies); }
-    public List<User> getConnexions() { return copyToList(connexions); }
+    public List<String> getConnexions() { return copyToList(connexions); }
 
     @Override
     public String toString() {
@@ -84,7 +83,7 @@ public class UpdateUserProfileActivityRequest {
         private String state;
         private String personalityType;
         private List<String> hobbies;
-        private List<User> connexions;
+        private List<String> connexions;
 
         public Builder withEmail(String email) {
             this.email = email;
@@ -126,7 +125,7 @@ public class UpdateUserProfileActivityRequest {
             return this;
         }
 
-        public Builder withConnexions(List<User> connexions) {
+        public Builder withConnexions(List<String> connexions) {
             this.connexions = copyToList(connexions);
             return this;
         }

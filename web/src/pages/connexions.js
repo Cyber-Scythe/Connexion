@@ -6,10 +6,10 @@ import DataStore from "../util/DataStore";
 /**
  * Logic needed for the view playlist page of the website.
  */
-class ViewProfile extends BindingClass {
+class Connexions extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['clientLoaded', 'mount', 'addConnexionsToPage'], this);
+        this.bindClassMethods(['clientLoaded', 'mount', 'addConnexionsToPage', 'getConnexionProfile'], this);
 
         this.dataStore = new DataStore();
 
@@ -24,9 +24,17 @@ class ViewProfile extends BindingClass {
     async clientLoaded() {
         console.log("Inside clientLoaded");
 
-        const connexions = await this.client.getConnexions((error) => {
+        const currUser = await this.client.getProfile((error => {
+            console.log(`Error: ${error.message}`);
+        }));
+
+        console.log("curr user: ", currUser);
+        console.log("personalityTYpe: ", currUser.personalityType);
+
+        const connexions = await this.client.getConnexions(currUser.personalityType, (error) => {
             console.log(`Error: ${error.message}`);
         });
+        console.log("curr user connexions: ", connexions);
 
         this.dataStore.set('connexions', connexions);
         this.addConnexionsToPage();
@@ -42,18 +50,37 @@ class ViewProfile extends BindingClass {
     }
 
     /**
+    * Get profile metadata for connexion
+    */
+    async getConnexionProfile(userId) {
+        return await this.client.getConnexionProfile(userId, (error) => {
+                            console.log(`Error: ${error.message}`);
+                    });
+    }
+
+
+    /**
      * When the profile is updated in the datastore, update the profile metadata on the page.
      */
-    addConnexionsToPage() {
+    async addConnexionsToPage() {
+        console.log("addConnexionsToPage");
+
         const connexions = this.dataStore.get('connexions');
 
         if (connexions == null) {
             return;
         }
 
-        var rowRemovable = document.getElementById('row-removable').innerHTML
+        var rowRemovable = document.getElementById('row-removable');
 
-        for (int i = 0; i < connexions.length; i++) {
+        for (var i = 0; i < connexions.length; i++) {
+            console.log("connexion: ", connexions[i]);
+
+            var userId = connexions[i];
+
+            const user = await this.getConnexionProfile(userId);
+            console.log("user: ", user);
+
             var div = document.createElement('div');
                             div.className = 'col-xl-3 col-md-6 mb-4';
                             div.type = 'div';
@@ -77,45 +104,55 @@ class ViewProfile extends BindingClass {
 
             var div3 = document.createElement('div')
             div3.className = 'd-flex align-items-center';
-            div3.type('div');
-            div3.id('div' + i);
+            div3.type = 'div';
+            div3.id = 'div' + i;
 
-            div2.appendChild(div3);
+            card.appendChild(div3);
 
-            var spaceDiv = document.getElementById('space-div');
+            var spaceDiv = document.createElement('div');
+            spaceDiv.type = 'div';
+            spaceDiv.id = 'space-div' + i;
 
-            var profileImage = document.createElement('img');
-            profileImage.className = 'avatar avata-sm';
-            profileImage.type('img');
-            profileImage.id = 'profile-picture' + i;
-            profileImage.src = 'images/alien.png'
+            var img = document.createElement('img');
+            img.className = 'avatar avata-sm';
+            img.type = 'img';
+            img.id = 'profile-picture' + i;
+            img.src = 'images/alien.png'
 
-            spaceDiv.appendChild(profileImage);
+            card.appendChild(spaceDiv);
+            spaceDiv.appendChild(img);
 
             var div4 = document.createElement('div');
-            spaceDiv.appendChild(div4);
+            card.appendChild(div4);
 
             var span = document.createElement('span');
             span.className = 'h6 font-weight-bold mb-0';
-            span.type('span');
+            span.type = 'span';
             span.id = 'user-name' + i;
-            span.value = connexions[i].name;
+            span.value = user.name;
+            span.innerHTML = user.name;
 
-            spaceDiv.appendChild(span);
+            div4.appendChild(span);
 
-            var userLocation = connexions[i].city + ", " + connexions[i].state;
+            var userLocation = user.city + ", " + user.state;
             var div5 = document.createElement('div');
-            div5.type('div');
+            div5.type = 'div';
             div5.id = userLocation;
+            div5.innerHTML = userLocation;
 
-            spaceDiv.appendChild(div5);
+            card.appendChild(div5);
+
+            var br = document.createElement('br');
+            br.type = 'br';
+            card.appendChild(br);
 
             var msgButton = document.createElement('button');
-            msgButton.className = 'fa fa-edit-profile';
-            msgButton.type('button');
-            msgButton.id('message-btn-' + i);
+            msgButton.className = 'message-btn';
+            msgButton.type = 'button';
+            msgButton.id = 'message-btn-' + i;
+            msgButton.innerHTML = "Message";
 
-            spaceDiv.appendChild(msgButton);
+            card.appendChild(msgButton);
         }
     }
 }
