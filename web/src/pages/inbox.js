@@ -4,16 +4,16 @@ import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
 
 /**
- * Logic needed for the view playlist page of the website.
+ * Logic needed for the inbox page of the website.
  */
 class Inbox extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['clientLoaded', 'mount', 'populateInbox'], this);
+        this.bindClassMethods(['clientLoaded', 'mount', 'populateInbox', 'sendNewMessage'], this);
 
         this.dataStore = new DataStore();
         this.header = new Header(this.dataStore);
-
+        this.dataStore.addChangeListener(this.sendNewMessage);
         console.log("inbox constructor");
     }
 
@@ -38,6 +38,8 @@ class Inbox extends BindingClass {
      * Add the header to the page and load the ConnexionClient.
      */
     mount() {
+        document.getElementById('save-msg-btn').addEventListener('click', this.sendNewMessage);
+
         this.header.addHeaderToPage();
         this.client = new ConnexionClient();
         this.clientLoaded();
@@ -100,10 +102,13 @@ class Inbox extends BindingClass {
             senderPic.height = 40;
             senderPic.src = 'images/alien.png'
 
+
             div2.appendChild(senderPic);
 
             var div3 = document.createElement('div');
             div.className = 'flex-grow-1 ml-3';
+
+            if ()
             div.innerText = messages[i].senderEmail;
 
             div2.appendChild(div3)
@@ -130,6 +135,22 @@ class Inbox extends BindingClass {
             sender.appendChild(br);
         }
     }
+
+    async sendNewMessage() {
+        var messageContent = document.getElementById('message-content').innerHTML;
+
+    }
+
+    /**
+     * When the playlist is updated in the datastore, redirect to the view playlist page.
+     */
+     redirectToViewMessage(evt) {
+        const playlist = this.dataStore.get('playlist');
+
+        if (playlist != null) {
+            window.location.href = `/playlist.html?id=${playlist.id}`;
+        }
+     }
 }
 
 /**

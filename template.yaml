@@ -381,6 +381,26 @@ Resources:
             Path: /inbox/{otherUserEmail}
             Method: get
 
+  SendNewMessageLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !GetAtt AccessRole.Arn
+      CodeUri: ConnexionServiceLambda
+      Handler: com.nashss.se.connexionservice.lambda.SendNewMessageLambda::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        ConnexionService:
+          Type: Api
+          Properties:
+            Path: /inbox/{otherUserEmail}
+            Method: post
+
   #-----------------------------------------------------
   # DynamoDB Configuration
   #-----------------------------------------------------

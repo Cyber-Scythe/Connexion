@@ -66,4 +66,10 @@ public interface ServiceComponent {
      * @return GetConnexionProfileActivity
      */
     GetMessagesFromUserActivity provideGetMessagesFromUserActivity();
+
+    /**
+     * Provides the relevant activity.
+     * @return SendNewMessageActivity
+     */
+    SendNewMessageActivity provideSendNewMessageActivity();
 }

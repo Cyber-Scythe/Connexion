@@ -36,7 +36,7 @@ public class GetUserInboxActivity {
     public GetUserInboxActivityResult handleRequest(final GetUserInboxActivityRequest getUserInboxActivityRequest) {
         log.info("Inside GetUserInboxActivityResult handleRequest");
 
-        List<Message> messages = messageDao.getAllMessages();
+        List<Message> messages = messageDao.getAllMessages(getUserInboxActivityRequest.getCurrUserEmail());
 
         return GetUserInboxActivityResult.builder()
                 .withMessages(messages)

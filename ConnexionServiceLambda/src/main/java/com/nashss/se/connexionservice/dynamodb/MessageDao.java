@@ -32,15 +32,32 @@ public class MessageDao {
     }
 
     /**
+     * Saves new message to inbox table.
+     * @return message that was saved
+     */
+    public Message sendMessage(Message message) {
+        this.dynamoDbMapper.save(message);
+        return message;
+    }
+
+    /**
      * Retrieves all messages between two users in inbox table.
      * <p>
      * If not found, throws MessageNotFoundException.
      *
      * @return All messages between two users in inbox table
      */
-    public List<Message> getAllMessages() {
-        DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
-        List<Message> scanResult = dynamoDbMapper.scan(Message.class, scanExpression);
+    public List<Message> getAllMessages(String currUserEmail) {
+        Map<String, AttributeValue> valueMap = new HashMap<>();
+
+        valueMap.put(":currUserEmail", new AttributeValue().withS(currUserEmail));
+
+        DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
+                .withFilterExpression("senderEmail = :currUserEmail OR recipientEmail = :currUserEmail ")
+                .withExpressionAttributeValues(valueMap);
+        ;
+        List<Message> scanResult = dynamoDbMapper.scan(Message.class, scanExpression)
+                ;
 
         return scanResult;
     }

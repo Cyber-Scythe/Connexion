@@ -18,9 +18,11 @@ public class GetUserInboxLambda
         return super.runActivity(
                 () -> {
                     //GetUserInboxActivityRequest unauthenticatedRequest = input.fromBody(GetUserInboxActivityRequest.class);
-                 return input.fromUserClaims(claims ->
+
+                    return input.fromUserClaims(claims ->
                          GetUserInboxActivityRequest.builder()
                                  .withUserId(claims.get("sub"))
+                                 .withCurrUserEmail(claims.get("email"))
                                  .build());
                 },
                 (request, serviceComponent) ->
