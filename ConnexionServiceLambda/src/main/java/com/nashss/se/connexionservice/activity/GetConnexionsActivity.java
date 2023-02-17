@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -39,13 +40,17 @@ public class GetConnexionsActivity {
      */
     public GetConnexionsActivityResult handleRequest(final GetConnexionsActivityRequest getConnexionsActivityRequest) {
         log.info("Inside GetConnexionsActivityResult handleRequest");
+        System.out.println("currUser PersonalityType: " + getConnexionsActivityRequest.getPersonalityType());
+
         List<String> compatiblePersonalityTypes =
                 userDao.getCompatiblePersonalityTypes(getConnexionsActivityRequest.getPersonalityType());
 
-        List<String> connexions = userDao.getConnexions(compatiblePersonalityTypes);
+        List<String> connexionsList = userDao.getConnexions(getConnexionsActivityRequest.getId(), compatiblePersonalityTypes);
+
+        System.out.println("connexionsLIst: " + connexionsList);
 
         return GetConnexionsActivityResult.builder()
-                .withConnexions(connexions)
+                .withConnexionsList(connexionsList)
                 .build();
     }
 }

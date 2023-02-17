@@ -16,7 +16,17 @@ export default class ConnexionClient extends BindingClass {
     constructor(props = {}) {
         super();
 
-        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getProfile', 'updateUserProfile', 'getHobbiesList', 'getMessages'];
+        const methodsToBind = ['clientLoaded',
+                               'getIdentity',
+                               'login',
+                               'logout',
+                               'getProfile',
+                               'updateUserProfile',
+                               'getHobbiesList',
+                               'getAllMessages',
+                               'getMessagesFromUser',
+                               'sendNewMessage'];
+
         this.bindClassMethods(methodsToBind, this);
 
         this.authenticator = new Authenticator();
@@ -94,6 +104,27 @@ export default class ConnexionClient extends BindingClass {
        }
     }
 
+
+/**
+     * Gets the user for the given email.
+     * @param userEmail email associated with user
+     * @param errorCallback (Optional) A function to execute if the call fails.
+     * @returns The user's metadata.
+     */
+    async getProfileByEmail(userEmail, errorCallback) {
+     try {
+          const token = await this.getTokenOrThrow("Only authenticated users can view profiles");
+          const response = await this.axiosClient.get(`/index/${userEmail}`, {
+                headers: {
+                  Authorization: `Bearer ${token}`
+                }
+            });
+         return response.data.user;
+
+       } catch (error) {
+         this.handleError(error, errorCallback)
+       }
+    }
 
     /**
      * Gets the user for the given ID.
@@ -189,12 +220,40 @@ export default class ConnexionClient extends BindingClass {
 
     /**
      * Add a song to a playlist.
-     * @param id The id of the playlist to add a song to.
-     * @param asin The asin that uniquely identifies the album.
-     * @param trackNumber The track number of the song on the album.
-     * @returns The list of songs on a playlist.
+     * @param messageId The id of the message to send.
+     * @param recipientEmail The email of the message recipient.
+     * @param dateTimeSent The date and time the message was sent.
+     * @param messageContent The content of the message.
+     * @param readStatus The status of the message
      */
-     async getMessages(errorCallback) {
+     async sendNewMessage(recipientEmail, dateTimeSent, messageContent, readStatus, errorCallback) {
+         try {
+            const token = await this.getTokenOrThrow("Only authenticated users can send messages.");
+            const response = await this.axiosClient.post(`/inbox/${recipientEmail}`, {
+
+            recipientEmail: recipientEmail,
+            dateTimeSent: dateTimeSent,
+            messageContent: messageContent,
+            readStatus: readStatus,
+            },{
+                 headers: {
+                    Authorization: `Bearer ${token}`
+                 }
+             });
+
+              return response.data.message;
+
+          } catch (error) {
+                this.handleError(error, errorCallback)
+          }
+     }
+
+
+    /**
+     * Get all messages with current user from inbox
+     * @returns The list of most recent messages from each user.
+     */
+     async getAllMessages(errorCallback) {
          try {
                  const token = await this.getTokenOrThrow("Only authenticated users can view inbox.");
                  const response = await this.axiosClient.get(`/inbox`, {
@@ -202,7 +261,26 @@ export default class ConnexionClient extends BindingClass {
                          Authorization: `Bearer ${token}`
                      }
                  });
-                 return response.data.user;
+                 return response.data.messages;
+             } catch (error) {
+                 this.handleError(error, errorCallback)
+             }
+     }
+
+
+    /**
+     * Get all messages with specified user from inbox.
+     * @returns The list of messages with specified user.
+     */
+     async getMessagesFromUser(otherUserEmail, errorCallback) {
+         try {
+                 const token = await this.getTokenOrThrow("Only authenticated users can view inbox.");
+                 const response = await this.axiosClient.get(`/inbox/${otherUserEmail}`, {
+                     headers: {
+                         Authorization: `Bearer ${token}`
+                     }
+                 });
+                 return response.data.messages;
              } catch (error) {
                  this.handleError(error, errorCallback)
              }

@@ -260,6 +260,25 @@ Resources:
             Path: /dashboard
             Method: get
 
+  GetUserByProfileByEmailLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !GetAtt AccessRole.Arn
+      CodeUri: ConnexionServiceLambda
+      Handler: com.nashss.se.connexionservice.lambda.GetUserByProfileByEmailLambda::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        ConnexionService:
+          Type: Api
+          Properties:
+            Path: /index/{userEmail}
+            Method: get
 
   UpdateUserProfileLambda:
     Type: AWS::Serverless::Function
@@ -341,6 +360,66 @@ Resources:
             Path: /index/{userId}
             Method: get
 
+  GetUserInboxLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !GetAtt AccessRole.Arn
+      CodeUri: ConnexionServiceLambda
+      Handler: com.nashss.se.connexionservice.lambda.GetUserInboxLambda::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        ConnexionService:
+          Type: Api
+          Properties:
+            Path: /inbox
+            Method: get
+
+  GetMessagesWithUserLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !GetAtt AccessRole.Arn
+      CodeUri: ConnexionServiceLambda
+      Handler: com.nashss.se.connexionservice.lambda.GetMessagesWithUserLambda::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        ConnexionService:
+          Type: Api
+          Properties:
+            Path: /inbox/{otherUserEmail}
+            Method: get
+
+  SendNewMessageLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !GetAtt AccessRole.Arn
+      CodeUri: ConnexionServiceLambda
+      Handler: com.nashss.se.connexionservice.lambda.SendNewMessageLambda::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        ConnexionService:
+          Type: Api
+          Properties:
+            Path: /inbox/{recipientEmail}
+            Method: post
+
   #-----------------------------------------------------
   # DynamoDB Configuration
   #-----------------------------------------------------
@@ -376,6 +455,12 @@ Resources:
         - IndexName: "PersonalityTypeIndex"
           KeySchema:
             - AttributeName: "personalityType"
+              KeyType: "HASH"
+          Projection:
+            ProjectionType: "ALL"
+        - IndexName: "UserEmailIndex"
+          KeySchema:
+            - AttributeName: "email"
               KeyType: "HASH"
           Projection:
             ProjectionType: "ALL"

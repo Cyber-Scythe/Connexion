@@ -55,4 +55,23 @@ public interface ServiceComponent {
      */
     GetConnexionProfileActivity provideGetConnexionProfileActivity();
 
+    /**
+     * Provides the relevant activity.
+     * @return GetConnexionProfileActivity
+     */
+    GetUserInboxActivity provideGetUserInboxActivity();
+
+    /**
+     * Provides the relevant activity.
+     * @return GetConnexionProfileActivity
+     */
+    GetMessagesFromUserActivity provideGetMessagesFromUserActivity();
+
+    /**
+     * Provides the relevant activity.
+     * @return SendNewMessageActivity
+     */
+    SendNewMessageActivity provideSendNewMessageActivity();
+
+    GetUserProfileByEmailActivity provideGetUserProfileByEmailActivity();
 }

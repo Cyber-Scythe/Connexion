@@ -4,16 +4,16 @@ import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
 
 /**
- * Logic needed for the view playlist page of the website.
+ * Logic needed for the inbox page of the website.
  */
 class Inbox extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['clientLoaded', 'mount', 'getMessages'], this);
+        this.bindClassMethods(['clientLoaded', 'mount', 'populateInbox', 'sendNewMessage'], this);
 
         this.dataStore = new DataStore();
         this.header = new Header(this.dataStore);
-
+        this.dataStore.addChangeListener(this.sendNewMessage);
         console.log("inbox constructor");
     }
 
@@ -21,86 +21,285 @@ class Inbox extends BindingClass {
      * Once the client is loaded, get the inbox metadata.
      */
     async clientLoaded() {
-        // Api call to get all inbox messages
-        const inbox = await this.client.getMessages((error) => {
+        console.log("inside clientLoaded()");
+
+        const currUser = await this.client.getProfile((error) => {
+            errorMessageDisplay.innerText = `Error: ${error.message}`;
+            errorMessageDisplay.classList.remove('hidden');
+        });
+
+        this.dataStore.set('currUser', currUser);
+
+
+        const inbox = await this.client.getAllMessages((error) => {
             errorMessageDisplay.innerText = `Error: ${error.message}`;
             errorMessageDisplay.classList.remove('hidden');
             });
 
-        // set the dataStore
         this.dataStore.set('inbox', inbox);
+
+        this.populateInbox();
     }
 
     /**
      * Add the header to the page and load the ConnexionClient.
      */
     mount() {
-//        document.getElementById('drp-dwn-1').addEventListener('click', this.getConnexions);
-//        document.getElementById('drp-dwn-2').addEventListener('click', this.editProfile);
+        //document.getElementById('send-msg-btn').addEventListener('click', this.sendNewMessage);
 
         this.header.addHeaderToPage();
         this.client = new ConnexionClient();
         this.clientLoaded();
     }
 
-    async getInbox() {
-        const messages = this.dataStore.get('messages');
+   /*
+    * Populate the inbox with message data
+    */
+    async populateInbox() {
+        const currUser = this.dataStore.get('currUser');
+        const recentMsgs = this.dataStore.get('inbox');
 
-        if (messages == null) {
-            document.getElementById("message-list").innerHTML = "Inbox is empty."
+        console.log("currUser: ", currUser);
+        console.log("Recent Messages: ", recentMsgs);
+
+        var colDiv = document.getElementById('col-div');
+        colDiv.className = 'col-12 col-lg-5 col-xl-3 border-right';
+
+        if (recentMsgs.length == 0) {
+            var emptyInboxDiv = document.createElement('div');
+            emptyInboxDiv.className = 'empty-inbox-card';
+            emptyInboxDiv.id = 'empty-inbox-card'
+
+            var emptyInboxContent = document.createElement('div');
+            emptyInboxContent.className = 'empty-inbox-card__content';
+
+            emptyInboxDiv.appendChild(emptyInboxContent);
+
+            var textDiv = document.createElement('div');
+            textDiv.className = 'row justify-content-center';
+            textDiv.innerText = 'Inbox is empty';
+
+            colDiv.appendChild(emptyInboxDiv);
+
+            emptyInboxContent.appendChild(textDiv);
+
             return;
         }
 
-        for (var i = 0; i < messages.length; i++) {
-            var messageListItem = document.createElement('li');
-                            messageListItem.className = 'list-group-item border-0 d-flex align-items-center';
-                            //message.type = 'checkbox';
-                            messageListItem.id = 'message' + i;
-                            messageListItem.name = 'message';
-                            //messageListItem.value = message;
+       for (var i = 0; i < recentMsgs.length; i++) {
 
-            var div = document.createElement('div');
-            div.className = 'avatar me-3';
-            div.id = 'sender-avatar' + i;
+            var sender = document.createElement('a');
+                            sender.className = 'list-group-item list-group-item-action border-0';
+                            sender.type = 'a';
+                            sender.id = 'sender' + i;
+                            sender.name = recentMsgs[i].sentBy;
+                            //sender.href = '';
 
-            messageListItem.appendChild(div);
+            var div1 = document.createElement('div');
+            div1.className = 'badge bg-success float-right';
+            div1.id = 'new-msg' + i;
+
+            var div2 = document.createElement('div');
+            div2.className = 'd-flex align-items-start';
+            div2.id = 'item-start-div';
+
+            sender.appendChild(div1);
+            sender.appendChild(div2);
 
             var senderPic = document.createElement('img');
-            senderPic.className = 'border-radius-lg shadow'
+            senderPic.className = 'rounded-circle mr-1';
             senderPic.id = 'sender-pic' + i;
             senderPic.name = 'sender-pic'
-            //senderPic.value = [S3 bucket of user's picture
+            senderPic.width = 40;
+            senderPic.height = 40;
+            senderPic.src = 'images/alien.png';
+            //senderPic.href = '';
 
-            div.appendChild(senderPic);
 
-            var msgDiv = document.createElement('div');
-            msgDiv.className = 'd-flex align-items-start flex-column justify-content-center';
-            msgDiv.id = 'sender-info' + i;
+            div2.appendChild(senderPic);
 
-            messageListItem.appendChild(msgDiv);
+            var div3 = document.createElement('div');
+            div3.className = 'flex-grow-1 ml-3';
 
-            var sender = document.createElement('h6');
-            sender.class = 'mb-0 text-sm';
-            sender.id = 'sender-name' + i;
-            //sender.value = messages[i].senderName;
+            if (recentMsgs[i].sentBy != currUser.email) {
+                div3.innerText = recentMsgs[i].sentBy;
+            } else if (recentMsgs[i].receivedBy != currUser.email) {
+                div3.innerText = recentMsgs[i].receivedBy;
+            }
 
-            var p = document.createElement('p');
-            p.className = 'mb-0 text-xs';
-            p.id = 'msg-preview' + i;
-            // *** A SUB-STRING OF THE MESSAGE CONTENT SHOULD BE STORE IN VALUE HERE
-            //p.value = messages[i].messageContent;
+            div2.appendChild(div3)
 
-            msgDiv.appendChild(sender);
-            msgDiv.appendChild(p);
+            var msgPreviewDiv = document.createElement('div');
+            msgPreviewDiv.className = 'small';
+            msgPreviewDiv.id = 'msg-preview' + i;
 
-            var a = document.createElement('a');
-            a.className = 'mb-0 text-xs float-right';
-            a.id = 'time-sent' + i;
-            // *** CHECK IF TIME SENT IS < 12AM, IF SO USE DATE HERE ***
-            //a.value = messages[i].timeSent;
+            var messageContent = recentMsgs[i].messageContent;
+            let previewLength = 0;
 
-            messageListItem.appendChild(a);
+            if (messageContent.length >= 2) {
+                previewLength = messageContent.length/2
+                previewLength = previewLength.toFixed(0);
+                msgPreviewDiv.innerText = messageContent.substring(0, previewLength);
+            } else {
+                msgPreviewDiv.innerText = messageContent;
+            }
+
+            if (recentMsgs[i].sentBy != currUser.email) {
+                msgPreviewDiv.onClick = this.populateChat(recentMsgs[i].sentBy);
+            } else {
+                msgPreviewDiv.onClick = this.populateChat(recentMsgs[i].receivedBy);
+            }
+
+            div3.appendChild(msgPreviewDiv);
+
+            var br = document.createElement('br');
+            sender.appendChild(br);
+
+            var deleteCheckbox = document.createElement('input');
+                            deleteCheckbox.className = 'container';
+                            deleteCheckbox.type = 'checkbox';
+                            deleteCheckbox.id = 'deleteCheckbox' + i;
+                            deleteCheckbox.name = 'message';
+                            deleteCheckbox.value = message;
+
+            sender.appendChild(deleteCheckbox);
         }
+    }
+
+
+   /*
+    * Populate the chat page
+    */
+    async populateChat(otherUserEmail) {
+
+        const messages = await this.client.getMessagesFromUser(otherUserEmail, (error) => {
+                    errorMessageDisplay.innerText = `Error: ${error.message}`;
+                    errorMessageDisplay.classList.remove('hidden');
+                    });
+
+        this.dataStore.set('messages', messages);
+
+        var chatMessages = document.getElementById('chat-messages').value;
+
+        for (var i = 0; i < messages.length; i++) {
+            if (messages[i].sender == currUser.email) {
+                var currUserDiv1 = document.createElement('div');
+                currUserDiv1.className = 'chat-message-right pb-4';
+                currUserDiv1.id = 'curr-user-msg' + i;
+
+                chatMessages.appendChild(currUserDiv1);
+
+                var div2 = document.createElement('div');
+                currUserDiv1.appendChild(div2);
+
+                var profilePic = document.createElement('img');
+                profilePic.className = 'rounded-circle mr-1';
+                profilePic.width = 40;
+                profilePic.height = 40;
+                profilePic.src = 'images/alien.png';
+
+                if (messages[i].sentBy != currUser.email) {
+                    profilePic.alt = messages[i].sentBy;
+                } else {
+                    profilePic.alt = messages[i].receivedBy;
+                }
+
+                var dateTimeDiv = document.createElement('div');
+                dateTimeDiv.className = 'text-muted small text-nowrap mt-2';
+                dateTimeDiv.id = 'dateTime';
+
+                var dateTime = Date.parse(msg.dateTimeSent);
+                dateTimeDiv.innerHTML = dateTime;
+
+                div2.appendChild(profile-pic);
+                div2.appendChild(dateTimeDiv);
+
+                var contentDiv3 = document.createElement('div');
+                contentDiv3.className = 'flex-shrink-1 bg-light rounded py-2 px-3 mr-3';
+                contentDiv3.innerHTML = messages[i].messageContent;
+
+                currUserDiv1.appendChild(div3);
+
+                var youDiv = document.createElement('div');
+                youDiv.className = 'font-weight-bold mb-1';
+
+                contentDiv3.appendChild(youDiv);
+             } else {
+
+                var currUserDiv1 = document.createElement('div');
+                currUserDiv1.className = 'chat-message-left pb-4';
+                currUserDiv1.id = 'other-user-msg' + i;
+
+                chatMessages.appendChild(currUserDiv1);
+
+                var div2 = document.createElement('div');
+                currUserDiv1.appendChild(div2);
+
+                var profilePic = document.createElement('img');
+                profilePic.className = 'rounded-circle mr-1';
+                profilePic.width = 40;
+                profilePic.height = 40;
+                profilePic.src = 'images/alien.png';
+
+                if (messages[i].sentBy != currUser.email) {
+                    profilePic.alt = messages[i].sentBy;
+                } else {
+                    profilePic.alt = messages[i].receivedBy;
+                }
+
+                var dateTimeDiv = document.createElement('div');
+                dateTimeDiv.className = 'text-muted small text-nowrap mt-2';
+                dateTimeDiv.id = 'dateTime';
+
+                var dateTime = Date.parse(msg.dateTimeSent);
+                dateTimeDiv.innerHTML = dateTime;
+
+                div2.appendChild(profile-pic);
+                div2.appendChild(dateTimeDiv);
+
+                var contentDiv3 = document.createElement('div');
+                contentDiv3.className = 'flex-shrink-1 bg-light rounded py-2 px-3 mr-3';
+                contentDiv3.innerHTML = messages[i].messageContent;
+
+                currUserDiv1.appendChild(div3);
+
+                var youDiv = document.createElement('div');
+                youDiv.className = 'font-weight-bold mb-1';
+
+                contentDiv3.appendChild(youDiv);
+             }
+        }
+
+        var messageBtn = document.getElementById('send-msg-btn');
+        messageBtn.href = this.sendNewMessage(otherUserEmail);
+    }
+
+   /*
+    * Send new message data to API endpoint
+    */
+    async sendNewMessage(otherUserEmail) {
+        var recipientEmail = otherUserEmail;
+
+        var currentDate = new Date();
+        var dateTime =  currentDate.getDate() + "/"
+                        + (currentDate.getMonth()+1)  + "/"
+                        + currentDate.getFullYear() + " @ "
+                        + currentDate.getHours() + ":"
+                        + currentDate.getMinutes() + ":"
+                        + currentDate.getSeconds();
+
+        var dateTimeSent = dateTime.toString();
+        var messageContent = document.getElementById('message-content').innerHTML;
+        var readStatus = Boolean(0);
+
+        const newMessage = await this.client.sendNewMessage(recipientEmail,
+                                                            dateTimeSent,
+                                                            messageContent,
+                                                            readStatus,
+                                                            (error) => {
+                    errorMessageDisplay.innerText = `Error: ${error.message}`;
+                    errorMessageDisplay.classList.remove('hidden');
+                    });
 
 
     }

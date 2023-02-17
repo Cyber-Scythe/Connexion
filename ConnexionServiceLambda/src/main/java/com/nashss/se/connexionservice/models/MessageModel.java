@@ -3,7 +3,6 @@ package com.nashss.se.connexionservice.models;
 import java.util.Objects;
 
 public class MessageModel {
-    private final String messageId;
     private final String dateTimeSent;
     private final String sentBy;
     private final String receivedBy;
@@ -11,23 +10,17 @@ public class MessageModel {
     private final boolean readStatus;
 
 
-    private MessageModel(String messageId,
-                          String dateTimeSent,
+    private MessageModel(String dateTimeSent,
                           String sentBy,
                           String receivedBy,
                           String messageContent,
                           boolean readStatus) {
 
-        this.messageId = messageId;
         this.dateTimeSent = dateTimeSent;
         this.sentBy = sentBy;
         this.receivedBy = receivedBy;
         this.messageContent = messageContent;
         this.readStatus = readStatus;
-    }
-
-    public String getMessageId() {
-        return messageId;
     }
 
     public String getDateTimeSent() {
@@ -55,8 +48,7 @@ public class MessageModel {
 
         MessageModel that = (MessageModel) o;
 
-        return Objects.equals(messageId, that.messageId) &&
-                Objects.equals(dateTimeSent, that.dateTimeSent) &&
+        return Objects.equals(dateTimeSent, that.dateTimeSent) &&
                 Objects.equals(sentBy, that.sentBy) &&
                 Objects.equals(receivedBy, that.receivedBy) &&
                 Objects.equals(messageContent, that.messageContent) &&
@@ -65,7 +57,7 @@ public class MessageModel {
 
     @Override
     public int hashCode() {
-        return Objects.hash(messageId, dateTimeSent, sentBy, receivedBy, messageContent, readStatus);
+        return Objects.hash(dateTimeSent, sentBy, receivedBy, messageContent, readStatus);
     }
 
     //CHECKSTYLE:OFF:Builder
@@ -73,9 +65,6 @@ public class MessageModel {
         return new MessageModel.Builder();
     }
 
-    public String getId() {
-        return messageId;
-    }
     public String getDateTime() { return dateTimeSent; }
     public String getSender() { return sentBy; }
     public String getRecipient() { return receivedBy ;}
@@ -84,17 +73,12 @@ public class MessageModel {
 
 
     public static class Builder {
-        private String messageId;
         private String dateTimeSent;
         private String sentBy;
         private String receivedBy;
         private String messageContent;
         private boolean readStatus;
 
-        public MessageModel.Builder withMessageId(String messageId) {
-            this.messageId = messageId;
-            return this;
-        }
 
         public MessageModel.Builder withDateTimeSent(String dateTimeSent) {
             this.dateTimeSent = dateTimeSent;
@@ -122,8 +106,7 @@ public class MessageModel {
         }
 
         public MessageModel build() {
-            return new MessageModel(messageId,
-                                    dateTimeSent,
+            return new MessageModel(dateTimeSent,
                                     sentBy,
                                     receivedBy,
                                     messageContent,

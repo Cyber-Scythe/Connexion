@@ -1,7 +1,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="assets/inbox.js"></script>
     <link rel="stylesheet" href="https://demos.creative-tim.com/soft-ui-dashboard/assets/css/nucleo-icons.css">
     <link rel="stylesheet" href="https://demos.creative-tim.com/soft-ui-dashboard/assets/css/nucleo-svg.css">
     <link rel="stylesheet" href="https://demos.creative-tim.com/soft-ui-dashboard/assets/css/soft-ui-dashboard.min.css?v=1.0.2">
@@ -22,24 +22,20 @@
 <div class="container-fluid pt-3">
     <br>
     <h2 align="center">Conversations</h2>
-<div class="container-fluid pt-3">
-    <div class="card h-100">
-        <div class="card-body">
-            <ul class="list-group" id="message-list">
-                <li class="list-group-item border-0 d-flex align-items-center">
-                    <div class="avatar me-3" id="sender-avatar">
-                        <img id="sender-pic" src="https://demos.creative-tim.com/soft-ui-dashboard/assets/img/kal-visuals-square.jpg" alt="kal" class="border-radius-lg shadow">
-                    </div>
-                    <div class="d-flex align-items-start flex-column justify-content-center" id="sender-info">
-                        <h6 class="mb-0 text-sm" id="sender-name">Sophie B.</h6>
-                        <p class="mb-0 text-xs" id="msg-preview" href="#">Hi! I need more information..</p>
-                    </div>
-                    <a class="mb-0 text-xs float-right" id="time-sent">00:00am/pm</a>
-                </li>
-            </ul>
+    <div>
+        <button class="delete-btn">Delete Messages</button>
+    </div>
+    <br>
+    <br>
+<div class="container-fluid pt-3" id="container-div">
+    <div class="card h-100" id="card-div">
+        <div class="card-body" id="card-body-div">
+            <div class="row g-0" id="row-div">
+                <div class="col-12 col-lg-5 col-xl-3 border-right" id="col-div">
+                </div>
+            </div>
         </div>
     </div>
-</div>
 </div>
 </div>
 </body>

@@ -9,7 +9,7 @@ import DataStore from "../util/DataStore";
 class Connexions extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['clientLoaded', 'mount', 'addConnexionsToPage', 'getConnexionProfile'], this);
+        this.bindClassMethods(['clientLoaded', 'mount', 'addConnexionsToPage', 'getConnexionProfile', 'sendNewMessage'], this);
 
         this.dataStore = new DataStore();
 
@@ -60,7 +60,7 @@ class Connexions extends BindingClass {
 
 
     /**
-     * When the profile is updated in the datastore, update the profile metadata on the page.
+     * When the connexions updated in the datastore, update the connexions metadata on the page.
      */
     async addConnexionsToPage() {
         console.log("addConnexionsToPage");
@@ -151,10 +151,16 @@ class Connexions extends BindingClass {
             msgButton.type = 'button';
             msgButton.id = 'message-btn-' + i;
             msgButton.innerHTML = "Message";
+            mshButton.href = this.sendNewMessage(connexions[i].email);
 
             card.appendChild(msgButton);
         }
     }
+
+    sendNewMessage(recipientEmail) {
+        Inbox.sendNewMessage(recipientEmail);
+    }
+
 }
 
 /**

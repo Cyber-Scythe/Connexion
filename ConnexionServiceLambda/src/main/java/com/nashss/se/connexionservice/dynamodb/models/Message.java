@@ -13,21 +13,11 @@ import java.util.Objects;
  */
 @DynamoDBTable(tableName = "inbox")
 public class Message {
-    private String messageId;
     private String dateTimeSent;
     private String sentBy;
     private String receivedBy;
     private String messageContent;
     private boolean readStatus;
-
-    @DynamoDBAttribute(attributeName = "messageId")
-    public String getMessageId() {
-        return messageId;
-    }
-
-    public void setMessageId(String messageId) {
-        this.messageId = messageId;
-    }
 
     @DynamoDBAttribute(attributeName = "dateTimeSent")
     public String getDateTimeSent() {
@@ -81,8 +71,7 @@ public class Message {
         }
 
         Message message = (Message) o;
-        return messageId.equals(message.messageId) &&
-                dateTimeSent.equals(message.dateTimeSent) &&
+        return dateTimeSent.equals(message.dateTimeSent) &&
                 sentBy.equals(message.sentBy) &&
                 receivedBy.equals(message.receivedBy) &&
                 messageContent.equals(message.messageContent) &&
@@ -91,7 +80,7 @@ public class Message {
 
     @Override
     public int hashCode() {
-        return Objects.hash(messageId, dateTimeSent, sentBy, receivedBy, messageContent, readStatus);
+        return Objects.hash(dateTimeSent, sentBy, receivedBy, messageContent, readStatus);
     }
 
 }

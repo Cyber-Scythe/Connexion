@@ -8,10 +8,9 @@ import com.nashss.se.connexionservice.metrics.MetricsPublisher;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static com.nashss.se.connexionservice.utils.CollectionUtils.copyToList;
 
 
 /**
@@ -21,6 +20,7 @@ import java.util.Map;
 public class UserDao {
     private final DynamoDBMapper dynamoDbMapper;
     private final MetricsPublisher metricsPublisher;
+    private final HashMap<Integer, String> connexionMap = new HashMap<>();
 
     /**
      * Instantiates a UserDao object.
@@ -59,9 +59,35 @@ public class UserDao {
         }
     }
 
+    /**
+     * Returns the user corresponding to the id
+     * @param id The user's id
+     * @return the stored user
+     */
     public User getUser(String id) {
         return this.dynamoDbMapper.load(User.class, id);
     }
+
+
+    /**
+     * Returns the user corresponding to the email
+     * @param userEmail The user's email
+     * @return the stored user
+     */
+    public User getUserByEmail(String userEmail) {
+        Map<String, AttributeValue> valueMap = new HashMap<>();
+        valueMap.put(":email", new AttributeValue().withS(userEmail));
+
+        DynamoDBQueryExpression<User> queryExpression = new DynamoDBQueryExpression<User>()
+                .withIndexName("UserEmailIndex")
+                .withConsistentRead(false)
+                .withKeyConditionExpression("email = :email")
+                .withExpressionAttributeValues(valueMap);
+
+        PaginatedQueryList<User> userList = dynamoDbMapper.query(User.class, queryExpression);
+        return userList.get(0);
+    }
+
 
     /**
      * Saves (creates or updates) the given user.
@@ -78,18 +104,19 @@ public class UserDao {
      * Perform a search ("via a scan") of the users table
      * @return a List of all User objects in the table
      */
-     public List<String> getAllConnexions() {
+     public List<String> getAllConnexions(User currUser) {
          DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
+         Map<Integer, String> connexionMap = new HashMap<>();
 
          List<User> scanResult = dynamoDbMapper.scan(User.class, scanExpression);
-         List<String> connexionsList = new ArrayList<>();
-
-         System.out.println("connexionsList: " + connexionsList);
 
          for (User user : scanResult) {
-             connexionsList.add(user.getId());
+             if(!user.equals(currUser)) {
+                 connexionMap = connexionsSort(currUser.getHobbies(), user);
+             }
          }
-         return connexionsList;
+
+         return copyToList(connexionMap.values());
      }
 
 
@@ -98,13 +125,16 @@ public class UserDao {
      * "personalityType" attribute is searched.
      * @return a List of User objects that match the search criteria.
      */
-    public List<String> getConnexions(List<String> personalityTypes) {
-        List<String> connexions = new ArrayList<>();
+    public List<String> getConnexions(String currUserId, List<String> personalityTypes) {
         Map<String, AttributeValue> valueMap = new HashMap<>();
+        Map<Integer, String> connexionMap = new HashMap<>();
+
+        User currUser = getUser(currUserId);
+
 
         if (personalityTypes.isEmpty()) {
 
-             getAllConnexions();
+             getAllConnexions(currUser);
         }
 
         for (int i = 0; i < personalityTypes.size(); i++) {
@@ -117,10 +147,11 @@ public class UserDao {
                         "= :personalityType4 OR personalityType = :personalityType5")
                 .withExpressionAttributeValues(valueMap);
         PaginatedScanList<User> connexionsList = dynamoDbMapper.scan(User.class, scanExpression);
+
         for (User user : connexionsList) {
-            connexions.add(user.getId());
+            connexionMap = connexionsSort(currUser.getHobbies(), user);
         }
-        return connexions;
+        return copyToList(connexionMap.values());
     }
 
     public List<String> getCompatiblePersonalityTypes(String personalityType) {
@@ -163,6 +194,23 @@ public class UserDao {
         }
 
         return null;
+    }
+
+    public Map<Integer, String> connexionsSort(List<String> currUserHobbies, User connexion) {
+        Map<Integer, String> connexionTreeMap = new TreeMap<>();
+
+        if (currUserHobbies != null && connexion != null) {
+           int count = 0;
+           List<String> connexionHobbies = connexion.getHobbies();
+
+           for (String userHobby : currUserHobbies) {
+               if (connexionHobbies.contains(userHobby)) {
+                   count++;
+               }
+           }
+          connexionTreeMap.put(count, connexion.getId());
+       }
+        return connexionTreeMap;
     }
 }
 
