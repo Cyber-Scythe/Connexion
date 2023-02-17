@@ -2,7 +2,6 @@ package com.nashss.se.connexionservice.lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.nashss.se.connexionservice.activity.requests.CheckDbForUserActivityRequest;
 import com.nashss.se.connexionservice.activity.requests.GetUserProfileActivityRequest;
 import com.nashss.se.connexionservice.activity.results.GetUserProfileActivityResult;
 import org.apache.logging.log4j.LogManager;

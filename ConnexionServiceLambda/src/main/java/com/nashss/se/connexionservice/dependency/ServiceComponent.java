@@ -72,4 +72,6 @@ public interface ServiceComponent {
      * @return SendNewMessageActivity
      */
     SendNewMessageActivity provideSendNewMessageActivity();
+
+    GetUserProfileByEmailActivity provideGetUserProfileByEmailActivity();
 }

@@ -21,7 +21,6 @@ public class SendNewMessageLambda
 
                     return input.fromUserClaims(claims ->
                             SendNewMessageActivityRequest.builder()
-                                    .withMessageId((unauthenticatedRequest.getMessageId()))
                                     .withSenderEmail(claims.get("email"))
                                     .withRecipientEmail(unauthenticatedRequest.getRecipientEmail())
                                     .withDateTimeSent(unauthenticatedRequest.getDateTimeSent())

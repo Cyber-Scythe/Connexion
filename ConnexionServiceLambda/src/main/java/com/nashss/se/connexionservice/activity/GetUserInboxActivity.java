@@ -4,15 +4,20 @@ import com.nashss.se.connexionservice.activity.requests.GetUserInboxActivityRequ
 import com.nashss.se.connexionservice.activity.results.GetUserInboxActivityResult;
 import com.nashss.se.connexionservice.dynamodb.MessageDao;
 import com.nashss.se.connexionservice.dynamodb.models.Message;
+import com.nashss.se.connexionservice.utils.DateTimeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class GetUserInboxActivity {
     private final Logger log = LogManager.getLogger();
     private final MessageDao messageDao;
+
+    private final DateTimeUtils dateTimeUtils;
 
     /**
      * Instantiates a new GetConnexionsActivity object.
@@ -20,8 +25,10 @@ public class GetUserInboxActivity {
      * @param messageDao MessageDao to access the inbox table.
      */
     @Inject
-    public GetUserInboxActivity(MessageDao messageDao) {
+    public GetUserInboxActivity(MessageDao messageDao, DateTimeUtils dateTimeUtils) {
+
         this.messageDao = messageDao;
+        this.dateTimeUtils = dateTimeUtils;
     }
 
     /**
@@ -37,9 +44,49 @@ public class GetUserInboxActivity {
         log.info("Inside GetUserInboxActivityResult handleRequest");
 
         List<Message> messages = messageDao.getAllMessages(getUserInboxActivityRequest.getCurrUserEmail());
+        List<String> conversationUsers = new ArrayList<>();
+
+        List<Message> mostRecent = new ArrayList<>();
+
+
+        for (int i = 0; i < messages.size(); i++) {
+            if (messages.get(i).getSentBy() != getUserInboxActivityRequest.getCurrUserEmail()) {
+                conversationUsers.add(messages.get(i).getSentBy());
+
+            } else if (messages.get(i).getReceivedBy() != getUserInboxActivityRequest.getCurrUserEmail()) {
+                conversationUsers.add(messages.get(i).getReceivedBy());
+            }
+        }
+
+
+        for (String user : conversationUsers) {
+            List<Message> allMsg = new ArrayList<>();
+
+            for (Message msg : messages) {
+                if (msg.getReceivedBy().equals(user) || msg.getSentBy().equals(user)) {
+                    allMsg.add(msg);
+                }
+            }
+
+            Message recent = allMsg.get(0);
+            Date recentDate = dateTimeUtils.convertStringToDateTime(recent.getDateTimeSent());
+            for (int i = 1; i < allMsg.size(); i++) {
+                Date dateTime =  dateTimeUtils.convertStringToDateTime(allMsg.get(i).getDateTimeSent());
+
+                if (dateTime.after(recentDate)) {
+                    recent = allMsg.get(i);
+                    recentDate = dateTimeUtils.convertStringToDateTime((allMsg.get(i).getDateTimeSent()));
+                }
+            }
+
+            mostRecent.add(recent);
+        }
 
         return GetUserInboxActivityResult.builder()
-                .withMessages(messages)
+                .withMessages(mostRecent)
                 .build();
     }
+
+
+
 }

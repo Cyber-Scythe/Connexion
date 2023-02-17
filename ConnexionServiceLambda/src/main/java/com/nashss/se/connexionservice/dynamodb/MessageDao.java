@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.nashss.se.connexionservice.utils.CollectionUtils.copyToList;
 
 public class MessageDao {
     private final DynamoDBMapper dynamoDbMapper;
@@ -55,9 +54,8 @@ public class MessageDao {
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
                 .withFilterExpression("senderEmail = :currUserEmail OR recipientEmail = :currUserEmail ")
                 .withExpressionAttributeValues(valueMap);
-        ;
-        List<Message> scanResult = dynamoDbMapper.scan(Message.class, scanExpression)
-                ;
+
+        List<Message> scanResult = dynamoDbMapper.scan(Message.class, scanExpression);
 
         return scanResult;
     }

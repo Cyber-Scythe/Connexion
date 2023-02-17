@@ -59,9 +59,35 @@ public class UserDao {
         }
     }
 
+    /**
+     * Returns the user corresponding to the id
+     * @param id The user's id
+     * @return the stored user
+     */
     public User getUser(String id) {
         return this.dynamoDbMapper.load(User.class, id);
     }
+
+
+    /**
+     * Returns the user corresponding to the email
+     * @param userEmail The user's email
+     * @return the stored user
+     */
+    public User getUserByEmail(String userEmail) {
+        Map<String, AttributeValue> valueMap = new HashMap<>();
+        valueMap.put(":email", new AttributeValue().withS(userEmail));
+
+        DynamoDBQueryExpression<User> queryExpression = new DynamoDBQueryExpression<User>()
+                .withIndexName("UserEmailIndex")
+                .withConsistentRead(false)
+                .withKeyConditionExpression("email = :email")
+                .withExpressionAttributeValues(valueMap);
+
+        PaginatedQueryList<User> userList = dynamoDbMapper.query(User.class, queryExpression);
+        return userList.get(0);
+    }
+
 
     /**
      * Saves (creates or updates) the given user.
