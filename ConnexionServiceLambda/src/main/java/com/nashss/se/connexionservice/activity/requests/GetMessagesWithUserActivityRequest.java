@@ -1,11 +1,11 @@
 package com.nashss.se.connexionservice.activity.requests;
 
-public class GetMessagesFromUserActivityRequest {
+public class GetMessagesWithUserActivityRequest {
     private final String userId;
     private final String currUserEmail;
     private final String otherUserEmail;
 
-    private GetMessagesFromUserActivityRequest(String userId, String currUserEmail, String otherUserEmail) {
+    private GetMessagesWithUserActivityRequest(String userId, String currUserEmail, String otherUserEmail) {
         this.userId = userId;
         this.currUserEmail = currUserEmail;
         this.otherUserEmail = otherUserEmail;
@@ -45,7 +45,7 @@ public class GetMessagesFromUserActivityRequest {
             return this;
         }
 
-        public GetMessagesFromUserActivityRequest build() { return new GetMessagesFromUserActivityRequest(userId, currUserEmail, otherUserEmail);
+        public GetMessagesWithUserActivityRequest build() { return new GetMessagesWithUserActivityRequest(userId, currUserEmail, otherUserEmail);
         }
     }
 }

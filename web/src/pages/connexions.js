@@ -4,15 +4,14 @@ import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
 
 /**
- * Logic needed for the view playlist page of the website.
+ * Logic needed for the view connexions page of the website.
  */
 class Connexions extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['clientLoaded', 'mount', 'addConnexionsToPage', 'getConnexionProfile', 'sendNewMessage'], this);
+        this.bindClassMethods(['clientLoaded', 'mount', 'addConnexionsToPage'], this);
 
         this.dataStore = new DataStore();
-
         this.header = new Header(this.dataStore);
 
         console.log("connexions constructor");
@@ -49,18 +48,9 @@ class Connexions extends BindingClass {
         this.clientLoaded();
     }
 
-    /**
-    * Get profile metadata for connexion
-    */
-    async getConnexionProfile(userId) {
-        return await this.client.getConnexionProfile(userId, (error) => {
-                            console.log(`Error: ${error.message}`);
-                    });
-    }
-
 
     /**
-     * When the connexions updated in the datastore, update the connexions metadata on the page.
+     * When the connexions are updated in the datastore, update the connexions metadata on the page.
      */
     async addConnexionsToPage() {
         console.log("addConnexionsToPage");
@@ -77,8 +67,11 @@ class Connexions extends BindingClass {
             console.log("connexion: ", connexions[i]);
 
             var userId = connexions[i];
+            console.log("userID: ", userId);
 
-            const user = await this.getConnexionProfile(userId);
+            var user = await this.client.getConnexionProfile(userId, (error) => {
+                                                     console.log(`Error: ${error.message}`);
+                                             });;
             console.log("user: ", user);
 
             var div = document.createElement('div');
@@ -150,17 +143,16 @@ class Connexions extends BindingClass {
             msgButton.className = 'message-btn';
             msgButton.type = 'button';
             msgButton.id = 'message-btn-' + i;
-            msgButton.innerHTML = "Message";
-            mshButton.href = this.sendNewMessage(connexions[i].email);
+            msgButton.innerText = "Message";
+
+            msgButton.onclick = function () {
+
+                     location.href = '/view_message.html?otherUser=' + user.email + '';
+            };
 
             card.appendChild(msgButton);
         }
     }
-
-    sendNewMessage(recipientEmail) {
-        Inbox.sendNewMessage(recipientEmail);
-    }
-
 }
 
 /**

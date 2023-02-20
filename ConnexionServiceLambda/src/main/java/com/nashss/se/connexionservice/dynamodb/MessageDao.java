@@ -1,16 +1,20 @@
 package com.nashss.se.connexionservice.dynamodb;
 
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
-import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedScanList;
+import com.amazonaws.services.dynamodbv2.document.DeleteItemOutcome;
+import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.nashss.se.connexionservice.dynamodb.models.Hobby;
+import com.amazonaws.services.dynamodbv2.model.DeleteItemRequest;
 import com.nashss.se.connexionservice.dynamodb.models.Message;
-import com.nashss.se.connexionservice.dynamodb.models.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +40,7 @@ public class MessageDao {
      */
     public Message sendMessage(Message message) {
         this.dynamoDbMapper.save(message);
+
         return message;
     }
 
@@ -52,7 +57,8 @@ public class MessageDao {
         valueMap.put(":currUserEmail", new AttributeValue().withS(currUserEmail));
 
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
-                .withFilterExpression("senderEmail = :currUserEmail OR recipientEmail = :currUserEmail ")
+                .withIndexName("EmailsSentAndReceivedIndex")
+                .withFilterExpression("sentBy = :currUserEmail OR receivedBy = :currUserEmail ")
                 .withExpressionAttributeValues(valueMap);
 
         List<Message> scanResult = dynamoDbMapper.scan(Message.class, scanExpression);
@@ -68,17 +74,23 @@ public class MessageDao {
      * @return All messages between two users in inbox table
      */
     public List<Message> getMessagesWithUser(String senderEmail, String recipientEmail) {
+        System.out.println("senderEmail: " + senderEmail + "   recipientEmail: " + recipientEmail);
+
         Map<String, AttributeValue> valueMap = new HashMap<>();
 
         valueMap.put(":currUserEmail", new AttributeValue().withS(senderEmail));
         valueMap.put(":otherUserEmail", new AttributeValue().withS(recipientEmail));
 
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
-                .withFilterExpression("senderEmail = :currUserEmail OR senderEmail = :otherUserEmail " +
-                        "OR recipientEmail = :currUserEmail OR recipientEmail = :otherUserEmail")
+                .withFilterExpression("sentBy = :currUserEmail OR sentBy = :otherUserEmail " +
+                        "OR receivedBy = :currUserEmail OR receivedBy = :otherUserEmail")
                 .withExpressionAttributeValues(valueMap);
 
 
         return dynamoDbMapper.scan(Message.class, scanExpression);
+    }
+
+    public void deleteMessages(Message message) {
+       dynamoDbMapper.delete(message);
     }
 }

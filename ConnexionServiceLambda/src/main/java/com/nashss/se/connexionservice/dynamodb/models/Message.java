@@ -1,9 +1,6 @@
 package com.nashss.se.connexionservice.dynamodb.models;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 
 import java.util.Objects;
 
@@ -19,7 +16,7 @@ public class Message {
     private String messageContent;
     private boolean readStatus;
 
-    @DynamoDBAttribute(attributeName = "dateTimeSent")
+    @DynamoDBRangeKey(attributeName = "dateTimeSent")
     public String getDateTimeSent() {
         return dateTimeSent;
     }
@@ -29,6 +26,8 @@ public class Message {
     }
 
     @DynamoDBHashKey(attributeName = "sentBy")
+    @DynamoDBIndexHashKey(globalSecondaryIndexName = "EmailsSentAndReceivedIndex",
+            attributeName = "sentBy")
     public String getSentBy() {
         return sentBy;
     }
@@ -37,7 +36,8 @@ public class Message {
         this.sentBy = sentBy;
     }
 
-    @DynamoDBRangeKey(attributeName = "receivedBy")
+    @DynamoDBIndexRangeKey(globalSecondaryIndexName = "EmailsSentAndReceivedIndex",
+            attributeName = "receivedBy")
     public String getReceivedBy() { return receivedBy; }
 
     public void setReceivedBy(String receivedBy) { this.receivedBy = receivedBy; }

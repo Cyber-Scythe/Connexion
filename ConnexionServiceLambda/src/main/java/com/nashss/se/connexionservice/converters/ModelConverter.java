@@ -66,8 +66,7 @@ public class ModelConverter {
      */
     public MessageModel toMessageModel(Message message) {
         return MessageModel.builder()
-                .withMessageId(message.getMessageId())
-                .withDateTimeSent(message.getDateTimeSent())
+                .withDateTimeSent(message.getDateTimeSent().toString())
                 .withSentBy(message.getSentBy())
                 .withReceivedBy(message.getReceivedBy())
                 .withMessageContent(message.getMessageContent())

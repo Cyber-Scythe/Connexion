@@ -65,7 +65,7 @@ public interface ServiceComponent {
      * Provides the relevant activity.
      * @return GetConnexionProfileActivity
      */
-    GetMessagesFromUserActivity provideGetMessagesFromUserActivity();
+    GetMessagesWithUserActivity provideGetMessagesWithUserActivity();
 
     /**
      * Provides the relevant activity.
@@ -74,4 +74,6 @@ public interface ServiceComponent {
     SendNewMessageActivity provideSendNewMessageActivity();
 
     GetUserProfileByEmailActivity provideGetUserProfileByEmailActivity();
+
+    DeleteMessagesActivity provideDeleteMessagesActivity();
 }

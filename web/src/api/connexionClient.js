@@ -24,8 +24,9 @@ export default class ConnexionClient extends BindingClass {
                                'updateUserProfile',
                                'getHobbiesList',
                                'getAllMessages',
-                               'getMessagesFromUser',
-                               'sendNewMessage'];
+                               'getMessagesWithUser',
+                               'sendNewMessage'
+                               ,'deleteMessages'];
 
         this.bindClassMethods(methodsToBind, this);
 
@@ -121,7 +122,7 @@ export default class ConnexionClient extends BindingClass {
             });
          return response.data.user;
 
-       } catch (error) {
+       } catch(error) {
          this.handleError(error, errorCallback)
        }
     }
@@ -226,13 +227,12 @@ export default class ConnexionClient extends BindingClass {
      * @param messageContent The content of the message.
      * @param readStatus The status of the message
      */
-     async sendNewMessage(recipientEmail, dateTimeSent, messageContent, readStatus, errorCallback) {
+     async sendNewMessage(recipientEmail, messageContent, readStatus, errorCallback) {
          try {
             const token = await this.getTokenOrThrow("Only authenticated users can send messages.");
-            const response = await this.axiosClient.post(`/inbox/${recipientEmail}`, {
+            const response = await this.axiosClient.post(`/inbox`, {
 
             recipientEmail: recipientEmail,
-            dateTimeSent: dateTimeSent,
             messageContent: messageContent,
             readStatus: readStatus,
             },{
@@ -272,7 +272,7 @@ export default class ConnexionClient extends BindingClass {
      * Get all messages with specified user from inbox.
      * @returns The list of messages with specified user.
      */
-     async getMessagesFromUser(otherUserEmail, errorCallback) {
+     async getMessagesWithUser(otherUserEmail, errorCallback) {
          try {
                  const token = await this.getTokenOrThrow("Only authenticated users can view inbox.");
                  const response = await this.axiosClient.get(`/inbox/${otherUserEmail}`, {
@@ -286,6 +286,26 @@ export default class ConnexionClient extends BindingClass {
              }
      }
 
+    /**
+     * Delete messages from DB.
+     * @param errorCallback (Optional) A function to execute if the call fails.
+     */
+    async deleteMessages(dateTimeSent, otherUserEmail, errorCallback) {
+       try {
+           const token = await this.getTokenOrThrow("Only authenticated users can retrieve hobbies from db.");
+           const response = await this.axiosClient.delete(`/inbox`, {
+                        dateTimeSent: dateTimeSent;
+                        recipientEmail: recipientEmail;
+                    },{
+                       headers: {
+                           Authorization: `Bearer ${token}`
+                       }
+                   });
+                   return response.data.deleted;
+               } catch (error) {
+                   this.handleError(error, errorCallback)
+               }
+    }
 
     /**
      * Helper method to log the error and run any error functions.
