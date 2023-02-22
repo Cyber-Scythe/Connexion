@@ -2,10 +2,9 @@ package com.nashss.se.connexionservice.activity.results;
 
 import com.nashss.se.connexionservice.models.MessageModel;
 
-public class SendNewMessageActivityResult {
+public class DeleteMessagesActivityResult {
     private final MessageModel message;
-
-    public SendNewMessageActivityResult(MessageModel message) {
+    private DeleteMessagesActivityResult(MessageModel message) {
 
         this.message = message;
     }
@@ -17,14 +16,16 @@ public class SendNewMessageActivityResult {
 
     @Override
     public String toString() {
-        return "SendNewMessageActivityResult{" +
+        return "DeleteMessagesActivityResult{" +
                 "message=" + message +
                 '}';
     }
 
     //CHECKSTYLE:OFF:Builder
     public static Builder builder() {
-        return new Builder(); }
+
+        return new Builder();
+    }
 
     public static class Builder {
         private MessageModel message;
@@ -33,10 +34,9 @@ public class SendNewMessageActivityResult {
             this.message = message;
             return this;
         }
+        public DeleteMessagesActivityResult build() {
 
-        public SendNewMessageActivityResult build() {
-
-            return new SendNewMessageActivityResult(message);
+            return new DeleteMessagesActivityResult(message);
         }
     }
 }

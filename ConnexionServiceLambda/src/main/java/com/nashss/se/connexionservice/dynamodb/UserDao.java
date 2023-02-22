@@ -106,17 +106,23 @@ public class UserDao {
      */
      public List<String> getAllConnexions(User currUser) {
          DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
-         Map<Integer, String> connexionMap = new HashMap<>();
 
-         List<User> scanResult = dynamoDbMapper.scan(User.class, scanExpression);
+         PaginatedScanList<User> scanResult = dynamoDbMapper.scan(User.class, scanExpression);
 
-         for (User user : scanResult) {
-             if(!user.equals(currUser)) {
-                 connexionMap = connexionsSort(currUser.getHobbies(), user);
-             }
-         }
+//         for (User user : scanResult) {
+//             if(!user.equals(currUser)) {
+//                 connexionMap = connexionsSort(currUser.getHobbies(), scanResult);
+//             }
+//         }
+         System.out.println("scanResult: " + scanResult);
 
-         return copyToList(connexionMap.values());
+         Map<Integer, String> sortedMap = connexionsSort(currUser.getHobbies(), scanResult);
+         Map<Integer, String> connexionMap = new HashMap<>(sortedMap);
+
+        List<String> sortedConnexions = copyToList(connexionMap.values());
+
+         sortedConnexions.remove(currUser.getId());
+         return sortedConnexions;
      }
 
 
@@ -148,12 +154,20 @@ public class UserDao {
                 .withExpressionAttributeValues(valueMap);
         PaginatedScanList<User> connexionsList = dynamoDbMapper.scan(User.class, scanExpression);
 
-        for (User user : connexionsList) {
-            connexionMap = connexionsSort(currUser.getHobbies(), user);
-        }
-        return copyToList(connexionMap.values());
+
+        connexionMap = connexionsSort(currUser.getHobbies(), connexionsList);
+
+        List<String> sortedConnexions = copyToList(connexionMap.values());
+        Collections.reverse(sortedConnexions);
+
+        return sortedConnexions;
     }
 
+
+    /**
+     * Return a list of compatible personality types for the given personality type
+     * @return a List of personality types compatible with the given personality type.
+     */
     public List<String> getCompatiblePersonalityTypes(String personalityType) {
 
         if (personalityType != null) {
@@ -196,20 +210,26 @@ public class UserDao {
         return null;
     }
 
-    public Map<Integer, String> connexionsSort(List<String> currUserHobbies, User connexion) {
+    /**
+     * Perform a sort on the list of connexions by their common hobbies
+     * @return a Map of compatible users in order from most compatible to least
+     */
+    public Map<Integer, String> connexionsSort(List<String> currUserHobbies, List<User> connexion) {
         Map<Integer, String> connexionTreeMap = new TreeMap<>();
 
-        if (currUserHobbies != null && connexion != null) {
-           int count = 0;
-           List<String> connexionHobbies = connexion.getHobbies();
+        for (User user : connexion) {
+            if (currUserHobbies != null && user != null) {
+                int count = 0;
+                List<String> connexionHobbies = user.getHobbies();
 
-           for (String userHobby : currUserHobbies) {
-               if (connexionHobbies.contains(userHobby)) {
-                   count++;
-               }
-           }
-          connexionTreeMap.put(count, connexion.getId());
-       }
+                for (String userHobby : currUserHobbies) {
+                    if (connexionHobbies.contains(userHobby)) {
+                        count++;
+                    }
+                }
+                connexionTreeMap.put(count, user.getId());
+            }
+        }
         return connexionTreeMap;
     }
 }

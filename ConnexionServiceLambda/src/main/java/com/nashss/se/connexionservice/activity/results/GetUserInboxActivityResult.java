@@ -12,10 +12,12 @@ public class GetUserInboxActivityResult {
      * @param messages the list of connexions to convert
      */
     public GetUserInboxActivityResult(List<Message> messages) {
+
         this.messages = messages;
     }
 
     public List<Message> getMessages() {
+
         return messages;
     }
 
@@ -27,7 +29,8 @@ public class GetUserInboxActivityResult {
     }
 
     //CHECKSTYLE:OFF:Builder
-    public static Builder builder() { return new Builder(); }
+    public static Builder builder() {
+        return new Builder(); }
 
     public static class Builder {
         private List<Message> messages;

@@ -4,18 +4,20 @@ import com.nashss.se.connexionservice.dynamodb.models.Message;
 
 import java.util.List;
 
-public class GetMessagesFromUserActivityResult {
+public class GetMessagesWithUserActivityResult {
     private final List<Message> messages;
 
     /**
      * Constructor for GetConnexionsActivityResult.
      * @param messages the list of connexions to convert
      */
-    public GetMessagesFromUserActivityResult(List<Message> messages) {
+    public GetMessagesWithUserActivityResult(List<Message> messages) {
+
         this.messages = messages;
     }
 
     public List<Message> getMessages() {
+
         return messages;
     }
 
@@ -27,7 +29,8 @@ public class GetMessagesFromUserActivityResult {
     }
 
     //CHECKSTYLE:OFF:Builder
-    public static Builder builder() { return new Builder(); }
+    public static Builder builder() {
+        return new Builder(); }
 
     public static class Builder {
         private List<Message> messages;
@@ -37,9 +40,9 @@ public class GetMessagesFromUserActivityResult {
             return this;
         }
 
-        public GetMessagesFromUserActivityResult build() {
+        public GetMessagesWithUserActivityResult build() {
 
-            return new GetMessagesFromUserActivityResult(messages);
+            return new GetMessagesWithUserActivityResult(messages);
         }
     }
 }

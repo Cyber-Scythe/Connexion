@@ -7,6 +7,8 @@ import com.nashss.se.connexionservice.activity.results.SendNewMessageActivityRes
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.time.LocalDateTime;
+
 public class SendNewMessageLambda
         extends LambdaActivityRunner<SendNewMessageActivityRequest, SendNewMessageActivityResult>
         implements RequestHandler<AuthenticatedLambdaRequest<SendNewMessageActivityRequest>, LambdaResponse> {
@@ -23,7 +25,7 @@ public class SendNewMessageLambda
                             SendNewMessageActivityRequest.builder()
                                     .withSenderEmail(claims.get("email"))
                                     .withRecipientEmail(unauthenticatedRequest.getRecipientEmail())
-                                    .withDateTimeSent(unauthenticatedRequest.getDateTimeSent())
+                                    .withDateTimeSent(LocalDateTime.now().toString())
                                     .withMessageContent(unauthenticatedRequest.getMessageContent())
                                     .withReadStatus(unauthenticatedRequest.getReadStatus())
                                     .build());

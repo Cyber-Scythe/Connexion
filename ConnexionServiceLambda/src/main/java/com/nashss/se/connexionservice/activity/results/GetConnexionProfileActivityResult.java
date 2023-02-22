@@ -6,10 +6,12 @@ public class GetConnexionProfileActivityResult {
     private final UserModel user;
 
     private GetConnexionProfileActivityResult(UserModel user) {
+
         this.user = user;
     }
 
     public UserModel getUser() {
+
         return user;
     }
 
@@ -22,6 +24,7 @@ public class GetConnexionProfileActivityResult {
 
     //CHECKSTYLE:OFF:Builder
     public static Builder builder() {
+
         return new Builder();
     }
 
@@ -34,6 +37,7 @@ public class GetConnexionProfileActivityResult {
         }
 
         public GetConnexionProfileActivityResult build() {
+
             return new GetConnexionProfileActivityResult(user);
         }
     }

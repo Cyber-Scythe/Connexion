@@ -1,22 +1,16 @@
 package com.nashss.se.connexionservice.activity;
 
 import com.nashss.se.connexionservice.activity.requests.SendNewMessageActivityRequest;
-import com.nashss.se.connexionservice.activity.requests.UpdateUserProfileActivityRequest;
 import com.nashss.se.connexionservice.activity.results.SendNewMessageActivityResult;
-import com.nashss.se.connexionservice.activity.results.UpdateUserProfileActivityResult;
 import com.nashss.se.connexionservice.converters.ModelConverter;
 import com.nashss.se.connexionservice.dynamodb.MessageDao;
-import com.nashss.se.connexionservice.dynamodb.UserDao;
 import com.nashss.se.connexionservice.dynamodb.models.Message;
-import com.nashss.se.connexionservice.dynamodb.models.User;
 import com.nashss.se.connexionservice.metrics.MetricsPublisher;
 import com.nashss.se.connexionservice.models.MessageModel;
-import com.nashss.se.connexionservice.models.UserModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
-import java.util.List;
 
 public class SendNewMessageActivity {
     private final Logger log = LogManager.getLogger();
@@ -36,7 +30,7 @@ public class SendNewMessageActivity {
     }
 
     /**
-     * This method handles the incoming request by saving the new message to the inbox table
+     * This method handles the incoming request by saving the new message to the database
      * <p>
      * It then returns the message that was sent.
      * <p>
@@ -49,7 +43,6 @@ public class SendNewMessageActivity {
 
         Message newMessage = new Message();
 
-        newMessage.setMessageId(sendNewMessageActivityRequest.getMessageId());
         newMessage.setSentBy(sendNewMessageActivityRequest.getSenderEmail());
         newMessage.setReceivedBy(sendNewMessageActivityRequest.getRecipientEmail());
         newMessage.setDateTimeSent(sendNewMessageActivityRequest.getDateTimeSent());

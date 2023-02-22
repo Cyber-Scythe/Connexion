@@ -1,5 +1,9 @@
 package com.nashss.se.connexionservice.activity.requests;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
+@JsonDeserialize(builder = GetUserInboxActivityRequest.Builder.class)
 public class GetUserInboxActivityRequest {
     private final String userId;
     private final String currUserEmail;
@@ -11,8 +15,11 @@ public class GetUserInboxActivityRequest {
         this.currUserEmail = currUserEmail;
     }
 
-    public String getUserId() { return userId; }
-    public String getCurrUserEmail() { return currUserEmail; }
+    public String getUserId() {
+        return userId; }
+
+    public String getCurrUserEmail() {
+        return currUserEmail; }
 
 
     @Override
@@ -23,8 +30,11 @@ public class GetUserInboxActivityRequest {
                 '}';
     }
 
-    public static Builder builder() { return new Builder(); }
+    public static Builder builder() {
+        return new Builder();
+    }
 
+    @JsonPOJOBuilder
     public static class Builder {
         private String userId;
         private String currUserEmail;
@@ -40,7 +50,8 @@ public class GetUserInboxActivityRequest {
         }
 
 
-        public GetUserInboxActivityRequest build() { return new GetUserInboxActivityRequest(userId, currUserEmail);
+        public GetUserInboxActivityRequest build() {
+            return new GetUserInboxActivityRequest(userId, currUserEmail);
         }
     }
 }

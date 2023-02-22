@@ -4,15 +4,14 @@ import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
 
 /**
- * Logic needed for the view playlist page of the website.
+ * Logic needed for the view connexions page of the website.
  */
 class Connexions extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['clientLoaded', 'mount', 'addConnexionsToPage', 'getConnexionProfile', 'sendNewMessage'], this);
+        this.bindClassMethods(['clientLoaded', 'mount', 'addConnexionsToPage'], this);
 
         this.dataStore = new DataStore();
-
         this.header = new Header(this.dataStore);
 
         console.log("connexions constructor");
@@ -29,6 +28,8 @@ class Connexions extends BindingClass {
         }));
 
         console.log("curr user: ", currUser);
+        this.dataStore.set('currUser', currUser);
+
         console.log("personalityTYpe: ", currUser.personalityType);
 
         const connexions = await this.client.getConnexions(currUser.personalityType, (error) => {
@@ -49,23 +50,15 @@ class Connexions extends BindingClass {
         this.clientLoaded();
     }
 
-    /**
-    * Get profile metadata for connexion
-    */
-    async getConnexionProfile(userId) {
-        return await this.client.getConnexionProfile(userId, (error) => {
-                            console.log(`Error: ${error.message}`);
-                    });
-    }
-
 
     /**
-     * When the connexions updated in the datastore, update the connexions metadata on the page.
+     * When the connexions are updated in the datastore, update the connexions metadata on the page.
      */
     async addConnexionsToPage() {
         console.log("addConnexionsToPage");
 
         const connexions = this.dataStore.get('connexions');
+        const currUser = this.dataStore.get('currUser');
 
         if (connexions == null) {
             return;
@@ -74,93 +67,95 @@ class Connexions extends BindingClass {
         var rowRemovable = document.getElementById('row-removable');
 
         for (var i = 0; i < connexions.length; i++) {
-            console.log("connexion: ", connexions[i]);
+            if (connexions[i] !== currUser.id) {
 
-            var userId = connexions[i];
+                var userId = connexions[i];
+                console.log("userID: ", userId);
 
-            const user = await this.getConnexionProfile(userId);
-            console.log("user: ", user);
+                const user = await this.client.getConnexionProfile(userId);
 
-            var div = document.createElement('div');
-                            div.className = 'col-xl-3 col-md-6 mb-4';
-                            div.type = 'div';
-                            div.id = 'col' + i;
+                var div = document.createElement('div');
+                                div.className = 'col-xl-3 col-md-6 mb-4';
+                                div.type = 'div';
+                                div.id = 'col' + i;
 
-            rowRemovable.appendChild(div);
+                rowRemovable.appendChild(div);
 
-            var card = document.createElement('card');
-                       card.className = 'card';
-                       card.type = 'card';
-                       card.id = 'card' + i;
+                var card = document.createElement('card');
+                           card.className = 'card';
+                           card.type = 'card';
+                           card.id = 'card' + i;
 
-            div.appendChild(card);
+                div.appendChild(card);
 
-            var div2 = document.createElement('div');
-                       div2.className = 'card-body p-3';
-                       div2.type = 'card';
-                       div2.id = 'card' + i;
+                var div2 = document.createElement('div');
+                           div2.className = 'card-body p-3';
+                           div2.type = 'card';
+                           div2.id = 'card' + i;
 
-            card.appendChild(div2);
+                card.appendChild(div2);
 
-            var div3 = document.createElement('div')
-            div3.className = 'd-flex align-items-center';
-            div3.type = 'div';
-            div3.id = 'div' + i;
+                var div3 = document.createElement('div')
+                div3.className = 'd-flex align-items-center';
+                div3.type = 'div';
+                div3.id = 'div' + i;
 
-            card.appendChild(div3);
+                card.appendChild(div3);
 
-            var spaceDiv = document.createElement('div');
-            spaceDiv.type = 'div';
-            spaceDiv.id = 'space-div' + i;
+                var spaceDiv = document.createElement('div');
+                spaceDiv.type = 'div';
+                spaceDiv.id = 'space-div' + i;
 
-            var img = document.createElement('img');
-            img.className = 'avatar avata-sm';
-            img.type = 'img';
-            img.id = 'profile-picture' + i;
-            img.src = 'images/alien.png'
+                var img = document.createElement('img');
+                img.className = 'avatar avata-sm';
+                img.type = 'img';
+                img.id = 'profile-picture' + i;
+                img.src = 'images/alien.png'
 
-            card.appendChild(spaceDiv);
-            spaceDiv.appendChild(img);
+                card.appendChild(spaceDiv);
+                spaceDiv.appendChild(img);
 
-            var div4 = document.createElement('div');
-            card.appendChild(div4);
+                var div4 = document.createElement('div');
+                card.appendChild(div4);
 
-            var span = document.createElement('span');
-            span.className = 'h6 font-weight-bold mb-0';
-            span.type = 'span';
-            span.id = 'user-name' + i;
-            span.value = user.name;
-            span.innerHTML = user.name;
+                var span = document.createElement('span');
+                span.className = 'h6 font-weight-bold mb-0';
+                span.type = 'span';
+                span.id = 'user-name' + i;
+                span.value = user.name;
+                span.innerHTML = user.name;
 
-            div4.appendChild(span);
+                div4.appendChild(span);
 
-            var userLocation = user.city + ", " + user.state;
-            var div5 = document.createElement('div');
-            div5.type = 'div';
-            div5.id = userLocation;
-            div5.innerHTML = userLocation;
+                var userLocation = user.city + ", " + user.state;
+                var div5 = document.createElement('div');
+                div5.type = 'div';
+                div5.id = userLocation;
+                div5.innerHTML = userLocation;
 
-            card.appendChild(div5);
+                card.appendChild(div5);
 
-            var br = document.createElement('br');
-            br.type = 'br';
-            card.appendChild(br);
+                var br = document.createElement('br');
+                br.type = 'br';
+                card.appendChild(br);
 
-            var msgButton = document.createElement('button');
-            msgButton.className = 'message-btn';
-            msgButton.type = 'button';
-            msgButton.id = 'message-btn-' + i;
-            msgButton.innerHTML = "Message";
-            mshButton.href = this.sendNewMessage(connexions[i].email);
+                var msgButton = document.createElement('button');
+                msgButton.className = 'message-btn';
+                msgButton.type = 'button';
+                msgButton.id = 'message-btn-' + i;
+                msgButton.innerText = "Message";
 
-            card.appendChild(msgButton);
+                console.log('user.email: ', user.email);
+                var email = user.email;
+                msgButton.onclick = function (email) {
+                         var encodedEmail = encodeURIComponent(user.email);
+                         location.href = '/view_message.html?otherUser=' + encodedEmail + '';
+                };
+
+                card.appendChild(msgButton);
+            }
         }
     }
-
-    sendNewMessage(recipientEmail) {
-        Inbox.sendNewMessage(recipientEmail);
-    }
-
 }
 
 /**

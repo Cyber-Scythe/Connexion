@@ -2,11 +2,8 @@ package com.nashss.se.connexionservice.lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.nashss.se.connexionservice.activity.GetHobbiesFromDbActivity;
 import com.nashss.se.connexionservice.activity.requests.GetHobbiesFromDbActivityRequest;
-import com.nashss.se.connexionservice.activity.requests.GetUserProfileActivityRequest;
 import com.nashss.se.connexionservice.activity.results.GetHobbiesFromDbActivityResult;
-import com.nashss.se.connexionservice.activity.results.GetUserProfileActivityResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

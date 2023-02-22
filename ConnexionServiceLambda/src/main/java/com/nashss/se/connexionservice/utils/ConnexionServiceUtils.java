@@ -1,6 +1,5 @@
 package com.nashss.se.connexionservice.utils;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.regex.Pattern;
@@ -20,10 +19,5 @@ public class ConnexionServiceUtils {
         }
     }
 
-    // public static boolean isValidState(String stateToValidate)
-    // public static boolean
-    public static String generateUserId() {
-        return RandomStringUtils.randomAlphanumeric(5);
-    }
 }
 

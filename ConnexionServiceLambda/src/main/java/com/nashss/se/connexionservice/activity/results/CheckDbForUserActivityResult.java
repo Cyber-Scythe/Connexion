@@ -6,10 +6,12 @@ public class CheckDbForUserActivityResult {
     private final UserModel user;
 
     private CheckDbForUserActivityResult(UserModel user) {
+
         this.user = user;
     }
 
     public UserModel getUser() {
+
         return user;
     }
 
@@ -22,6 +24,7 @@ public class CheckDbForUserActivityResult {
 
     //CHECKSTYLE:OFF:Builder
     public static Builder builder() {
+
         return new Builder();
     }
 
@@ -34,6 +37,7 @@ public class CheckDbForUserActivityResult {
         }
 
         public CheckDbForUserActivityResult build() {
+
             return new CheckDbForUserActivityResult(user);
         }
     }

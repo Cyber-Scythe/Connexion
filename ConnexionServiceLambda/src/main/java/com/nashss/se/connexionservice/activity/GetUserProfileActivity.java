@@ -35,8 +35,6 @@ public class GetUserProfileActivity {
      * <p>
      * It then returns the user.
      * <p>
-     * If the user does not exist, this should throw a UserNotFoundException.
-     *
      * @param getUserProfileActivityRequest request object containing the user's email
      * @return getUserProfileActivityResult result object containing the API defined {@link UserModel}
      */

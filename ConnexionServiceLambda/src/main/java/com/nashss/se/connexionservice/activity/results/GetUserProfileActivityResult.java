@@ -6,10 +6,12 @@ public class GetUserProfileActivityResult {
     private final UserModel user;
 
     private GetUserProfileActivityResult(UserModel user) {
+
         this.user = user;
     }
 
     public UserModel getUser() {
+
         return user;
     }
 
@@ -22,6 +24,7 @@ public class GetUserProfileActivityResult {
 
     //CHECKSTYLE:OFF:Builder
     public static Builder builder() {
+
         return new Builder();
     }
 
@@ -34,6 +37,7 @@ public class GetUserProfileActivityResult {
         }
 
         public GetUserProfileActivityResult build() {
+
             return new GetUserProfileActivityResult(user);
         }
     }

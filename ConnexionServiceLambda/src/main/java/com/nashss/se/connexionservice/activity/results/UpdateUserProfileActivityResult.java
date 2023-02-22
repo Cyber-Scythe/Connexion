@@ -6,6 +6,7 @@ public class UpdateUserProfileActivityResult {
     private final UserModel user;
 
     public UpdateUserProfileActivityResult(UserModel user) {
+
         this.user = user;
     }
 
@@ -22,6 +23,7 @@ public class UpdateUserProfileActivityResult {
 
     //CHECKSTYLE:OFF:Builder
     public static Builder builder() {
+
         return new Builder();
     }
 
@@ -34,6 +36,7 @@ public class UpdateUserProfileActivityResult {
         }
 
         public UpdateUserProfileActivityResult build() {
+
             return new UpdateUserProfileActivityResult(user);
         }
     }

@@ -3,26 +3,19 @@ package com.nashss.se.connexionservice.activity.requests;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
-import java.util.List;
-
-import static com.nashss.se.connexionservice.utils.CollectionUtils.copyToList;
-
 @JsonDeserialize(builder = SendNewMessageActivityRequest.Builder.class)
 public class SendNewMessageActivityRequest {
-    private final String messageId;
     private final String senderEmail;
     private final String recipientEmail;
     private final String dateTimeSent;
     private final String messageContent;
     private final boolean readStatus;
 
-    public SendNewMessageActivityRequest(String messageId,
-                                         String senderEmail,
+    public SendNewMessageActivityRequest(String senderEmail,
                                          String recipientEmail,
                                          String dateTimeSent,
                                          String messageContent,
                                          boolean readStatus) {
-        this.messageId = messageId;
         this.senderEmail = senderEmail;
         this.recipientEmail = recipientEmail;
         this.dateTimeSent = dateTimeSent;
@@ -30,9 +23,6 @@ public class SendNewMessageActivityRequest {
         this.readStatus = readStatus;
     }
 
-    public String getMessageId() {
-            return messageId;
-        }
     public String getSenderEmail() { return senderEmail; }
 
    public String getRecipientEmail() { return recipientEmail; }
@@ -52,7 +42,6 @@ public class SendNewMessageActivityRequest {
     @Override
     public String toString() {
         return "UpdateUserProfileActivityRequest{" +
-                "messageId='" + messageId + '\'' +
                 "senderEmail='" + senderEmail + '\'' +
                 "recipientEmail='" + recipientEmail + '\'' +
                 "dateTimeSent='" + dateTimeSent + '\'' +
@@ -67,17 +56,11 @@ public class SendNewMessageActivityRequest {
 
     @JsonPOJOBuilder
     public static class Builder {
-        private String messageId;
         private String senderEmail;
         private String recipientEmail;
         private String dateTimeSent;
         private String messageContent;
         private boolean readStatus;
-
-        public Builder withMessageId(String messageId) {
-                this.messageId = messageId;
-                return this;
-        }
 
         public Builder withSenderEmail(String senderEmail) {
                 this.senderEmail = senderEmail;
@@ -105,8 +88,7 @@ public class SendNewMessageActivityRequest {
         }
 
      public SendNewMessageActivityRequest build() {
-                return new SendNewMessageActivityRequest(messageId,
-                                                         senderEmail,
+                return new SendNewMessageActivityRequest(senderEmail,
                                                          recipientEmail,
                                                          dateTimeSent,
                                                          messageContent,

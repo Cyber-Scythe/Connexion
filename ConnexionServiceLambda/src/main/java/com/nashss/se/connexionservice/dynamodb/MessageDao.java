@@ -2,11 +2,8 @@ package com.nashss.se.connexionservice.dynamodb;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
-import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedScanList;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.nashss.se.connexionservice.dynamodb.models.Hobby;
 import com.nashss.se.connexionservice.dynamodb.models.Message;
-import com.nashss.se.connexionservice.dynamodb.models.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,6 +33,7 @@ public class MessageDao {
      */
     public Message sendMessage(Message message) {
         this.dynamoDbMapper.save(message);
+
         return message;
     }
 
@@ -52,7 +50,8 @@ public class MessageDao {
         valueMap.put(":currUserEmail", new AttributeValue().withS(currUserEmail));
 
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
-                .withFilterExpression("senderEmail = :currUserEmail OR recipientEmail = :currUserEmail ")
+                .withIndexName("EmailsSentAndReceivedIndex")
+                .withFilterExpression("sentBy = :currUserEmail OR receivedBy = :currUserEmail ")
                 .withExpressionAttributeValues(valueMap);
 
         List<Message> scanResult = dynamoDbMapper.scan(Message.class, scanExpression);
@@ -68,17 +67,25 @@ public class MessageDao {
      * @return All messages between two users in inbox table
      */
     public List<Message> getMessagesWithUser(String senderEmail, String recipientEmail) {
+        System.out.println("senderEmail: " + senderEmail + "   recipientEmail: " + recipientEmail);
+
         Map<String, AttributeValue> valueMap = new HashMap<>();
 
         valueMap.put(":currUserEmail", new AttributeValue().withS(senderEmail));
         valueMap.put(":otherUserEmail", new AttributeValue().withS(recipientEmail));
 
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
-                .withFilterExpression("senderEmail = :currUserEmail OR senderEmail = :otherUserEmail " +
-                        "OR recipientEmail = :currUserEmail OR recipientEmail = :otherUserEmail")
+                .withFilterExpression("sentBy = :currUserEmail AND receivedBy = :otherUserEmail " +
+                        "OR receivedBy = :currUserEmail AND sentBy = :otherUserEmail")
                 .withExpressionAttributeValues(valueMap);
 
 
         return dynamoDbMapper.scan(Message.class, scanExpression);
+    }
+
+    public Message deleteMessages(Message message) {
+
+        dynamoDbMapper.delete(message);
+        return message;
     }
 }

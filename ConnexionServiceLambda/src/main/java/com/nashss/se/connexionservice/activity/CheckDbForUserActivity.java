@@ -12,17 +12,17 @@ import org.apache.logging.log4j.Logger;
 import javax.inject.Inject;
 
 /**
- * Implementation of the CheckDbForUserActivity for the Connexion's CreatePlaylist API.
+ * Implementation of the CheckDbForUserActivity for the Connexion's CheckDbForUser API.
  * <p>
  * This API checks the database to see if the user already exists. If they do not then
- * the API to create a new user is triggered.
+ * the API call to create a new user is triggered.
  */
 public class CheckDbForUserActivity {
     private final Logger log = LogManager.getLogger();
     private final UserDao userDao;
 
     /**
-     * Instantiates a new CreateUserActivity object.
+     * Instantiates a new CheckDbForUser object.
      *
      * @param userDao UserDao to access the users table.
      */
@@ -37,11 +37,9 @@ public class CheckDbForUserActivity {
      * <p>
      * It then returns the newly created user.
      * <p>
-     * If the provided name, email, city, state, personalityType, or hobbies has invalid characters, throws an
-     * InvalidAttributeValueException
      *
      * @param checkDbForUserActivityRequest request object containing the user's name, email, city, state, personality type,
-     *                                  and hobbies associated with it
+     *                                      and hobbies associated with it
      * @return CheckDbForUserActivityResult result object containing the API defined {@link UserModel}
      */
     public CheckDbForUserActivityResult handleRequest(final CheckDbForUserActivityRequest checkDbForUserActivityRequest) {

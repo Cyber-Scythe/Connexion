@@ -31,6 +31,7 @@ module.exports = {
     editUserProfile: path.resolve(__dirname, 'src', 'pages', 'editUserProfile.js'),
     inbox: path.resolve(__dirname, 'src', 'pages', 'inbox.js'),
     connexions: path.resolve(__dirname, 'src', 'pages', 'connexions.js'),
+    viewMessage: path.resolve(__dirname, 'src', 'pages', 'viewMessage.js'),
 
   },
   output: {

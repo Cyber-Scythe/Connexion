@@ -976,45 +976,11 @@
   border: 1px solid green ;
 }
 
-.tags {
-    display: flex;
-    flex-direction: row;
-}
-
-.tag {
-    font-size: 12px;
-    margin: 0 10px;
-    padding: 4px 8px;
-    background-color: var(--primary);
-    color: var(--secondary);
-    position: relative;
-    border-radius: 16px;
-}
-
-.song {
-    padding: 2px;
-    display: flex;
-}
-
-.song .title {
-    flex: 20%;
-}
-
-.song .album {
-    flex: 80%;
-}
-
 /*
 Flexbox on a lists removes the numbers. We use a counter here to add them back.
 https://stackoverflow.com/a/34316093
 https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Lists_and_Counters/Using_CSS_counters
 */
-.song:before {
-    counter-increment: section;
-    content: counter(section) ".";
-    position: absolute;
-    margin-left: -40px;
-}
 
 .hidden {
     display: none;
@@ -1889,8 +1855,7 @@ body{margin-top:20px;}
 }
 
 .empty-inbox-card {
- width: 400%;
- height: 150px;
+ display: flex;
  border-radius: 20px;
  padding: 5px;
  box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;

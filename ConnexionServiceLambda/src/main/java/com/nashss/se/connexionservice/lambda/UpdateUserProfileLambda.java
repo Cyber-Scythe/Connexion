@@ -2,14 +2,10 @@ package com.nashss.se.connexionservice.lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.nashss.se.connexionservice.activity.requests.GetUserProfileActivityRequest;
 import com.nashss.se.connexionservice.activity.requests.UpdateUserProfileActivityRequest;
 import com.nashss.se.connexionservice.activity.results.UpdateUserProfileActivityResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.Collections;
 
 public class UpdateUserProfileLambda
         extends LambdaActivityRunner<UpdateUserProfileActivityRequest, UpdateUserProfileActivityResult>

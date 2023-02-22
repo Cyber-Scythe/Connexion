@@ -1,5 +1,9 @@
 package com.nashss.se.connexionservice.activity.requests;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
+@JsonDeserialize(builder = GetUserProfileByEmailActivityRequest.Builder.class)
 public class GetUserProfileByEmailActivityRequest {
     private final String userEmail;
 
@@ -8,7 +12,9 @@ public class GetUserProfileByEmailActivityRequest {
         this.userEmail = userEmail;
     }
 
-    public String getUserEmail() { return userEmail; }
+    public String getUserEmail() {
+        return userEmail;
+    }
 
 
     @Override
@@ -21,6 +27,7 @@ public class GetUserProfileByEmailActivityRequest {
     //CHECKSTYLE:OFF:Builder
     public static Builder builder() { return new Builder(); }
 
+    @JsonPOJOBuilder
     public static class Builder {
         private String userEmail;
 

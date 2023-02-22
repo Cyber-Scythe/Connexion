@@ -14,12 +14,6 @@ public interface ServiceComponent {
 
     /**
      * Provides the relevant activity.
-     * @return AddSongToPlaylistActivity
-     */
-  //  AddSongToPlaylistActivity provideAddSongToPlaylistActivity();
-
-    /**
-     * Provides the relevant activity.
      * @return CheckDbForUserActivity
      */
     CheckDbForUserActivity provideCheckDbForUserActivity();
@@ -27,19 +21,19 @@ public interface ServiceComponent {
 
     /**
      * Provides the relevant activity.
-     * @return GetPlaylistActivity
+     * @return GetUserProfileActivity
      */
     GetUserProfileActivity provideGetUserProfileActivity();
 
     /**
      * Provides the relevant activity.
-     * @return GetPlaylistActivity
+     * @return UpdateUserProfileActivity
      */
     UpdateUserProfileActivity provideUpdateUserProfileActivity();
 
     /**
      * Provides the relevant activity.
-     * @return GetPlaylistSongsActivity
+     * @return GetHobbiesFromDbActivity
      */
     GetHobbiesFromDbActivity provideGetHobbiesFromDbActivity();
 
@@ -57,15 +51,15 @@ public interface ServiceComponent {
 
     /**
      * Provides the relevant activity.
-     * @return GetConnexionProfileActivity
+     * @return GetUserInboxActivity
      */
     GetUserInboxActivity provideGetUserInboxActivity();
 
     /**
      * Provides the relevant activity.
-     * @return GetConnexionProfileActivity
+     * @return GetMessagesWithUserActivity
      */
-    GetMessagesFromUserActivity provideGetMessagesFromUserActivity();
+    GetMessagesWithUserActivity provideGetMessagesWithUserActivity();
 
     /**
      * Provides the relevant activity.
@@ -73,5 +67,15 @@ public interface ServiceComponent {
      */
     SendNewMessageActivity provideSendNewMessageActivity();
 
+    /**
+     * Provides the relevant activity.
+     * @return GetUserProfileByEmailActivity
+     */
     GetUserProfileByEmailActivity provideGetUserProfileByEmailActivity();
+
+    /**
+     * Provides the relevant activity.
+     * @return DeleteMessagesActivity
+     */
+    DeleteMessagesActivity provideDeleteMessagesActivity();
 }
