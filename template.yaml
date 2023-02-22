@@ -236,7 +236,7 @@ Resources:
         ConnexionService:
           Type: Api
           Properties:
-            Path: /index # UPDATE THIS PATH
+            Path: /index
             Method: get
 
 

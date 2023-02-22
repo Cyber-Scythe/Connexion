@@ -96,9 +96,6 @@ class EditUserProfile extends BindingClass {
     prepopulateProfile() {
         const user = this.dataStore.get('currUser');
 
-//        let email = document.getElementById('input-email');
-//        email.value = user.email;
-
         let username = document.getElementById('input-name');
         username.value = user.name;
 
@@ -170,6 +167,8 @@ class EditUserProfile extends BindingClass {
         const profile =  await this.client.updateUserProfile(username, age, city, state, personalityType, userHobbies, connexions);
         console.log("Profile: ", profile);
         this.dataStore.set('profile', profile);
+
+        this.redirectToViewProfile();
     }
 
     /**

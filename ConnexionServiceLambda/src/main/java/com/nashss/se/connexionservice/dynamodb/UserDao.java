@@ -106,14 +106,8 @@ public class UserDao {
      */
      public List<String> getAllConnexions(User currUser) {
          DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
-
          PaginatedScanList<User> scanResult = dynamoDbMapper.scan(User.class, scanExpression);
 
-//         for (User user : scanResult) {
-//             if(!user.equals(currUser)) {
-//                 connexionMap = connexionsSort(currUser.getHobbies(), scanResult);
-//             }
-//         }
          System.out.println("scanResult: " + scanResult);
 
          Map<Integer, String> sortedMap = connexionsSort(currUser.getHobbies(), scanResult);
@@ -139,8 +133,7 @@ public class UserDao {
 
 
         if (personalityTypes.isEmpty()) {
-
-             getAllConnexions(currUser);
+             return getAllConnexions(currUser);
         }
 
         for (int i = 0; i < personalityTypes.size(); i++) {
