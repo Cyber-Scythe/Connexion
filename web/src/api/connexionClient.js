@@ -117,6 +117,7 @@ export default class ConnexionClient extends BindingClass {
     */
     async getProfileByEmail(userEmail, errorCallback) {
      try {
+          userEmail = encodeURIComponent(userEmail);
           const token = await this.getTokenOrThrow("Only authenticated users can view profiles");
           const response = await this.axiosClient.get(`/index/${userEmail}`, {
                 headers: {

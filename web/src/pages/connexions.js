@@ -64,49 +64,49 @@ class Connexions extends BindingClass {
             return;
         }
 
-        var rowRemovable = document.getElementById('row-removable');
+        let rowRemovable = document.getElementById('row-removable');
 
-        for (var i = 0; i < connexions.length; i++) {
+        for (let i = 0; i < connexions.length; i++) {
             if (connexions[i] !== currUser.id) {
 
-                var userId = connexions[i];
+                let userId = connexions[i];
                 console.log("userID: ", userId);
 
                 const user = await this.client.getConnexionProfile(userId);
 
-                var div = document.createElement('div');
+                let div = document.createElement('div');
                                 div.className = 'col-xl-3 col-md-6 mb-4';
                                 div.type = 'div';
                                 div.id = 'col' + i;
 
                 rowRemovable.appendChild(div);
 
-                var card = document.createElement('card');
+                let card = document.createElement('card');
                            card.className = 'card';
                            card.type = 'card';
                            card.id = 'card' + i;
 
                 div.appendChild(card);
 
-                var div2 = document.createElement('div');
+                let div2 = document.createElement('div');
                            div2.className = 'card-body p-3';
                            div2.type = 'card';
                            div2.id = 'card' + i;
 
                 card.appendChild(div2);
 
-                var div3 = document.createElement('div')
+                let div3 = document.createElement('div')
                 div3.className = 'd-flex align-items-center';
                 div3.type = 'div';
                 div3.id = 'div' + i;
 
                 card.appendChild(div3);
 
-                var spaceDiv = document.createElement('div');
+                let spaceDiv = document.createElement('div');
                 spaceDiv.type = 'div';
                 spaceDiv.id = 'space-div' + i;
 
-                var img = document.createElement('img');
+                let img = document.createElement('img');
                 img.className = 'avatar avata-sm';
                 img.type = 'img';
                 img.id = 'profile-picture' + i;
@@ -115,40 +115,43 @@ class Connexions extends BindingClass {
                 card.appendChild(spaceDiv);
                 spaceDiv.appendChild(img);
 
-                var div4 = document.createElement('div');
+                let div4 = document.createElement('div');
                 card.appendChild(div4);
 
-                var span = document.createElement('span');
+                let span = document.createElement('span');
                 span.className = 'h6 font-weight-bold mb-0';
                 span.type = 'span';
                 span.id = 'user-name' + i;
                 span.value = user.name;
                 span.innerHTML = user.name;
+                span.addEventListener('click', async() => {
+                    location.href = '/view_profile.html?user=' + user.id + '';
+                });
 
                 div4.appendChild(span);
 
-                var userLocation = user.city + ", " + user.state;
-                var div5 = document.createElement('div');
+                let userLocation = user.city + ", " + user.state;
+                let div5 = document.createElement('div');
                 div5.type = 'div';
                 div5.id = userLocation;
                 div5.innerHTML = userLocation;
 
                 card.appendChild(div5);
 
-                var br = document.createElement('br');
+                let br = document.createElement('br');
                 br.type = 'br';
                 card.appendChild(br);
 
-                var msgButton = document.createElement('button');
+                let msgButton = document.createElement('button');
                 msgButton.className = 'message-btn';
                 msgButton.type = 'button';
                 msgButton.id = 'message-btn-' + i;
                 msgButton.innerText = "Message";
 
                 console.log('user.email: ', user.email);
-                var email = user.email;
+                let email = user.email;
                 msgButton.onclick = function (email) {
-                         var encodedEmail = encodeURIComponent(user.email);
+                         let encodedEmail = encodeURIComponent(user.email);
                          location.href = '/view_message.html?otherUser=' + encodedEmail + '';
                 };
 

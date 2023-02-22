@@ -11,12 +11,11 @@ class EditUserProfile extends BindingClass {
     constructor() {
         super();
 
-        this.bindClassMethods(['mount', 'populateHobbiesList', 'prepopulateProfile', 'updateProfile', 'redirectToViewProfile'], this);
+        this.bindClassMethods(['mount', 'populateHobbiesList', 'prepopulateProfile'], this);
 
         // Create a new datastore
         this.dataStore = new DataStore();
         this.header = new Header(this.dataStore);
-        this.dataStore.addChangeListener(this.redirectToViewProfile);
 
         console.log("editUserProfile constructor");
     }
@@ -42,11 +41,7 @@ class EditUserProfile extends BindingClass {
      * Add the header to the page and load the ConnexionClient.
      */
      mount() {
-        // Wire up the button's 'click' event to the updateProfile  method.
-        document.getElementById('save-btn').addEventListener('click', this.updateProfile);
-
         this.header.addHeaderToPage();
-
         this.client = new ConnexionClient();
         this.clientLoaded();
     }
@@ -63,28 +58,28 @@ class EditUserProfile extends BindingClass {
                document.getElementById("hobbies-list").innerHTML = "Return list is empty."
            }
 
-           for (var i = 0; i < jsonHobbyList.length; i++) {
+           for (let i = 0; i < jsonHobbyList.length; i++) {
 
-                var hobby = jsonHobbyList[i];
+                let hobby = jsonHobbyList[i];
 
                 if (hobby != null) {
                     document.getElementById("hobbies-list").innerHTML += hobby + "<br>";
                 }
 
-                var checkbox = document.createElement('input');
+                let checkbox = document.createElement('input');
                 checkbox.className = 'container';
                 checkbox.type = 'checkbox';
                 checkbox.id = 'hobbyCheckbox' + i;
                 checkbox.name = 'hobby';
                 checkbox.value = hobby;
 
-                var label = document.createElement('label')
+                let label = document.createElement('label')
                 label.htmlFor = 'selected-hobby';
                 label.appendChild(document.createTextNode('My Hobby'));
 
-                var br = document.createElement('br');
+                let br = document.createElement('br');
 
-                var container = document.getElementById('hobbies-list');
+                let container = document.getElementById('hobbies-list');
                 container.appendChild(checkbox);
                 container.appendChild(br);
             }
@@ -93,7 +88,7 @@ class EditUserProfile extends BindingClass {
    /*
     * Pre-populate user's profile with data already stored in the database
     */
-    prepopulateProfile() {
+    async prepopulateProfile() {
         const user = this.dataStore.get('currUser');
 
         let username = document.getElementById('input-name');
@@ -130,57 +125,46 @@ class EditUserProfile extends BindingClass {
         }
 
         let connexions = null;
+
+        let saveButton = document.getElementById('save-btn');
+        saveButton.addEventListener('click', async (evt) => {
+             evt.preventDefault();
+             const username = document.getElementById('input-name').value;
+             const age = document.getElementById('input-age').value;
+             const personalityType = document.getElementById('input-personality-type').value;
+             const city = document.getElementById('input-city').value;
+             const state = document.getElementById('input-state').value;
+             const connexions = null;
+
+             const hobbyList = this.dataStore.get('hobbies');
+
+             if (hobbyList.length === 0) {
+                 document.getElementById("hobbies-list").innerHTML = "Return list is empty."
+             }
+
+            let userHobbies = [];
+
+            for (let i = 0; i < hobbyList.length; i++) {
+                let checkbox = document.getElementById('hobbyCheckbox' + i);
+
+                if(checkbox.checked) {
+                    console.log("Checked box");
+                    userHobbies.push(checkbox.value);
+                    console.log("Type: ", checkbox.value.type);
+                }
+                console.log("Unchecked box");
+             }
+
+            console.log("userHobbies: ", userHobbies);
+
+            await this.client.updateUserProfile(username, age, city, state, personalityType, userHobbies, connexions);
+
+            const user = this.dataStore.get('currUser');
+            console.log('user.id: ', user.id);
+
+            location.href = '/view_profile.html?user=' + user.id + '';
+        });
     }
-
-   /*
-    * Updates a user's profile information when the save button is clicked
-    */
-    async updateProfile(evt) {
-         var username = document.getElementById('input-name').value;
-         var age = document.getElementById('input-age').value;
-         var personalityType = document.getElementById('input-personality-type').value;
-         var city = document.getElementById('input-city').value;
-         var state = document.getElementById('input-state').value;
-         var connexions = null;
-
-         const hobbyList = this.dataStore.get('hobbies');
-
-         if (hobbyList.length == 0) {
-                    document.getElementById("hobbies-list").innerHTML = "Return list is empty."
-         }
-
-        var userHobbies = [];
-
-        for (var i = 0; i < hobbyList.length; i++) {
-            var checkbox = document.getElementById('hobbyCheckbox' + i);
-
-            if(checkbox.checked) {
-                console.log("Checked box");
-                userHobbies.push(checkbox.value);
-                console.log("Type: ", checkbox.value.type);
-            }
-            console.log("Unchecked box");
-         }
-
-        console.log("userHobbies: ", userHobbies);
-
-        const profile =  await this.client.updateUserProfile(username, age, city, state, personalityType, userHobbies, connexions);
-        console.log("Profile: ", profile);
-        this.dataStore.set('profile', profile);
-
-        this.redirectToViewProfile();
-    }
-
-    /**
-     * When the profile is updated in the datastore, redirect to the view playlist page.
-     */
-      redirectToViewProfile() {
-        const profile = this.dataStore.get('profile');
-
-        if (profile != null) {
-            window.location.href = `/view_profile.html?id=${profile.id}`;
-        }
-      }
 }
 
 /**
