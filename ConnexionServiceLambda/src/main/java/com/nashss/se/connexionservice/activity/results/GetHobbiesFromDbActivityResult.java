@@ -12,10 +12,12 @@ public class GetHobbiesFromDbActivityResult {
      * @param hobbyList the list of hobbies to convert
      */
     public GetHobbiesFromDbActivityResult(List<String> hobbyList) {
+
         this.hobbyList = hobbyList;
     }
 
     public List<String> getHobbies() {
+
         return hobbyList;
     }
 

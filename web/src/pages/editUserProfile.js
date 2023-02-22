@@ -11,7 +11,7 @@ class EditUserProfile extends BindingClass {
     constructor() {
         super();
 
-        this.bindClassMethods(['mount', 'populateHobbiesList', 'updateProfile', 'redirectToViewProfile'], this);
+        this.bindClassMethods(['mount', 'populateHobbiesList', 'prepopulateProfile', 'updateProfile', 'redirectToViewProfile'], this);
 
         // Create a new datastore
         this.dataStore = new DataStore();
@@ -28,21 +28,21 @@ class EditUserProfile extends BindingClass {
      async clientLoaded() {
         console.log("clientLoaded method");
 
+        const currUser = await this.client.getProfile();
+        this.dataStore.set('currUser', currUser);
 
-        const hobbies = await this.client.getHobbiesList((error) => {
-            console.log(`Error: ${error.message}`)
-            });
-        console.log('hobbies: ', hobbies);
+        const hobbies = await this.client.getHobbiesList();
         this.dataStore.set('hobbies', hobbies);
 
         this.populateHobbiesList();
+        this.prepopulateProfile();
     }
 
     /**
      * Add the header to the page and load the ConnexionClient.
      */
      mount() {
-        // Wire up the form's 'submit' event and the button's 'click' event to the search method.
+        // Wire up the button's 'click' event to the updateProfile  method.
         document.getElementById('save-btn').addEventListener('click', this.updateProfile);
 
         this.header.addHeaderToPage();
@@ -52,9 +52,7 @@ class EditUserProfile extends BindingClass {
     }
 
   /**
-   *
-   *
-   *
+   * Populate the list of hobbies
    **/
    populateHobbiesList() {
         const jsonHobbyList = this.dataStore.get('hobbies');
@@ -93,6 +91,51 @@ class EditUserProfile extends BindingClass {
     }
 
    /*
+    * Pre-populate user's profile with data already stored in the database
+    */
+    prepopulateProfile() {
+        const user = this.dataStore.get('currUser');
+
+//        let email = document.getElementById('input-email');
+//        email.value = user.email;
+
+        let username = document.getElementById('input-name');
+        username.value = user.name;
+
+        if (user.age !== null) {
+            let age = document.getElementById('input-age');
+            age.value = user.age;
+        }
+
+        if (user.personalityType !== null) {
+            let personalityType = document.getElementById('input-personality-type');
+            personalityType.value = user.personalityType;
+        }
+
+        if (user.city !== null) {
+            let city = document.getElementById('input-city');
+            city.value = user.city;
+        }
+
+        if (user.state !== null) {
+            let state = document.getElementById('input-state');
+            state.value = user.state;
+        }
+
+        let hobbyList = this.dataStore.get('hobbies');
+        for (let a = 0; a < user.hobbies.length; a++) {
+            for (let i = 0; i < hobbyList.length; i++) {
+                if (user.hobbies[a] === hobbyList[i]) {
+                    let checkbox = document.getElementById('hobbyCheckbox' + i);
+                    checkbox.checked = true;
+                }
+            }
+        }
+
+        let connexions = null;
+    }
+
+   /*
     * Updates a user's profile information when the save button is clicked
     */
     async updateProfile(evt) {
@@ -124,11 +167,7 @@ class EditUserProfile extends BindingClass {
 
         console.log("userHobbies: ", userHobbies);
 
-        const profile =  await this.client.updateUserProfile(username, age, city, state, personalityType, userHobbies, connexions, (error) => {
-//                    errorMessageDisplay.innerText = `Error: ${error.message}`;
-//                    errorMessageDisplay.classList.remove('hidden');
-                      console.log("Error: " + error.message);
-                });
+        const profile =  await this.client.updateUserProfile(username, age, city, state, personalityType, userHobbies, connexions);
         console.log("Profile: ", profile);
         this.dataStore.set('profile', profile);
     }

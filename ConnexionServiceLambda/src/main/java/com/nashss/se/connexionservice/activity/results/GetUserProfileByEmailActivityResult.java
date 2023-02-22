@@ -6,10 +6,12 @@ public class GetUserProfileByEmailActivityResult {
     private final UserModel user;
 
     private GetUserProfileByEmailActivityResult(UserModel user) {
+
         this.user = user;
     }
 
     public UserModel getUser() {
+
         return user;
     }
 
@@ -22,6 +24,7 @@ public class GetUserProfileByEmailActivityResult {
 
     //CHECKSTYLE:OFF:Builder
     public static Builder builder() {
+
         return new Builder();
     }
 
@@ -34,6 +37,7 @@ public class GetUserProfileByEmailActivityResult {
         }
 
         public GetUserProfileByEmailActivityResult build() {
+
             return new GetUserProfileByEmailActivityResult(user);
         }
     }

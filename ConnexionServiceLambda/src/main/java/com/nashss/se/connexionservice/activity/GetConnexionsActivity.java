@@ -7,7 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
-import java.util.HashMap;
+
 import java.util.List;
 
 /**
@@ -32,10 +32,8 @@ public class GetConnexionsActivity {
     /**
      * This method handles the incoming request by retrieving the connexions (Users) from the database.
      * <p>
-     * It then returns the list of connexions (User).
+     * It then returns the list of connexions (Users).
      * <p>
-     * If the connexion does not exist, this should throw a ConnexionNotFound.
-     *
      * @return GetConnexionsActivityResult result object
      */
     public GetConnexionsActivityResult handleRequest(final GetConnexionsActivityRequest getConnexionsActivityRequest) {

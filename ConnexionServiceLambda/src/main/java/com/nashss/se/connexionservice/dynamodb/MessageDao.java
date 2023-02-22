@@ -1,20 +1,13 @@
 package com.nashss.se.connexionservice.dynamodb;
 
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
-import com.amazonaws.services.dynamodbv2.document.DeleteItemOutcome;
-import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.services.dynamodbv2.model.DeleteItemRequest;
 import com.nashss.se.connexionservice.dynamodb.models.Message;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,15 +75,17 @@ public class MessageDao {
         valueMap.put(":otherUserEmail", new AttributeValue().withS(recipientEmail));
 
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
-                .withFilterExpression("sentBy = :currUserEmail OR sentBy = :otherUserEmail " +
-                        "OR receivedBy = :currUserEmail OR receivedBy = :otherUserEmail")
+                .withFilterExpression("sentBy = :currUserEmail AND receivedBy = :otherUserEmail " +
+                        "OR receivedBy = :currUserEmail AND sentBy = :otherUserEmail")
                 .withExpressionAttributeValues(valueMap);
 
 
         return dynamoDbMapper.scan(Message.class, scanExpression);
     }
 
-    public void deleteMessages(Message message) {
-       dynamoDbMapper.delete(message);
+    public Message deleteMessages(Message message) {
+
+        dynamoDbMapper.delete(message);
+        return message;
     }
 }

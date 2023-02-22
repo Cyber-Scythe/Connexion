@@ -11,8 +11,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -89,18 +88,21 @@ public class UserDaoTest {
 //    @Test
 //    public void getAllConnexions_callsScan_ReturnsAllUsers() {
 //        // GIVEN
+//        Map<Integer, String> connexionMap = new HashMap<>();
 //        List<User> usersList = new ArrayList<>();
-//        List<User> connexionsList = List.of(new User());
-//
+//        User currUser = new User("1", "me", "me@gmail.com", 33, "city", "state", "TYPE",
+//                List.of("hobby1", "hobby2", "hobby3"), null);
 //        User u1 = new User("8gffhrgdujff-7fhr", "u1", "u1@mail.com",
 //                32, "city", "state", "TYPE",
-//                List.of("hobby1", "hobby2", "hobby3"), connexionsList);
+//                List.of("hobby1"), null);
 //        User u2 = new User("353-h7d-4hyfje", "u2", "u2@mail.com",
 //                32, "city", "state", "TYPE",
-//                List.of("hobby1", "hobby2", "hobby3"), connexionsList);
+//                List.of("hobby2", "hobby3"), null);
 //
 //        usersList.add(u1);
 //        usersList.add(u2);
+//
+//        List<User> connexionsList = List.of(u1, u2);
 //
 //        // WHEN
 //        ArgumentCaptor<DynamoDBScanExpression> scanExpressionArgumentCaptor =
@@ -110,12 +112,67 @@ public class UserDaoTest {
 //        when(scanResult.getResults()).thenReturn(usersList);
 //
 //        //WHEN
-//        List<User> scanList = userDao.getAllConnexions();
+//        List<String> scanList = userDao.getAllConnexions(currUser);
 //
 //        //THEN
 //        verify(dynamoDBMapper).scan(eq(User.class), scanExpressionArgumentCaptor.capture());
 //        DynamoDBScanExpression scanExpression = scanExpressionArgumentCaptor.getValue();
 //        assertEquals(scanResult.getResults(), scanList, "Expected method to return the results of the scan");
 //    }
+
+    @Test
+    public void getConnexions_personalityTypeIsNull_returnsListOfAllConnexions() {
+        // GIVEN
+        User currUser = new User("1", "me", "me@gmail.com", 33, "city", "state",
+                    null, List.of("hobby1", "hobby2", "hobby3"), null);
+        User u1 = new User("8gffhrgdujff-7fhr", "u1", "u1@mail.com",
+                        32, "city", "state", "TYPE2",
+                            List.of("hobby1"), null);
+        User u2 = new User("353-h7d-4hyfje", "u2", "u2@mail.com",
+                        32, "city", "state", "TYPE1",
+                            List.of("hobby2", "hobby3"), null);
+
+        List<String> connexionsList = List.of(u1.getId(), u2.getId());
+
+        ArgumentCaptor<DynamoDBScanExpression> scanExpressionArgumentCaptor =
+                ArgumentCaptor.forClass(DynamoDBScanExpression.class);
+
+        when(dynamoDBMapper.scanPage(eq(User.class), any())).thenReturn(scanResult);
+        when(scanResult.getResults()).thenReturn(List.of(currUser, u1, u2));
+
+        // WHEN
+        List<String> allConnexions = userDao.getAllConnexions(currUser);
+
+        // THEN
+        verify(dynamoDBMapper).scan(eq(User.class), scanExpressionArgumentCaptor.capture());
+        DynamoDBScanExpression scanExpression = scanExpressionArgumentCaptor.getValue();
+
+        assertEquals(allConnexions, scanResult);
+    }
+
+    @Test
+    public void connexionsSort_sortsListOfConnexions_returnsMapOfSortedUsers() {
+        // GIVEN
+        Map<Integer, String> connexionTreeMap = new TreeMap<>();
+
+        List<String> currUserHobbies = List.of("hobby1", "hobby2", "hobby3", "hobby4");
+
+        User u1 = new User("8gffhrgdujff-7fhr", "u1", "u1@mail.com",
+                            32, "city", "state", "TYPE2",
+                            List.of("hobby1"), null);
+        User u2 = new User("353-h7d-4hyfje", "u2", "u2@mail.com",
+                        32, "city", "state", "TYPE1",
+                             List.of("hobby2", "hobby3"), null);
+
+        List<User> connexionList = List.of(u1, u2);
+        connexionTreeMap.put(1, u1.getId());
+        connexionTreeMap.put(2, u2.getId());
+
+        // WHEN
+        Map<Integer, String> sortedMap = userDao.connexionsSort(currUserHobbies, connexionList);
+
+        // THEN
+        assertEquals(connexionTreeMap, sortedMap);
+    }
 }
 

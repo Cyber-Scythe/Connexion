@@ -10,10 +10,12 @@ public class GetConnexionsActivityResult {
      * @param connexionsList the list of connexions to convert
      */
     public GetConnexionsActivityResult(List<String> connexionsList) {
+
         this.connexionsList = connexionsList;
     }
 
     public List<String> getConnexions() {
+
         return connexionsList;
     }
 
@@ -25,7 +27,8 @@ public class GetConnexionsActivityResult {
     }
 
     //CHECKSTYLE:OFF:Builder
-    public static Builder builder() { return new Builder(); }
+    public static Builder builder() {
+        return new Builder(); }
 
     public static class Builder {
         private List<String> connexionsList;

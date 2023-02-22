@@ -7,7 +7,6 @@ import com.nashss.se.connexionservice.activity.results.DeleteMessagesActivityRes
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Collections;
 
 public class DeleteMessagesLambda
         extends LambdaActivityRunner<DeleteMessagesActivityRequest, DeleteMessagesActivityResult>
@@ -19,19 +18,17 @@ public class DeleteMessagesLambda
 
         @Override
         public LambdaResponse handleRequest(AuthenticatedLambdaRequest<DeleteMessagesActivityRequest> input, Context context) {
-        return super.runActivity(
-                () -> {
-                    DeleteMessagesActivityRequest unauthenticatedRequest = input.fromBody(DeleteMessagesActivityRequest.class);
+            log.info("Inside DeleteMessagesLambda");
+            System.out.println("Inside delete messages lambda");
 
-                    return input.fromUserClaims(claims ->
-                            DeleteMessagesActivityRequest.builder()
-                                    .withSenderEmail(claims.get("email"))
-                                    .withRecipientEmail(unauthenticatedRequest.getRecipientEmail())
-                                    .withDateTimeSent(unauthenticatedRequest.getDateTimeSent())
-                                    .build());
-                },
-                (request, serviceComponent) ->
-                        serviceComponent.provideDeleteMessagesActivity().handleRequest(request)
-        );
+                    return super.runActivity(
+                            () -> input.fromQuery(query ->
+                                    DeleteMessagesActivityRequest.builder()
+                                            .withSenderEmail(query.get("senderEmail"))
+                                            .withDateTimeSent(query.get("dateTimeSent"))
+                                            .build()),
+                            (request, serviceComponent) ->
+                                    serviceComponent.provideDeleteMessagesActivity().handleRequest(request)
+                    );
     }
 }

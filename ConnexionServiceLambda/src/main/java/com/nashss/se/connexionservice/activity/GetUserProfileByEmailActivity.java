@@ -1,8 +1,6 @@
 package com.nashss.se.connexionservice.activity;
 
-import com.nashss.se.connexionservice.activity.requests.GetUserProfileActivityRequest;
 import com.nashss.se.connexionservice.activity.requests.GetUserProfileByEmailActivityRequest;
-import com.nashss.se.connexionservice.activity.results.GetUserProfileActivityResult;
 import com.nashss.se.connexionservice.activity.results.GetUserProfileByEmailActivityResult;
 import com.nashss.se.connexionservice.converters.ModelConverter;
 import com.nashss.se.connexionservice.dynamodb.UserDao;
@@ -28,12 +26,10 @@ public class GetUserProfileByEmailActivity {
     }
 
     /**
-     * This method handles the incoming request by retrieving the user from the database.
+     * This method handles the incoming request by retrieving the user from the database using their email.
      * <p>
      * It then returns the user.
      * <p>
-     * If the user does not exist, this should throw a UserNotFoundException.
-     *
      * @param getUserProfileByEmailActivityRequest request object containing the user's email
      * @return getUserProfileByEmailActivityResult result object containing the API defined {@link UserModel}
      */

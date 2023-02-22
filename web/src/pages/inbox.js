@@ -53,7 +53,7 @@ export default class Inbox extends BindingClass {
     }
 
    /*
-    * Populate the inbox with message data
+    * Populate the inbox with the most recent messages with other users
     */
     async populateInbox() {
         console.log("populateInbox");
@@ -92,8 +92,6 @@ export default class Inbox extends BindingClass {
                 parentDiv.className = 'list-group-item list-group-item-action border-0';
                 parentDiv.id = 'parent-div' + i;
 
-                console.log("sentBy: ", recentMsgs[i].sentBy);
-
                 var sender = document.createElement('a');
                                 sender.className = 'list-group-item list-group-item-action border-0';
                                 sender.type = 'a';
@@ -129,12 +127,11 @@ export default class Inbox extends BindingClass {
 
                 var div3 = document.createElement('div');
                 div3.className = 'flex-grow-1 ml-3';
+                div3.id = 'other-user-email-div';
 
-                console.log('received by: ', recentMsgs[i].receivedBy);
-
-                if (recentMsgs[i].sentBy != currUser.email) {
+                if (recentMsgs[i].sentBy !== currUser.email) {
                     div3.innerText = recentMsgs[i].sentBy;
-                } else if (recentMsgs[i].receivedBy != currUser.email) {
+                } else if (recentMsgs[i].receivedBy !== currUser.email) {
                     div3.innerText = recentMsgs[i].receivedBy;
                 }
 
@@ -155,19 +152,19 @@ export default class Inbox extends BindingClass {
                     msgPreviewDiv.innerText = messageContent;
                 }
 
-                if (recentMsgs[i].sentBy != currUser.email) {
-                    const otherUserEmail = recentMsgs[i].sentBy;
-                    this.dataStore.set('otherUserEmail', otherUserEmail);
+                let otherUserEmail
+                if (recentMsgs[i].sentBy === currUser.email) {
+                    otherUserEmail = recentMsgs[i].receivedBy;
                 } else {
-                    const otherUserEmail = recentMsgs[i].sentBy;
-                    this.dataStore.set('otherUserEmail', otherUserEmail);
+                    otherUserEmail = recentMsgs[i].sentBy;
                 }
 
-                let otherUser = this.dataStore.get('otherUserEmail');
-                msgPreviewDiv.onclick = function (otherUser) {
+                console.log('otherUserEmail: ', otherUserEmail);
 
-                    location.href = '/view_message.html?otherUser=' + otherUser + '';
-                };
+                msgPreviewDiv.addEventListener('click',  async () => {
+                    var encodedUserEmail = encodeURIComponent(otherUserEmail);
+                    location.href = '/view_message.html?otherUser=' + encodedUserEmail + '';
+                });
 
                 div3.appendChild(msgPreviewDiv);
 
@@ -187,48 +184,36 @@ export default class Inbox extends BindingClass {
                 var deleteButton = document.getElementById('delete-btn');
 
                 deleteButton.addEventListener('click', async () => {
+                    console.log('inside deleteButton event listener');
 
                     for (var i = 0; i < recentMsgs.length; i++) {
                         var deleteCheckbox = document.getElementById('deleteCheckbox' + i);
 
                         if(deleteCheckbox.checked) {
-                            if (recentMsgs[i].sentBy != currUser.email) {
-                               const otherUserEmail = recentMsgs[i].sentBy;
 
-                               var dateTimeSent = recentMsgs[i].dateTimeSent
+                            if (recentMsgs[i].sentBy === currUser.email) {
+                                var msgWithUser = await this.client.getMessagesWithUser(recentMsgs[i].receivedBy);
+                                console.log("msgWithUser: " , msgWithUser);
 
-                               console.log('time sent: ', dateTimeSent);
-                               console.log('otherUserEmail: ', otherUserEmail);
+                                for (var i = 0; i < msgWithUser.length; i ++) {
+                                    console.log("dateTimeSent: ", msgWithUser[i].dateTimeSent);
+                                    console.log("sender: ", msgWithUser[i].sentBy);
+                                    await this.client.deleteMessages(msgWithUser[i].dateTimeSent, msgWithUser[i].sentBy);
+                                }
 
-                               await this.client.deleteMessages(dateTimeSent, otherUserEmail);
-                               const inbox = await this.client.getAllMessages((error) => {
-                                           errorMessageDisplay.innerText = `Error: ${error.message}`;
-                                           errorMessageDisplay.classList.remove('hidden');
-                                           });
-
-                               console.log("inbox: ", inbox);
-
-                               this.dataStore.set('inbox', inbox);
-
-                               this.populateInbox();
                             } else {
-                               const otherUserEmail = recentMsgs[i].receivedBy;
-                               const dateTimeSent = recentMsgs[i].dateTimeSent;
-                               await this.client.deleteMessages(dateTimeSent, otherUserEmail);
+                                var msgWithUser = await this.client.getMessagesWithUser(recentMsgs[i].sentBy);
+                                console.log("msgWithUser: " , msgWithUser);
 
-                               const inbox = await this.client.getAllMessages((error) => {
-                                           errorMessageDisplay.innerText = `Error: ${error.message}`;
-                                           errorMessageDisplay.classList.remove('hidden');
-                                           });
-
-                               console.log("inbox: ", inbox);
-
-                               this.dataStore.set('inbox', inbox);
-
-                               this.populateInbox();
-                            }
-                        }
+                                for (var i = 0; i < msgWithUser.length; i ++) {
+                                    console.log("dateTimeSent: ", msgWithUser[i].dateTimeSent);
+                                    console.log("sender: ", msgWithUser[i].sentBy);
+                                    await this.client.deleteMessages(msgWithUser[i].dateTimeSent, msgWithUser[i].sentBy);
+                                }
+                           }
+                       }
                     }
+                    location.reload();
                 });
            }
         }

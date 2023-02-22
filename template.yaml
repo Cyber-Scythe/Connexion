@@ -337,7 +337,7 @@ Resources:
         ConnexionService:
           Type: Api
           Properties:
-            Path: /inbox
+            Path: /index/delete
             Method: delete
 
   GetConnexionsLambda:

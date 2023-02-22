@@ -1,5 +1,9 @@
 package com.nashss.se.connexionservice.activity.requests;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
+@JsonDeserialize(builder = DeleteMessagesActivityRequest.Builder.class)
 public class GetUserProfileActivityRequest {
     private final String name;
     private final String email;
@@ -13,10 +17,16 @@ public class GetUserProfileActivityRequest {
         this.id = id;
     }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
-    public String getEmail() { return email; }
+    public String getEmail() {
+        return email;
+    }
+
     public String getId() {
+
         return id;
     }
 
@@ -31,9 +41,11 @@ public class GetUserProfileActivityRequest {
 
     //CHECKSTYLE:OFF:Builder
     public static Builder builder() {
+
         return new Builder();
     }
 
+    @JsonPOJOBuilder
     public static class Builder {
         private String name;
         private String email;
@@ -56,6 +68,7 @@ public class GetUserProfileActivityRequest {
         }
 
         public GetUserProfileActivityRequest build() {
+
             return new GetUserProfileActivityRequest(name, email, id);
         }
     }

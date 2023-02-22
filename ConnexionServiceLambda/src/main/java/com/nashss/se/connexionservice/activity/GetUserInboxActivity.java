@@ -17,7 +17,7 @@ public class GetUserInboxActivity {
     private final MessageDao messageDao;
 
     /**
-     * Instantiates a new GetConnexionsActivity object.
+     * Instantiates a new GetUserInboxActivity object.
      *
      * @param messageDao MessageDao to access the inbox table.
      */
@@ -28,12 +28,10 @@ public class GetUserInboxActivity {
     }
 
     /**
-     * This method handles the incoming request by retrieving the messages (Messages) from the database.
+     * This method handles the incoming request by retrieving the messages from the database.
      * <p>
-     * It then returns the list of messages (Message).
+     * It then returns the list of most recent messages for each conversation.
      * <p>
-     * If the message does not exist, this should throw a MessageNotFound.
-     *
      * @return GetUserInboxActivityResult result object
      */
     public GetUserInboxActivityResult handleRequest(final GetUserInboxActivityRequest getUserInboxActivityRequest) {
@@ -45,14 +43,14 @@ public class GetUserInboxActivity {
         List<Message> mostRecent = new ArrayList<>();
 
 
-        for (int i = 0; i < messages.size(); i++) {
-            if (messages.get(i).getSentBy().equals(getUserInboxActivityRequest.getCurrUserEmail())) {
-                if (!conversationUsers.contains(messages.get(i).getReceivedBy())) {
-                    conversationUsers.add(messages.get(i).getReceivedBy());
+        for (Message message : messages) {
+            if (message.getSentBy().equals(getUserInboxActivityRequest.getCurrUserEmail())) {
+                if (!conversationUsers.contains(message.getReceivedBy())) {
+                    conversationUsers.add(message.getReceivedBy());
                 }
-            } else if (messages.get(i).getReceivedBy().equals(getUserInboxActivityRequest.getCurrUserEmail())) {
-                if (!conversationUsers.contains(messages.get(i).getSentBy())) {
-                    conversationUsers.add(messages.get(i).getSentBy());
+            } else if (message.getReceivedBy().equals(getUserInboxActivityRequest.getCurrUserEmail())) {
+                if (!conversationUsers.contains(message.getSentBy())) {
+                    conversationUsers.add(message.getSentBy());
                 }
             }
         }

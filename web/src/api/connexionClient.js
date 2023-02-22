@@ -10,7 +10,7 @@ import Authenticator from "./authenticator";
  * which we could avoid using inheritance or Mixins.
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#Mix-ins
  * https://javascript.info/mixins
-  */
+ */
 export default class ConnexionClient extends BindingClass {
 
     constructor(props = {}) {
@@ -21,12 +21,15 @@ export default class ConnexionClient extends BindingClass {
                                'login',
                                'logout',
                                'getProfile',
+                               'getProfileByEmail',
+                               'getConnexions',
+                               'getConnexionProfile',
                                'updateUserProfile',
                                'getHobbiesList',
                                'getAllMessages',
                                'getMessagesWithUser',
-                               'sendNewMessage'
-                               ,'deleteMessages'];
+                               'sendNewMessage',
+                               'deleteMessages'];
 
         this.bindClassMethods(methodsToBind, this);
 
@@ -38,20 +41,20 @@ export default class ConnexionClient extends BindingClass {
         this.clientLoaded();
     }
 
-    /**
-     * Run any functions that are supposed to be called once the client has loaded successfully.
-     */
+   /**
+    * Run any functions that are supposed to be called once the client has loaded successfully.
+    */
     clientLoaded() {
         if (this.props.hasOwnProperty("onReady")) {
             this.props.onReady(this);
         }
     }
 
-    /**
-     * Get the identity of the current user
-     * @param errorCallback (Optional) A function to execute if the call fails.
-     * @returns The user information for the current user.
-     */
+   /**
+    * Get the identity of the current user
+    * @param errorCallback (Optional) A function to execute if the call fails.
+    * @returns The user information for the current user.
+    */
     async getIdentity(errorCallback) {
         try {
             const isLoggedIn = await this.authenticator.isUserLoggedIn();
@@ -84,12 +87,12 @@ export default class ConnexionClient extends BindingClass {
     }
 
 
-    /**
-     * Gets the user for the given ID.
-     * @param id Unique identifier for a user
-     * @param errorCallback (Optional) A function to execute if the call fails.
-     * @returns The user's metadata.
-     */
+   /**
+    * Gets the user for the given ID.
+    * @param id Unique identifier for a user
+    * @param errorCallback (Optional) A function to execute if the call fails.
+    * @returns The user's metadata.
+    */
     async getProfile(errorCallback) {
      try {
           const token = await this.getTokenOrThrow("Only authenticated users can view profiles");
@@ -106,12 +109,12 @@ export default class ConnexionClient extends BindingClass {
     }
 
 
-/**
-     * Gets the user for the given email.
-     * @param userEmail email associated with user
-     * @param errorCallback (Optional) A function to execute if the call fails.
-     * @returns The user's metadata.
-     */
+   /**
+    * Gets the user for the given email.
+    * @param userEmail email associated with user
+    * @param errorCallback (Optional) A function to execute if the call fails.
+    * @returns The user's metadata.
+    */
     async getProfileByEmail(userEmail, errorCallback) {
      try {
           const token = await this.getTokenOrThrow("Only authenticated users can view profiles");
@@ -127,12 +130,12 @@ export default class ConnexionClient extends BindingClass {
        }
     }
 
-    /**
-     * Gets the user for the given ID.
-     * @param id Unique identifier for a user
-     * @param errorCallback (Optional) A function to execute if the call fails.
-     * @returns The user's metadata.
-     */
+   /**
+    * Gets the user for the given ID.
+    * @param id Unique identifier for a user
+    * @param errorCallback (Optional) A function to execute if the call fails.
+    * @returns The user's metadata.
+    */
     async getConnexionProfile(userId, errorCallback) {
      try {
           const token = await this.getTokenOrThrow("Only authenticated users can view profiles");
@@ -149,11 +152,11 @@ export default class ConnexionClient extends BindingClass {
     }
 
 
-    /**
-     * Get the hobbies from DB.
-     * @param errorCallback (Optional) A function to execute if the call fails.
-     * @returns The list of hobbies.
-     */
+   /**
+    * Get the user's hobbies from DB.
+    * @param errorCallback (Optional) A function to execute if the call fails.
+    * @returns The list of hobbies.
+    */
     async getHobbiesList(errorCallback) {
        try {
            const token = await this.getTokenOrThrow("Only authenticated users can retrieve hobbies from db.");
@@ -168,11 +171,12 @@ export default class ConnexionClient extends BindingClass {
                }
     }
 
-    /**
-     * Get connexions for the current user.
-     * @param errorCallback (Optional) A function to execute if the call fails.
-     * @returns List of connexions for the user.
-     */
+   /**
+    * Get connexions for the current user.
+    * @param personalityType The personality type of the current user
+    * @param errorCallback (Optional) A function to execute if the call fails.
+    * @returns List of connexions for the user.
+    */
     async getConnexions(personalityType, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can view connexions.");
@@ -187,16 +191,18 @@ export default class ConnexionClient extends BindingClass {
         }
     }
 
-    /**
-     * Update the user's profile.
-     * @param name The name of the user to add to profile.
-     * @param city The city that the user lives in.
-     * @param state The state that the user lives in.
-     * @param personalityType the personalityType of the user
-     * @hobbies list of the user's hobbies
-     * @connexions list of the user's connexions
-     * @returns The list of songs on a playlist.
-     */
+   /**
+    * Update the user's profile.
+    * @param name The name of the user to add to profile.
+    * @param age The age of the current user.
+    * @param city The city that the user lives in.
+    * @param state The state that the user lives in.
+    * @param personalityType the personalityType of the user
+    * @hobbies list of the user's hobbies
+    * @connexions list of the user's connexions
+    * @param errorCallback (Optional) A function to execute if the call fails.
+    * @returns The updated user profile.
+    */
     async updateUserProfile(name, age, city, state, personalityType, hobbies, connexions, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can edit their profile.");
@@ -220,14 +226,16 @@ export default class ConnexionClient extends BindingClass {
     }
 
     /**
-     * Add a song to a playlist.
-     * @param messageId The id of the message to send.
-     * @param recipientEmail The email of the message recipient.
+     * Send a new message to a user.
+     * @param recipientEmail The email of the receiving user.
+     * @param messageContent The content of the message being sent.
      * @param dateTimeSent The date and time the message was sent.
      * @param messageContent The content of the message.
      * @param readStatus The status of the message
+     * @param errorCallback (Optional) A function to execute if the call fails.
      */
      async sendNewMessage(recipientEmail, messageContent, readStatus, errorCallback) {
+
          try {
             const token = await this.getTokenOrThrow("Only authenticated users can send messages.");
             const response = await this.axiosClient.post(`/inbox`, {
@@ -251,6 +259,7 @@ export default class ConnexionClient extends BindingClass {
 
     /**
      * Get all messages with current user from inbox
+     * @param errorCallback (Optional) A function to execute if the call fails.
      * @returns The list of most recent messages from each user.
      */
      async getAllMessages(errorCallback) {
@@ -269,7 +278,9 @@ export default class ConnexionClient extends BindingClass {
 
 
     /**
-     * Get all messages with specified user from inbox.
+     * Get all messages with a specified user from inbox.
+     * @param otherUserEmail The email of the other user.
+     * @param errorCallback (Optional) A function to execute if the call fails.
      * @returns The list of messages with specified user.
      */
      async getMessagesWithUser(otherUserEmail, errorCallback) {
@@ -286,32 +297,33 @@ export default class ConnexionClient extends BindingClass {
              }
      }
 
-    /**
-     * Delete messages from DB.
-     * @param errorCallback (Optional) A function to execute if the call fails.
-     */
-    async deleteMessages(dateTimeSent, otherUserEmail, errorCallback) {
+   /**
+    * Delete messages from DB.
+    * @param dateTimeSent The date and time a message was sent.
+    * @param senderEmail The email of the sender.
+    * @param errorCallback (Optional) A function to execute if the call fails.
+    */
+    async deleteMessages(dateTimeSent, senderEmail, errorCallback) {
+       senderEmail = encodeURIComponent(senderEmail);
        try {
-           const token = await this.getTokenOrThrow("Only authenticated users can retrieve hobbies from db.");
-           const response = await this.axiosClient.delete(`/inbox`, {
-                        dateTimeSent: dateTimeSent;
-                        recipientEmail: recipientEmail;
-                    },{
+           const token = await this.getTokenOrThrow("Only authenticated users can delete messages.");
+           const response = await this.axiosClient.delete(`/index/delete?dateTimeSent=${dateTimeSent}&senderEmail=${senderEmail}`,
+            {
                        headers: {
                            Authorization: `Bearer ${token}`
                        }
                    });
-                   return response.data.deleted;
+                   return response.data.message;
                } catch (error) {
                    this.handleError(error, errorCallback)
                }
     }
 
-    /**
-     * Helper method to log the error and run any error functions.
-     * @param error The error received from the server.
-     * @param errorCallback (Optional) A function to execute if the call fails.
-     */
+   /**
+    * Helper method to log the error and run any error functions.
+    * @param error The error received from the server.
+    * @param errorCallback (Optional) A function to execute if the call fails.
+    */
     handleError(error, errorCallback) {
         console.error(error);
 

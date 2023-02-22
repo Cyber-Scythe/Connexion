@@ -1,9 +1,6 @@
 package com.nashss.se.connexionservice.dynamodb.models;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
-import com.nashss.se.connexionservice.converters.StringConverter;
-import org.apache.commons.lang3.SerializationUtils;
-import org.apache.logging.log4j.core.config.plugins.convert.TypeConverters;
 
 import java.io.Serializable;
 import java.util.*;

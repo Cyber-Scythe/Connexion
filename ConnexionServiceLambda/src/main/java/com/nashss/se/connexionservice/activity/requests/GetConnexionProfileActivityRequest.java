@@ -1,5 +1,9 @@
 package com.nashss.se.connexionservice.activity.requests;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
+@JsonDeserialize(builder = GetConnexionProfileActivityRequest.Builder.class)
 public class GetConnexionProfileActivityRequest {
     private final String id;
 
@@ -22,6 +26,7 @@ public class GetConnexionProfileActivityRequest {
     //CHECKSTYLE:OFF:Builder
     public static Builder builder() { return new Builder(); }
 
+    @JsonPOJOBuilder
     public static class Builder {
         private String id;
 

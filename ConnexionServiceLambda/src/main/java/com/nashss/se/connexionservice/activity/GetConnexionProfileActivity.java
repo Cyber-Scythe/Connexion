@@ -35,8 +35,6 @@ public class GetConnexionProfileActivity {
      * <p>
      * It then returns the compatible user.
      * <p>
-     * If the user does not exist, this should throw a UserNotFound.
-     *
      * @return GetConnexionsActivityResult result object
      */
     public GetConnexionProfileActivityResult handleRequest(final GetConnexionProfileActivityRequest getConnexionProfileActivityRequest) {

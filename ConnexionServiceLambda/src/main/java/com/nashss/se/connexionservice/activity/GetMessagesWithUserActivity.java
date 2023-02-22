@@ -9,7 +9,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
-import java.time.LocalDateTime;
 import java.util.*;
 
 public class GetMessagesWithUserActivity {
@@ -17,7 +16,7 @@ public class GetMessagesWithUserActivity {
     private final MessageDao messageDao;
 
     /**
-     * Instantiates a new GetConnexionsActivity object.
+     * Instantiates a new GetMessagesWithUserActivity object.
      *
      * @param messageDao MessageDao to access the inbox table.
      */
@@ -27,12 +26,10 @@ public class GetMessagesWithUserActivity {
     }
 
     /**
-     * This method handles the incoming request by retrieving the messages (Messages) from the database.
+     * This method handles the incoming request by retrieving the messages between two users from the database.
      * <p>
      * It then returns the list of messages (Message).
      * <p>
-     * If the message does not exist, this should throw a MessageNotFound.
-     *
      * @return GetMessagesFromUserActivityResult result object
      */
     public GetMessagesWithUserActivityResult handleRequest(final GetMessagesWithUserActivityRequest

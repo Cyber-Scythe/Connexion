@@ -1,16 +1,17 @@
 package com.nashss.se.connexionservice.activity.results;
 
 import com.nashss.se.connexionservice.models.MessageModel;
-import com.nashss.se.connexionservice.models.UserModel;
 
 public class SendNewMessageActivityResult {
     private final MessageModel message;
 
     public SendNewMessageActivityResult(MessageModel message) {
+
         this.message = message;
     }
 
     public MessageModel getMessage() {
+
         return message;
     }
 
@@ -22,7 +23,8 @@ public class SendNewMessageActivityResult {
     }
 
     //CHECKSTYLE:OFF:Builder
-    public static Builder builder() { return new Builder(); }
+    public static Builder builder() {
+        return new Builder(); }
 
     public static class Builder {
         private MessageModel message;
@@ -33,6 +35,7 @@ public class SendNewMessageActivityResult {
         }
 
         public SendNewMessageActivityResult build() {
+
             return new SendNewMessageActivityResult(message);
         }
     }

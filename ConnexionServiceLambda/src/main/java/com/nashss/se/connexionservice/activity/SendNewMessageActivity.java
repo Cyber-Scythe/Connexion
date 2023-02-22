@@ -30,7 +30,7 @@ public class SendNewMessageActivity {
     }
 
     /**
-     * This method handles the incoming request by saving the new message to the inbox table
+     * This method handles the incoming request by saving the new message to the database
      * <p>
      * It then returns the message that was sent.
      * <p>

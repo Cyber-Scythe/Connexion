@@ -1,15 +1,16 @@
 package com.nashss.se.connexionservice.activity.results;
 
 import com.nashss.se.connexionservice.models.MessageModel;
-import com.nashss.se.connexionservice.models.UserModel;
 
 public class DeleteMessagesActivityResult {
     private final MessageModel message;
     private DeleteMessagesActivityResult(MessageModel message) {
+
         this.message = message;
     }
 
     public MessageModel getMessage() {
+
         return message;
     }
 
@@ -22,6 +23,7 @@ public class DeleteMessagesActivityResult {
 
     //CHECKSTYLE:OFF:Builder
     public static Builder builder() {
+
         return new Builder();
     }
 
@@ -33,6 +35,7 @@ public class DeleteMessagesActivityResult {
             return this;
         }
         public DeleteMessagesActivityResult build() {
+
             return new DeleteMessagesActivityResult(message);
         }
     }

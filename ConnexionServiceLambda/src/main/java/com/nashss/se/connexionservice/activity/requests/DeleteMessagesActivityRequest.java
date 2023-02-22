@@ -3,20 +3,16 @@ package com.nashss.se.connexionservice.activity.requests;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
-import java.util.List;
-
 @JsonDeserialize(builder = DeleteMessagesActivityRequest.Builder.class)
 public class DeleteMessagesActivityRequest {
 
     private final String senderEmail;
-    private final String recipientEmail;
     private final String dateTimeSent;
 
 
-    private DeleteMessagesActivityRequest(String senderEmail, String recipientEmail, String dateTimeSent) {
+    private DeleteMessagesActivityRequest(String senderEmail, String dateTimeSent) {
 
         this.senderEmail = senderEmail;
-        this.recipientEmail = recipientEmail;
         this.dateTimeSent = dateTimeSent;
     }
 
@@ -24,14 +20,12 @@ public class DeleteMessagesActivityRequest {
         return senderEmail;
     }
 
-    public String getRecipientEmail() { return recipientEmail; }
     public String getDateTimeSent() { return dateTimeSent; }
 
     @Override
     public String toString() {
         return "DeleteMessagesActivityRequest{ " +
                 "senderEmail='" + senderEmail + '\'' +
-                ", recipientEmail='" + recipientEmail + '\'' +
                 ", dateTimeSent='" + dateTimeSent + '\'' +
                 '}';
     }
@@ -44,7 +38,6 @@ public class DeleteMessagesActivityRequest {
     @JsonPOJOBuilder
     public static class Builder {
         private String senderEmail;
-        private String recipientEmail;
         private String dateTimeSent;
 
         public Builder withSenderEmail(String senderEmail) {
@@ -52,10 +45,6 @@ public class DeleteMessagesActivityRequest {
             return this;
         }
 
-        public Builder withRecipientEmail(String recipientEmail) {
-            this.recipientEmail = recipientEmail;
-            return this;
-        }
 
         public Builder withDateTimeSent(String dateTimeSent) {
             this.dateTimeSent = dateTimeSent;
@@ -63,7 +52,7 @@ public class DeleteMessagesActivityRequest {
         }
 
         public DeleteMessagesActivityRequest build() {
-            return new DeleteMessagesActivityRequest(senderEmail, recipientEmail, dateTimeSent);
+            return new DeleteMessagesActivityRequest(senderEmail, dateTimeSent);
         }
     }
 }

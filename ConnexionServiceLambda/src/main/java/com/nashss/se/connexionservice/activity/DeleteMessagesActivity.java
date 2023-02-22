@@ -2,6 +2,7 @@ package com.nashss.se.connexionservice.activity;
 
 import com.nashss.se.connexionservice.activity.requests.DeleteMessagesActivityRequest;
 import com.nashss.se.connexionservice.activity.results.DeleteMessagesActivityResult;
+import com.nashss.se.connexionservice.converters.ModelConverter;
 import com.nashss.se.connexionservice.dynamodb.MessageDao;
 import com.nashss.se.connexionservice.dynamodb.models.Message;
 import com.nashss.se.connexionservice.models.MessageModel;
@@ -11,19 +12,18 @@ import org.apache.logging.log4j.Logger;
 import javax.inject.Inject;
 
 /**
- * Implementation of the DeleteMessagesActivity for the Connexion's CreatePlaylist API.
+ * Implementation of the DeleteMessagesActivity for the Connexion's DeleteMessages API.
  * <p>
- * This API checks the database to see if the user already exists. If they do not then
- * the API to create a new user is triggered.class
+ * This API deletes the specified message from the database
  */
 public class DeleteMessagesActivity {
     private final Logger log = LogManager.getLogger();
     private final MessageDao messageDao;
 
     /**
-     * Instantiates a new CreateUserActivity object.
+     * Instantiates a new DeleteMessagesActivity object.
      *
-     * @param messageDao UserDao to access the users table.
+     * @param messageDao MessageDao to access the inbox table.
      */
     @Inject
     public DeleteMessagesActivity(MessageDao messageDao) {
@@ -31,16 +31,13 @@ public class DeleteMessagesActivity {
     }
 
     /**
-     * This method handles the incoming request by persisting a new user
-     * with the provided user's name, email, city, state, personalityType, and hobbies from the request.
+     * This method handles the incoming request by finding the message in the inbox table
+     * with the provided sender email and date and time from the request
      * <p>
-     * It then returns the newly created user.
+     * It then returns the deleted message
      * <p>
-     * If the provided name, email, city, state, personalityType, or hobbies has invalid characters, throws an
-     * InvalidAttributeValueException
-     *
-     * @param deleteMessagesActivityRequest request object containing the user's name, email, city, state, personality type,
-     *                                  and hobbies associated with it
+     * @param deleteMessagesActivityRequest request object containing the sender's email and the date
+     *                                      and time the message was sent
      * @return DeleteMessagesActivityResult result object containing the API defined {@link MessageModel}
      */
     public DeleteMessagesActivityResult handleRequest(final DeleteMessagesActivityRequest deleteMessagesActivityRequest) {
@@ -49,12 +46,13 @@ public class DeleteMessagesActivity {
 
         Message deleteMessage = new Message();
         deleteMessage.setSentBy(deleteMessagesActivityRequest.getSenderEmail());
-        deleteMessage.setReceivedBy(deleteMessagesActivityRequest.getRecipientEmail());
         deleteMessage.setDateTimeSent(deleteMessagesActivityRequest.getDateTimeSent());
 
         messageDao.deleteMessages(deleteMessage);
+        MessageModel deleteMsgModel = new ModelConverter().toMessageModel(deleteMessage);
 
         return DeleteMessagesActivityResult.builder()
+                .withMessage(deleteMsgModel)
                 .build();
     }
 }

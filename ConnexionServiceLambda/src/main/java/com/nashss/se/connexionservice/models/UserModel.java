@@ -1,6 +1,5 @@
 package com.nashss.se.connexionservice.models;
 
-import com.nashss.se.connexionservice.dynamodb.models.User;
 
 import java.util.List;
 import java.util.Objects;

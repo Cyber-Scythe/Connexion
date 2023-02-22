@@ -1,7 +1,6 @@
 package com.nashss.se.connexionservice.activity;
 
 import com.nashss.se.connexionservice.activity.requests.GetHobbiesFromDbActivityRequest;
-import com.nashss.se.connexionservice.activity.requests.GetUserProfileActivityRequest;
 import com.nashss.se.connexionservice.activity.results.GetHobbiesFromDbActivityResult;
 import com.nashss.se.connexionservice.dynamodb.HobbyDao;
 import com.nashss.se.connexionservice.dynamodb.models.Hobby;
@@ -13,9 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Implementation of the GetPlaylistActivity for the MusicPlaylistService's GetPlaylist API.
+ * Implementation of the GetHobbiesFromDbActivity for Connexion's GetHobbiesFromDb API.
  *
- * This API allows the customer to get one of their saved playlists.
+ * This API gets a list of the user's hobbies from the database.
  */
 public class GetHobbiesFromDbActivity {
     private final Logger log = LogManager.getLogger();
@@ -36,8 +35,6 @@ public class GetHobbiesFromDbActivity {
      * <p>
      * It then returns the list of hobbies.
      * <p>
-     * If the hobby does not exist, this should throw a HobbyNotFoundException.
-     *
      * @return GetHobbiesFromDbActivityResult result object
      */
     public GetHobbiesFromDbActivityResult handleRequest(final GetHobbiesFromDbActivityRequest getHobbiesFromDbActivityRequest) {

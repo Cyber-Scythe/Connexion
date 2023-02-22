@@ -1,5 +1,9 @@
 package com.nashss.se.connexionservice.activity.requests;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
+@JsonDeserialize(builder = GetMessagesWithUserActivityRequest.Builder.class)
 public class GetMessagesWithUserActivityRequest {
     private final String userId;
     private final String currUserEmail;
@@ -26,6 +30,7 @@ public class GetMessagesWithUserActivityRequest {
 
     public static Builder builder() { return new Builder(); }
 
+    @JsonPOJOBuilder
     public static class Builder {
         private String userId;
         private String currUserEmail;

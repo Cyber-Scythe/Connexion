@@ -24,10 +24,7 @@ class ViewMessage extends BindingClass {
     async clientLoaded() {
         console.log("inside clientLoaded()");
 
-        var currUser = await this.client.getProfile((error) => {
-            //errorMessageDisplay.innerText = `Error: ${error.message}`;
-            //errorMessageDisplay.classList.remove('hidden');
-        });
+        var currUser = await this.client.getProfile();
 
         console.log('currUser: ', currUser);
         this.dataStore.set('currUser', currUser);
@@ -44,16 +41,17 @@ class ViewMessage extends BindingClass {
 
     }
 
+   /*
+    * Get all of the messages between two users
+    */
     async getMessageData() {
+
         const urlParams = new URLSearchParams(window.location.search);
         const otherUserFromURL = urlParams.get('otherUser');
         console.log("otherUserEmail: " + otherUserFromURL);
         this.dataStore.set('otherUserFromURL', otherUserFromURL);
 
-        const msgWithUser = await this.client.getMessagesWithUser(otherUserFromURL, (error) => {
-                    //errorMessageDisplay.innerText = `Error: ${error.message}`;
-                    //errorMessageDisplay.classList.remove('hidden');
-        });
+        const msgWithUser = await this.client.getMessagesWithUser(otherUserFromURL);
 
         this.dataStore.set('msgWithUser', msgWithUser);
         console.log("messages with user: ", msgWithUser);
@@ -76,6 +74,7 @@ class ViewMessage extends BindingClass {
             var chatMessages = document.getElementById('chat-messages');
 
             var currUser = this.dataStore.get('currUser');
+
 
             for (var i = 0; i < msgWithUser.length; i++) {
                 console.log('sentBy: ', msgWithUser[i].sentBy);
@@ -109,7 +108,12 @@ class ViewMessage extends BindingClass {
 
                     dateTimeDiv.innerHTML = msgWithUser[i].dateTimeSent;
 
+                    var userEmailDiv = document.createElement('div');
+                    userEmailDiv.id = 'user-email';
+                    userEmailDiv.innerHTML = msgWithUser[i].sentBy
+
                     div2.appendChild(profilePic);
+                    div2.appendChild(userEmailDiv);
                     div2.appendChild(dateTimeDiv);
 
                     var contentDiv3 = document.createElement('div');
@@ -155,7 +159,13 @@ class ViewMessage extends BindingClass {
 
                     dateTimeDiv.innerHTML = msgWithUser[i].dateTimeSent;
 
+                    var userEmailDiv = document.createElement('div');
+                    userEmailDiv.id = 'user-email';
+                    userEmailDiv.innerHTML = msgWithUser[i].sentBy
+
+
                     div2.appendChild(profilePic);
+                    div2.appendChild(userEmailDiv);
                     div2.appendChild(dateTimeDiv);
 
                     var contentDiv3 = document.createElement('div');
@@ -174,19 +184,16 @@ class ViewMessage extends BindingClass {
 
             var messageBtn = document.getElementById('send-msg-btn');
 
-            var recipientEmail = this.dataStore.get('otherUserFromURL');
-            var messageContent = document.getElementById('message-content').innerText;
-            var readStatus = false;
-
             messageBtn.addEventListener('click', async () => {
+                var recipientEmail = this.dataStore.get('otherUserFromURL');
+                var messageContent = document.getElementById('message-content').value;
+                var readStatus = false;
 
-                await this.client.sendNewMessage(recipientEmail,
-                                                     messageContent,
-                                                     readStatus,
-                                                     (error) => {
-                          //errorMessageDisplay.innerText = `Error: ${error.message}`;
-                          //errorMessageDisplay.classList.remove('hidden');
-                });
+                console.log('recipient email: ', recipientEmail)
+                console.log("messageContent: ", messageContent);
+
+                await this.client.sendNewMessage(recipientEmail, messageContent, readStatus);
+                location.reload();
             });
         }
 }
