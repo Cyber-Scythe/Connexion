@@ -24,9 +24,16 @@ class ViewProfile extends BindingClass {
     async clientLoaded() {
         console.log("Inside clientLoaded");
 
-        const user = await this.client.getProfile((error) => {
-            console.log(`Error: ${error.message}`);
-        });
+        const urlParams = new URLSearchParams(window.location.search);
+        const userFromURL = urlParams.get('user');
+        console.log("otherUser: " + userFromURL);
+
+        let user;
+        if (userFromURL !== null) {
+            user = await this.client.getConnexionProfile(userFromURL);
+        } else {
+            user = await this.client.getProfile();
+        }
 
         this.dataStore.set('user', user);
         this.addProfileInfoToPage();

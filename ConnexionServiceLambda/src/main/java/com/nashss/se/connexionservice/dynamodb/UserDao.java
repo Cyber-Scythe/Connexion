@@ -70,26 +70,6 @@ public class UserDao {
 
 
     /**
-     * Returns the user corresponding to the email
-     * @param userEmail The user's email
-     * @return the stored user
-     */
-    public User getUserByEmail(String userEmail) {
-        Map<String, AttributeValue> valueMap = new HashMap<>();
-        valueMap.put(":email", new AttributeValue().withS(userEmail));
-
-        DynamoDBQueryExpression<User> queryExpression = new DynamoDBQueryExpression<User>()
-                .withIndexName("UserEmailIndex")
-                .withConsistentRead(false)
-                .withKeyConditionExpression("email = :email")
-                .withExpressionAttributeValues(valueMap);
-
-        PaginatedQueryList<User> userList = dynamoDbMapper.query(User.class, queryExpression);
-        return userList.get(0);
-    }
-
-
-    /**
      * Saves (creates or updates) the given user.
      *
      * @param user The user to save
@@ -106,23 +86,25 @@ public class UserDao {
      */
      public List<String> getAllConnexions(User currUser) {
          DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
-
          PaginatedScanList<User> scanResult = dynamoDbMapper.scan(User.class, scanExpression);
 
-//         for (User user : scanResult) {
-//             if(!user.equals(currUser)) {
-//                 connexionMap = connexionsSort(currUser.getHobbies(), scanResult);
-//             }
-//         }
          System.out.println("scanResult: " + scanResult);
 
-         Map<Integer, String> sortedMap = connexionsSort(currUser.getHobbies(), scanResult);
-         Map<Integer, String> connexionMap = new HashMap<>(sortedMap);
+         if (!currUser.getHobbies().isEmpty()) {
+             Map<String, Integer> sortedMap = connexionsSort(currUser.getHobbies(), scanResult);
+             Map<String, Integer> connexionMap = new HashMap<>(sortedMap);
 
-        List<String> sortedConnexions = copyToList(connexionMap.values());
+             List<String> sortedConnexions = copyToList(connexionMap.keySet());
 
-         sortedConnexions.remove(currUser.getId());
-         return sortedConnexions;
+             sortedConnexions.remove(currUser.getId());
+             return sortedConnexions;
+         } else {
+             List<String> connexionIds = new ArrayList<>();
+             for (int i = 0; i < scanResult.size(); i++) {
+                 connexionIds.add(scanResult.get(i).getId());
+             }
+             return connexionIds;
+         }
      }
 
 
@@ -133,14 +115,13 @@ public class UserDao {
      */
     public List<String> getConnexions(String currUserId, List<String> personalityTypes) {
         Map<String, AttributeValue> valueMap = new HashMap<>();
-        Map<Integer, String> connexionMap = new HashMap<>();
+        Map<String, Integer> connexionMap = new HashMap<>();
 
         User currUser = getUser(currUserId);
 
 
         if (personalityTypes.isEmpty()) {
-
-             getAllConnexions(currUser);
+             return getAllConnexions(currUser);
         }
 
         for (int i = 0; i < personalityTypes.size(); i++) {
@@ -154,13 +135,21 @@ public class UserDao {
                 .withExpressionAttributeValues(valueMap);
         PaginatedScanList<User> connexionsList = dynamoDbMapper.scan(User.class, scanExpression);
 
+        if (currUser.getHobbies() != null && !currUser.getHobbies().isEmpty()) {
+            connexionMap = connexionsSort(currUser.getHobbies(), connexionsList);
 
-        connexionMap = connexionsSort(currUser.getHobbies(), connexionsList);
+            List<String> sortedConnexions = copyToList(connexionMap.keySet());
+            Collections.reverse(sortedConnexions);
 
-        List<String> sortedConnexions = copyToList(connexionMap.values());
-        Collections.reverse(sortedConnexions);
+            return sortedConnexions;
+        } else {
+            List<String> connexionIds = new ArrayList<>();
+            for (User user : connexionsList) {
+                connexionIds.add(user.getId());
+            }
 
-        return sortedConnexions;
+            return connexionIds;
+        }
     }
 
 
@@ -214,20 +203,24 @@ public class UserDao {
      * Perform a sort on the list of connexions by their common hobbies
      * @return a Map of compatible users in order from most compatible to least
      */
-    public Map<Integer, String> connexionsSort(List<String> currUserHobbies, List<User> connexion) {
-        Map<Integer, String> connexionTreeMap = new TreeMap<>();
+    public Map<String, Integer> connexionsSort(List<String> currUserHobbies, List<User> connexion) {
+        Map<String, Integer> connexionTreeMap = new TreeMap<>();
 
-        for (User user : connexion) {
-            if (currUserHobbies != null && user != null) {
-                int count = 0;
-                List<String> connexionHobbies = user.getHobbies();
+        if (!currUserHobbies.isEmpty()) {
+            for (User user : connexion) {
+                if(user.getHobbies() != null) {
+                    int count = 0;
+                    List<String> connexionHobbies = user.getHobbies();
 
-                for (String userHobby : currUserHobbies) {
-                    if (connexionHobbies.contains(userHobby)) {
-                        count++;
+                    for (String userHobby : currUserHobbies) {
+                        if (connexionHobbies.contains(userHobby)) {
+                            count++;
+                        }
                     }
+                    connexionTreeMap.put(user.getId(), count);
+                } else {
+                    connexionTreeMap.put(user.getId(), 0);
                 }
-                connexionTreeMap.put(count, user.getId());
             }
         }
         return connexionTreeMap;

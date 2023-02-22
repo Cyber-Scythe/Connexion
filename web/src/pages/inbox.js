@@ -64,20 +64,20 @@ export default class Inbox extends BindingClass {
         console.log("currUser: ", currUser);
         console.log("Recent Messages: ", recentMsgs);
 
-        var colDiv = document.getElementById('col-div');
+        let colDiv = document.getElementById('col-div');
         colDiv.className = 'col-12 col-lg-5 col-xl-3 border-right';
 
         if (recentMsgs.length == 0) {
-            var emptyInboxDiv = document.createElement('div');
+            let emptyInboxDiv = document.createElement('div');
             emptyInboxDiv.className = 'empty-inbox-card';
             emptyInboxDiv.id = 'empty-inbox-card'
 
-            var emptyInboxContent = document.createElement('div');
+            let emptyInboxContent = document.createElement('div');
             emptyInboxContent.className = 'empty-inbox-card__content';
 
             emptyInboxDiv.appendChild(emptyInboxContent);
 
-            var textDiv = document.createElement('div');
+            let textDiv = document.createElement('div');
             textDiv.className = 'row justify-content-center';
             textDiv.innerText = 'Inbox is empty';
 
@@ -87,12 +87,12 @@ export default class Inbox extends BindingClass {
 
         } else {
 
-           for (var i = 0; i < recentMsgs.length; i++) {
-                var parentDiv = document.createElement('div');
+           for (let i = 0; i < recentMsgs.length; i++) {
+                let parentDiv = document.createElement('div');
                 parentDiv.className = 'list-group-item list-group-item-action border-0';
                 parentDiv.id = 'parent-div' + i;
 
-                var sender = document.createElement('a');
+                let sender = document.createElement('a');
                                 sender.className = 'list-group-item list-group-item-action border-0';
                                 sender.type = 'a';
                                 sender.id = 'sender' + i;
@@ -100,13 +100,13 @@ export default class Inbox extends BindingClass {
                                 sender.innerText = recentMsgs[i].sentBy;
 
 
-                var div1 = document.createElement('div');
+                let div1 = document.createElement('div');
                 div1.type = 'div';
                 div1.className = 'badge bg-success float-right';
                 div1.id = 'new-msg' + i;
 
 
-                var div2 = document.createElement('div');
+                let div2 = document.createElement('div');
                 div2.className = 'd-flex align-items-start';
                 div2.type = 'div';
                 div2.id = 'item-start-div';
@@ -114,7 +114,7 @@ export default class Inbox extends BindingClass {
                 parentDiv.appendChild(div1);
                 parentDiv.appendChild(div2);
 
-                var senderPic = document.createElement('img');
+                let senderPic = document.createElement('img');
                 senderPic.className = 'rounded-circle mr-1';
                 senderPic.id = 'sender-pic' + i;
                 senderPic.name = 'sender-pic'
@@ -125,7 +125,7 @@ export default class Inbox extends BindingClass {
 
                 div2.appendChild(senderPic);
 
-                var div3 = document.createElement('div');
+                let div3 = document.createElement('div');
                 div3.className = 'flex-grow-1 ml-3';
                 div3.id = 'other-user-email-div';
 
@@ -137,11 +137,11 @@ export default class Inbox extends BindingClass {
 
                 div2.appendChild(div3)
 
-                var msgPreviewDiv = document.createElement('div');
+                let msgPreviewDiv = document.createElement('div');
                 msgPreviewDiv.className = 'small';
                 msgPreviewDiv.id = 'msg-preview' + i;
 
-                var messageContent = recentMsgs[i].messageContent;
+                let messageContent = recentMsgs[i].messageContent;
                 let previewLength = 0;
 
                 if (messageContent.length >= 2) {
@@ -162,16 +162,16 @@ export default class Inbox extends BindingClass {
                 console.log('otherUserEmail: ', otherUserEmail);
 
                 msgPreviewDiv.addEventListener('click',  async () => {
-                    var encodedUserEmail = encodeURIComponent(otherUserEmail);
+                    let encodedUserEmail = encodeURIComponent(otherUserEmail);
                     location.href = '/view_message.html?otherUser=' + encodedUserEmail + '';
                 });
 
                 div3.appendChild(msgPreviewDiv);
 
-                var br = document.createElement('br');
+                let br = document.createElement('br');
                 sender.appendChild(br);
 
-                var deleteCheckbox = document.createElement('input');
+                let deleteCheckbox = document.createElement('input');
                                 deleteCheckbox.className = 'container';
                                 deleteCheckbox.type = 'checkbox';
                                 deleteCheckbox.id = 'deleteCheckbox' + i;
@@ -181,31 +181,31 @@ export default class Inbox extends BindingClass {
                 parentDiv.appendChild(deleteCheckbox);
                 colDiv.appendChild(parentDiv);
 
-                var deleteButton = document.getElementById('delete-btn');
+                let deleteButton = document.getElementById('delete-btn');
 
                 deleteButton.addEventListener('click', async () => {
                     console.log('inside deleteButton event listener');
 
-                    for (var i = 0; i < recentMsgs.length; i++) {
-                        var deleteCheckbox = document.getElementById('deleteCheckbox' + i);
+                    for (let i = 0; i < recentMsgs.length; i++) {
+                        let deleteCheckbox = document.getElementById('deleteCheckbox' + i);
 
                         if(deleteCheckbox.checked) {
 
                             if (recentMsgs[i].sentBy === currUser.email) {
-                                var msgWithUser = await this.client.getMessagesWithUser(recentMsgs[i].receivedBy);
+                                let msgWithUser = await this.client.getMessagesWithUser(recentMsgs[i].receivedBy);
                                 console.log("msgWithUser: " , msgWithUser);
 
-                                for (var i = 0; i < msgWithUser.length; i ++) {
+                                for (let i = 0; i < msgWithUser.length; i ++) {
                                     console.log("dateTimeSent: ", msgWithUser[i].dateTimeSent);
                                     console.log("sender: ", msgWithUser[i].sentBy);
                                     await this.client.deleteMessages(msgWithUser[i].dateTimeSent, msgWithUser[i].sentBy);
                                 }
 
                             } else {
-                                var msgWithUser = await this.client.getMessagesWithUser(recentMsgs[i].sentBy);
+                                let msgWithUser = await this.client.getMessagesWithUser(recentMsgs[i].sentBy);
                                 console.log("msgWithUser: " , msgWithUser);
 
-                                for (var i = 0; i < msgWithUser.length; i ++) {
+                                for (let i = 0; i < msgWithUser.length; i ++) {
                                     console.log("dateTimeSent: ", msgWithUser[i].dateTimeSent);
                                     console.log("sender: ", msgWithUser[i].sentBy);
                                     await this.client.deleteMessages(msgWithUser[i].dateTimeSent, msgWithUser[i].sentBy);
@@ -213,7 +213,7 @@ export default class Inbox extends BindingClass {
                            }
                        }
                     }
-                    location.reload();
+                    window.location.reload();
                 });
            }
         }

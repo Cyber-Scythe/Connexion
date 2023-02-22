@@ -117,6 +117,7 @@ export default class ConnexionClient extends BindingClass {
     */
     async getProfileByEmail(userEmail, errorCallback) {
      try {
+          userEmail = encodeURIComponent(userEmail);
           const token = await this.getTokenOrThrow("Only authenticated users can view profiles");
           const response = await this.axiosClient.get(`/index/${userEmail}`, {
                 headers: {
@@ -203,10 +204,10 @@ export default class ConnexionClient extends BindingClass {
     * @param errorCallback (Optional) A function to execute if the call fails.
     * @returns The updated user profile.
     */
-    async updateUserProfile(name, age, city, state, personalityType, hobbies, connexions, errorCallback) {
+    async updateUserProfile(userId, name, age, city, state, personalityType, hobbies, connexions, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can edit their profile.");
-            const response = await this.axiosClient.post(`/index`, {
+            const response = await this.axiosClient.post(`/index/update/${userId}`, {
                 name: name,
                 age: age,
                 city: city,
