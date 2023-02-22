@@ -115,11 +115,13 @@ class EditUserProfile extends BindingClass {
         }
 
         let hobbyList = this.dataStore.get('hobbies');
-        for (let a = 0; a < user.hobbies.length; a++) {
-            for (let i = 0; i < hobbyList.length; i++) {
-                if (user.hobbies[a] === hobbyList[i]) {
-                    let checkbox = document.getElementById('hobbyCheckbox' + i);
-                    checkbox.checked = true;
+        if (user.hobbies !== null) {
+            for (let a = 0; a < user.hobbies.length; a++) {
+                for (let i = 0; i < hobbyList.length; i++) {
+                    if (user.hobbies[a] === hobbyList[i]) {
+                        let checkbox = document.getElementById('hobbyCheckbox' + i);
+                        checkbox.checked = true;
+                    }
                 }
             }
         }
@@ -156,8 +158,9 @@ class EditUserProfile extends BindingClass {
              }
 
             console.log("userHobbies: ", userHobbies);
+            const currUser = this.dataStore.get('currUser');
 
-            await this.client.updateUserProfile(username, age, city, state, personalityType, userHobbies, connexions);
+            await this.client.updateUserProfile(currUser.id, username, age, city, state, personalityType, userHobbies, connexions);
 
             const user = this.dataStore.get('currUser');
             console.log('user.id: ', user.id);

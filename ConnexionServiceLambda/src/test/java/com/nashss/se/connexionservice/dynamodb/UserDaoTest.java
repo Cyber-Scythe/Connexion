@@ -149,7 +149,7 @@ public class UserDaoTest {
     @Test
     public void connexionsSort_sortsListOfConnexions_returnsMapOfSortedUsers() {
         // GIVEN
-        Map<Integer, String> connexionTreeMap = new TreeMap<>();
+        Map<String, Integer> connexionTreeMap = new TreeMap<>();
 
         List<String> currUserHobbies = List.of("hobby1", "hobby2", "hobby3", "hobby4");
 
@@ -161,11 +161,11 @@ public class UserDaoTest {
                              List.of("hobby2", "hobby3"), null);
 
         List<User> connexionList = List.of(u1, u2);
-        connexionTreeMap.put(1, u1.getId());
-        connexionTreeMap.put(2, u2.getId());
+        connexionTreeMap.put(u1.getId(), 1);
+        connexionTreeMap.put(u2.getId(), 2);
 
         // WHEN
-        Map<Integer, String> sortedMap = userDao.connexionsSort(currUserHobbies, connexionList);
+        Map<String, Integer> sortedMap = userDao.connexionsSort(currUserHobbies, connexionList);
 
         // THEN
         assertEquals(connexionTreeMap, sortedMap);

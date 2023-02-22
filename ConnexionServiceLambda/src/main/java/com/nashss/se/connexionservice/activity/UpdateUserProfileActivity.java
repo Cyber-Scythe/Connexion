@@ -54,11 +54,18 @@ public class UpdateUserProfileActivity {
         user.setState(updateUserProfileActivityRequest.getState());
         user.setHobbies(updateUserProfileActivityRequest.getHobbies());
 
-        List<String> compatiblePersonalityTypes =
-                userDao.getCompatiblePersonalityTypes(updateUserProfileActivityRequest.getPersonalityType());
+        if (!updateUserProfileActivityRequest.getPersonalityType().isBlank()) {
+            List<String> compatiblePersonalityTypes =
+                    userDao.getCompatiblePersonalityTypes(updateUserProfileActivityRequest.getPersonalityType());
 
-        List<String> connexions = userDao.getConnexions(updateUserProfileActivityRequest.getId(), compatiblePersonalityTypes);
-        user.setConnexions(connexions);
+            List<String> connexions = userDao.getConnexions(updateUserProfileActivityRequest.getId(), compatiblePersonalityTypes);
+            user.setConnexions(connexions);
+
+        } else {
+            List<String> connexions = userDao.getAllConnexions(user);
+            System.out.println("connexions: " + connexions);
+            user.setConnexions(connexions);
+        }
 
         userDao.saveUser(user);
 

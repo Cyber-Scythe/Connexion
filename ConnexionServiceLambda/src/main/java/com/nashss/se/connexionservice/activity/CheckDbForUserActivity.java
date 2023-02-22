@@ -54,7 +54,7 @@ public class CheckDbForUserActivity {
         UserModel userModel = new ModelConverter().toUserModel(searchUser);
 
         return CheckDbForUserActivityResult.builder()
-               .withUser(userModel)
+                .withUser(userModel)
                 .build();
     }
 }

@@ -277,7 +277,7 @@ Resources:
         ConnexionService:
           Type: Api
           Properties:
-            Path: /index
+            Path: /index/update/{userId}
             Method: post
 
   GetHobbiesFromDbLambda:

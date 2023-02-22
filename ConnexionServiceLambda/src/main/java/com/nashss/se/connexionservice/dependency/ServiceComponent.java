@@ -69,12 +69,6 @@ public interface ServiceComponent {
 
     /**
      * Provides the relevant activity.
-     * @return GetUserProfileByEmailActivity
-     */
-    GetUserProfileByEmailActivity provideGetUserProfileByEmailActivity();
-
-    /**
-     * Provides the relevant activity.
      * @return DeleteMessagesActivity
      */
     DeleteMessagesActivity provideDeleteMessagesActivity();
