@@ -1,0 +1,146 @@
+{
+  "hobbies": [
+    {
+      "PutRequest": {
+        "Item": {
+          "hobbyName": { "S": "Computers & tech" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "hobbyName": { "S": "traveling" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "hobbyName": { "S": "photography" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "hobbyName": { "S": "music" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "hobbyName": { "S": "cars & vehicles" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "hobbyName": { "S": "writing" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "hobbyName": {
+            "S": "meditation & wellness"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "hobbyName": { "S": "fitness" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "hobbyName": { "S": "sports" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "hobbyName": { "S": "board games & card games" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "hobbyName": { "S": "socializing" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "hobbyName": { "S": "plants" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "hobbyName": { "S": "gardening" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "hobbyName": { "S": "arts & crafts" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "hobbyName": { "S": "DIY" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "hobbyName": { "S": "video gaming" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "hobbyName": { "S": "pets" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "hobbyName": { "S": "outdoor activities" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "hobbyName": { "S": "reading" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "hobbyName": { "S": "cooking" }
+        }
+      }
+    }
+  ]
+}

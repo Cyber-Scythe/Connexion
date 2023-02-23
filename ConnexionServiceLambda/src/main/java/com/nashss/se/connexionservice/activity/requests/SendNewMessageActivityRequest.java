@@ -23,9 +23,13 @@ public class SendNewMessageActivityRequest {
         this.readStatus = readStatus;
     }
 
-    public String getSenderEmail() { return senderEmail; }
+    public String getSenderEmail() {
+        return senderEmail;
+    }
 
-   public String getRecipientEmail() { return recipientEmail; }
+   public String getRecipientEmail() {
+        return recipientEmail;
+    }
 
    public String getDateTimeSent() {
         return dateTimeSent;
@@ -52,47 +56,50 @@ public class SendNewMessageActivityRequest {
 
 
     //CHECKSTYLE:OFF:Builder
-    public static Builder builder() { return new Builder(); }
+    public static Builder builder() {
+
+        return new Builder();
+    }
 
     @JsonPOJOBuilder
     public static class Builder {
-        private String senderEmail;
-        private String recipientEmail;
-        private String dateTimeSent;
-        private String messageContent;
-        private boolean readStatus;
+        private String sender;
+        private String recipient;
+        private String dateTime;
+        private String content;
+        private boolean read;
 
         public Builder withSenderEmail(String senderEmail) {
-                this.senderEmail = senderEmail;
+                this.sender = senderEmail;
                 return this;
         }
 
         public Builder withRecipientEmail(String recipientEmail) {
-                this.recipientEmail = recipientEmail;
+                this.recipient = recipientEmail;
                 return this;
         }
 
        public Builder withDateTimeSent(String dateTimeSent) {
-                this.dateTimeSent = dateTimeSent;
+                this.dateTime = dateTimeSent;
                 return this;
         }
 
       public Builder withMessageContent(String messageContent) {
-                this.messageContent = messageContent;
+                this.content = messageContent;
                 return this;
         }
 
       public Builder withReadStatus(boolean readStatus) {
-                this.readStatus = readStatus;
+                this.read = readStatus;
                 return this;
         }
 
      public SendNewMessageActivityRequest build() {
-                return new SendNewMessageActivityRequest(senderEmail,
-                                                         recipientEmail,
-                                                         dateTimeSent,
-                                                         messageContent,
-                                                         readStatus);
+                return new SendNewMessageActivityRequest(sender,
+                                                         recipient,
+                                                         dateTime,
+                                                         content,
+                                                         read);
         }
     }
 }

@@ -6,6 +6,7 @@ import com.nashss.se.connexionservice.converters.ModelConverter;
 import com.nashss.se.connexionservice.dynamodb.UserDao;
 import com.nashss.se.connexionservice.dynamodb.models.User;
 import com.nashss.se.connexionservice.models.UserModel;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,6 +28,7 @@ public class GetConnexionProfileActivity {
      */
     @Inject
     public GetConnexionProfileActivity(UserDao userDao) {
+
         this.userDao = userDao;
     }
 
@@ -35,9 +37,11 @@ public class GetConnexionProfileActivity {
      * <p>
      * It then returns the compatible user.
      * <p>
+     * @param getConnexionProfileActivityRequest
      * @return GetConnexionsActivityResult result object
      */
-    public GetConnexionProfileActivityResult handleRequest(final GetConnexionProfileActivityRequest getConnexionProfileActivityRequest) {
+    public GetConnexionProfileActivityResult handleRequest(final GetConnexionProfileActivityRequest
+                                                                   getConnexionProfileActivityRequest) {
         log.info("Inside GetConnexionsActivityResult handleRequest");
 
         User compatibleUser = userDao.getUser(getConnexionProfileActivityRequest.getId());

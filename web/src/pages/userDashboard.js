@@ -45,7 +45,6 @@ class UserDashboard extends BindingClass {
      */
      mount() {
         // Wire up the form's 'submit' event and the button's 'click' event to the search method.
-        //document.getElementById('edit-profile-btn').addEventListener('click', this.editProfile);
 
         this.header.addHeaderToPage();
 
@@ -80,6 +79,11 @@ class UserDashboard extends BindingClass {
 
         document.getElementById('user-location').innerHTML = location;
         document.getElementById('hobbies-list').innerHTML = user.hobbies;
+
+        const editProfileButton = document.getElementById('edit-profile-btn');
+        editProfileButton.addEventListener('click', async() => {
+            window.location.href = '/edit_profile.html';
+        });
     }
 }
 

@@ -1,23 +1,21 @@
 package com.nashss.se.connexionservice.activity.results;
 
-import com.nashss.se.connexionservice.models.MessageModel;
-
 public class DeleteMessagesActivityResult {
-    private final MessageModel message;
-    private DeleteMessagesActivityResult(MessageModel message) {
+    private final boolean result;
+    private DeleteMessagesActivityResult(boolean result) {
 
-        this.message = message;
+        this.result = result;
     }
 
-    public MessageModel getMessage() {
+    public boolean getResult() {
 
-        return message;
+        return result;
     }
 
     @Override
     public String toString() {
         return "DeleteMessagesActivityResult{" +
-                "message=" + message +
+                "result=" + result +
                 '}';
     }
 
@@ -28,15 +26,15 @@ public class DeleteMessagesActivityResult {
     }
 
     public static class Builder {
-        private MessageModel message;
+        private boolean result;
 
-        public Builder withMessage(MessageModel message) {
-            this.message = message;
+        public Builder withResult(boolean result) {
+            this.result = result;
             return this;
         }
         public DeleteMessagesActivityResult build() {
 
-            return new DeleteMessagesActivityResult(message);
+            return new DeleteMessagesActivityResult(result);
         }
     }
 }

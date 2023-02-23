@@ -17,10 +17,13 @@ public class DeleteMessagesActivityRequest {
     }
 
     public String getSenderEmail() {
+
         return senderEmail;
     }
 
-    public String getDateTimeSent() { return dateTimeSent; }
+    public String getDateTimeSent() {
+        return dateTimeSent;
+    }
 
     @Override
     public String toString() {
@@ -32,6 +35,7 @@ public class DeleteMessagesActivityRequest {
 
     //CHECKSTYLE:OFF:Builder
     public static Builder builder() {
+
         return new Builder();
     }
 

@@ -11,14 +11,17 @@ public class HobbyModel {
      * @param hobbiesList categories parameter
      */
     public HobbyModel(List<String> hobbiesList) {
+
         this.hobbiesList = hobbiesList;
     }
 
     public List<String> getHobbies() {
+
         return hobbiesList;
     }
 
     public void setHobbies(List<String> hobbies) {
+
         this.hobbiesList = hobbies;
     }
 
@@ -36,6 +39,7 @@ public class HobbyModel {
 
     @Override
     public int hashCode() {
+
         return Objects.hash(hobbiesList);
     }
 

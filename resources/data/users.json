@@ -1,0 +1,130 @@
+{
+  "users": [
+    {
+      "PutRequest": {
+        "Item": {
+          "id": { "S": "O7SFa" },
+          "name": { "S": "NSS Songs" },
+          "email": { "S": "1" },
+          "age": { "N": 1 },
+          "city": { "S": "foo@example.com" },
+          "state": { "S": "Foo Barrington" },
+          "personalityType": { "S": "TYPE" },
+          "hobbies": { "SS": ["banjo", "triangle", "saw"]},
+          "connexions": { "SS": [null] }
+        }
+      },
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "S": "O7SFa"
+          },
+          "name": {
+            "S": "NSS Songs"
+          },
+          "email": {
+            "S": "1"
+          },
+          "age": {
+            "N": 1
+          },
+          "city": {
+            "S": "foo@example.com"
+          },
+          "state": {
+            "S": "Foo Barrington"
+          },
+          "personalityType": {
+            "S": "TYPE"
+          },
+          "hobbies": {
+            "SS": [
+              "banjo",
+              "triangle",
+              "saw"
+            ]
+          },
+          "connexions": {
+            "SS": [
+              null
+            ]
+          }
+        }
+      },
+        "PutRequest": {
+          "Item": {
+            "id": {
+              "S": "O7SFa"
+            },
+            "name": {
+              "S": "NSS Songs"
+            },
+            "email": {
+              "S": "1"
+            },
+            "age": {
+              "N": 1
+            },
+            "city": {
+              "S": "foo@example.com"
+            },
+            "state": {
+              "S": "Foo Barrington"
+            },
+            "personalityType": {
+              "S": "TYPE"
+            },
+            "hobbies": {
+              "SS": [
+                "banjo",
+                "triangle",
+                "saw"
+              ]
+            },
+            "connexions": {
+              "SS": [
+                null
+              ]
+            }
+          }
+        },
+          "PutRequest": {
+            "Item": {
+              "id": {
+                "S": "O7SFa"
+              },
+              "name": {
+                "S": "NSS Songs"
+              },
+              "email": {
+                "S": "1"
+              },
+              "age": {
+                "N": 1
+              },
+              "city": {
+                "S": "foo@example.com"
+              },
+              "state": {
+                "S": "Foo Barrington"
+              },
+              "personalityType": {
+                "S": "TYPE"
+              },
+              "hobbies": {
+                "SS": [
+                  "banjo",
+                  "triangle",
+                  "saw"
+                ]
+              },
+              "connexions": {
+                "SS": [
+                  null
+                ]
+              }
+            }
+          }
+    }
+  ]
+}

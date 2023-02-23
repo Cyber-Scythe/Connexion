@@ -6,6 +6,7 @@ import com.nashss.se.connexionservice.converters.ModelConverter;
 import com.nashss.se.connexionservice.dynamodb.UserDao;
 import com.nashss.se.connexionservice.dynamodb.models.User;
 import com.nashss.se.connexionservice.models.UserModel;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,6 +29,7 @@ public class CheckDbForUserActivity {
      */
     @Inject
     public CheckDbForUserActivity(UserDao userDao) {
+
         this.userDao = userDao;
     }
 
@@ -38,20 +40,31 @@ public class CheckDbForUserActivity {
      * It then returns the newly created user.
      * <p>
      *
-     * @param checkDbForUserActivityRequest request object containing the user's name, email, city, state, personality type,
-     *                                      and hobbies associated with it
+     * @param checkDbForUserActivityRequest request object containing the user's name, email, city, state,
+     *                                      personality type, and hobbies associated with it
      * @return CheckDbForUserActivityResult result object containing the API defined {@link UserModel}
      */
-    public CheckDbForUserActivityResult handleRequest(final CheckDbForUserActivityRequest checkDbForUserActivityRequest) {
+    public CheckDbForUserActivityResult handleRequest(final CheckDbForUserActivityRequest
+                                                              checkDbForUserActivityRequest) {
 
         log.info("Received CreateUserActivityRequest {}", checkDbForUserActivityRequest);
 
+        User searchUser = userDao.getUser(checkDbForUserActivityRequest.getId());
 
-        User searchUser = userDao.getUser(checkDbForUserActivityRequest.getEmail(),
-                                          checkDbForUserActivityRequest.getName(),
-                                          checkDbForUserActivityRequest.getId());
+        UserModel userModel;
 
-        UserModel userModel = new ModelConverter().toUserModel(searchUser);
+        if (searchUser != null) {
+            userModel = new ModelConverter().toUserModel(searchUser);
+        } else {
+
+            User newUser = new User();
+            newUser.setEmail(checkDbForUserActivityRequest.getEmail());
+            newUser.setName(checkDbForUserActivityRequest.getName());
+            newUser.setId(checkDbForUserActivityRequest.getId());
+
+            userDao.saveUser(newUser);
+            userModel = new ModelConverter().toUserModel(newUser);
+        }
 
         return CheckDbForUserActivityResult.builder()
                 .withUser(userModel)

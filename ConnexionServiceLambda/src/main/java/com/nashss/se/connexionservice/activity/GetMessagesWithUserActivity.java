@@ -5,11 +5,13 @@ import com.nashss.se.connexionservice.activity.results.GetMessagesWithUserActivi
 import com.nashss.se.connexionservice.dynamodb.MessageDao;
 import com.nashss.se.connexionservice.dynamodb.models.Message;
 import com.nashss.se.connexionservice.utils.LocalDateTimeComparator;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.inject.Inject;
 import java.util.*;
+
+import javax.inject.Inject;
 
 public class GetMessagesWithUserActivity {
     private final Logger log = LogManager.getLogger();
@@ -22,6 +24,7 @@ public class GetMessagesWithUserActivity {
      */
     @Inject
     public GetMessagesWithUserActivity(MessageDao messageDao) {
+
         this.messageDao = messageDao;
     }
 
@@ -30,14 +33,17 @@ public class GetMessagesWithUserActivity {
      * <p>
      * It then returns the list of messages (Message).
      * <p>
+     * @param getMessagesWithUserActivityRequest
      * @return GetMessagesFromUserActivityResult result object
      */
     public GetMessagesWithUserActivityResult handleRequest(final GetMessagesWithUserActivityRequest
                                                                    getMessagesWithUserActivityRequest) {
         log.info("Inside GetMessagesFromWithActivityResult handleRequest");
 
-        List<Message> messages = messageDao.getMessagesWithUser(getMessagesWithUserActivityRequest.getCurrUserEmail(),
+        List<Message> messages = messageDao.getMessagesWithUser(
+                getMessagesWithUserActivityRequest.getCurrUserEmail(),
                 getMessagesWithUserActivityRequest.getOtherUserEmail());
+
         List<Message> msgArraylist = new ArrayList<>(messages);
         List<Message> sortedMsg = sortedMessages(msgArraylist);
 

@@ -3,14 +3,16 @@ package com.nashss.se.connexionservice.dynamodb;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+
 import com.nashss.se.connexionservice.dynamodb.models.Message;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.inject.Inject;
 
 
 public class MessageDao {
@@ -24,11 +26,13 @@ public class MessageDao {
      */
     @Inject
     public MessageDao(DynamoDBMapper dynamoDbMapper) {
+
         this.dynamoDbMapper = dynamoDbMapper;
     }
 
     /**
      * Saves new message to inbox table.
+     * @param message
      * @return message that was saved
      */
     public Message sendMessage(Message message) {
@@ -41,7 +45,7 @@ public class MessageDao {
      * Retrieves all messages between two users in inbox table.
      * <p>
      * If not found, throws MessageNotFoundException.
-     *
+     * @param currUserEmail
      * @return All messages between two users in inbox table
      */
     public List<Message> getAllMessages(String currUserEmail) {
@@ -63,11 +67,11 @@ public class MessageDao {
      * Retrieves all messages between two users in inbox table.
      * <p>
      * If not found, throws MessageNotFoundException.
-     *
+     * @param senderEmail
+     * @param recipientEmail
      * @return All messages between two users in inbox table
      */
     public List<Message> getMessagesWithUser(String senderEmail, String recipientEmail) {
-        System.out.println("senderEmail: " + senderEmail + "   recipientEmail: " + recipientEmail);
 
         Map<String, AttributeValue> valueMap = new HashMap<>();
 
@@ -83,9 +87,13 @@ public class MessageDao {
         return dynamoDbMapper.scan(Message.class, scanExpression);
     }
 
-    public Message deleteMessages(Message message) {
-
+    /**
+     * Deletes a message from the database.
+     * @param message
+     * @return true
+     */
+    public boolean deleteMessages(Message message) {
         dynamoDbMapper.delete(message);
-        return message;
+        return true;
     }
 }

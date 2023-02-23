@@ -1,7 +1,5 @@
 package com.nashss.se.connexionservice.activity.results;
 
-import com.nashss.se.connexionservice.dynamodb.models.Hobby;
-
 import java.util.List;
 
 public class GetHobbiesFromDbActivityResult {

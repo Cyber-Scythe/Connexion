@@ -11,6 +11,7 @@ public class UpdateUserProfileActivityResult {
     }
 
     public UserModel getUser() {
+
         return user;
     }
 

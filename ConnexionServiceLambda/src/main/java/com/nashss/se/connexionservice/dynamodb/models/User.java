@@ -61,61 +61,79 @@ public class User implements Serializable {
         this.connexions = connexions;
     }
     @DynamoDBHashKey(attributeName = "id")
-    public String getId() { return id; }
+    public String getId() {
+        return id;
+    }
 
-    public void setId(String id) { this.id = id; }
+    public void setId(String id) {
+        this.id = id;
+    }
 
     // "name" is a reserved word in DDB, so the attribute in the table is called "userName".
     @DynamoDBAttribute(attributeName = "userName")
     public String getName() {
+
         return name;
     }
 
     public void setName(String name) {
+
         this.name = name;
     }
 
     @DynamoDBAttribute(attributeName = "email")
     public String getEmail() {
+
         return email;
     }
 
     public void setEmail(String email) {
+
         this.email = email;
     }
 
     @DynamoDBAttribute(attributeName = "age")
     public int getAge() {
+
         return age;
     }
 
     public void setAge(int age) {
+
         this.age = age;
     }
 
     @DynamoDBAttribute(attributeName = "city")
     public String getCity() {
+
         return city;
     }
 
     public void setCity(String city) {
+
         this.city = city;
     }
 
     @DynamoDBAttribute(attributeName = "state")
     public String getState() {
+
         return state;
     }
 
     public void setState(String state) {
+
         this.state = state;
     }
 
     @DynamoDBIndexHashKey(globalSecondaryIndexName = PERSONALITY_TYPE_INDEX,
             attributeName = "personalityType")
-    public String getPersonalityType() { return personalityType; }
+    public String getPersonalityType() {
+        return personalityType;
+    }
 
-    public void setPersonalityType(String personalityType) { this.personalityType = personalityType; }
+    public void setPersonalityType(String personalityType) {
+        this.personalityType = personalityType;
+    }
 
     /**
      * Returns the set of hobbies associated with this User, null if there are none.
@@ -209,5 +227,4 @@ public class User implements Serializable {
         return Objects.hash(id, name, email, age, city, state,
                             personalityType, hobbies, connexions);
     }
-
 }

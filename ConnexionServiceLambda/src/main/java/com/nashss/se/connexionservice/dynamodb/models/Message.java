@@ -18,10 +18,12 @@ public class Message {
 
     @DynamoDBRangeKey(attributeName = "dateTimeSent")
     public String getDateTimeSent() {
+
         return dateTimeSent;
     }
 
     public void setDateTimeSent(String dateTimeSent) {
+
         this.dateTimeSent = dateTimeSent;
     }
 
@@ -29,34 +31,44 @@ public class Message {
     @DynamoDBIndexHashKey(globalSecondaryIndexName = "EmailsSentAndReceivedIndex",
             attributeName = "sentBy")
     public String getSentBy() {
+
         return sentBy;
     }
 
     public void setSentBy(String sentBy) {
+
         this.sentBy = sentBy;
     }
 
     @DynamoDBIndexRangeKey(globalSecondaryIndexName = "EmailsSentAndReceivedIndex",
             attributeName = "receivedBy")
-    public String getReceivedBy() { return receivedBy; }
+    public String getReceivedBy() {
+        return receivedBy;
+    }
 
-    public void setReceivedBy(String receivedBy) { this.receivedBy = receivedBy; }
+    public void setReceivedBy(String receivedBy) {
+        this.receivedBy = receivedBy;
+    }
 
     @DynamoDBAttribute(attributeName = "messageContent")
     public String getMessageContent() {
+
         return messageContent;
     }
 
     public void setMessageContent(String messageContent) {
+
         this.messageContent = messageContent;
     }
 
     @DynamoDBAttribute(attributeName = "readStatus")
     public boolean getReadStatus() {
+
         return readStatus;
     }
 
     public void setReadStatus(boolean readStatus) {
+
         this.readStatus = readStatus;
     }
 
@@ -80,7 +92,7 @@ public class Message {
 
     @Override
     public int hashCode() {
+
         return Objects.hash(dateTimeSent, sentBy, receivedBy, messageContent, readStatus);
     }
-
 }

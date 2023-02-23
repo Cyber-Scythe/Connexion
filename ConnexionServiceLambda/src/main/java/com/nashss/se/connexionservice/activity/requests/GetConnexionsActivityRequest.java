@@ -15,10 +15,13 @@ public class GetConnexionsActivityRequest {
     }
 
     public String getPersonalityType() {
+
         return personalityType;
     }
 
-    public String getId() { return id; }
+    public String getId() {
+        return id;
+    }
 
     @Override
     public String toString() {
@@ -28,24 +31,27 @@ public class GetConnexionsActivityRequest {
                 '}';
     }
 
-    public static Builder builder() { return new Builder(); }
+    public static Builder builder() {
+        return new Builder();
+    }
 
     @JsonPOJOBuilder
     public static class Builder {
-        private String personalityType;
-        private String id;
+        private String userPersonalityType;
+        private String userId;
 
         public Builder withPersonalityType(String personalityType) {
-            this.personalityType = personalityType;
+            this.userPersonalityType = personalityType;
             return this;
         }
 
         public Builder withId(String id) {
-            this.id = id;
+            this.userId = id;
             return this;
         }
 
-        public GetConnexionsActivityRequest build() { return new GetConnexionsActivityRequest(personalityType, id);
+        public GetConnexionsActivityRequest build() {
+            return new GetConnexionsActivityRequest(userPersonalityType, userId);
         }
     }
 }

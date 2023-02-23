@@ -4,7 +4,7 @@ import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
 
 /**
- * Logic needed for the view playlist page of the website.
+ * Logic needed for the view profile page of the website.
  */
 class ViewProfile extends BindingClass {
     constructor() {

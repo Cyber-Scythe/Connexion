@@ -18,11 +18,16 @@ public class CheckDbForUserActivityRequest {
     }
 
     public String getEmail() {
+
         return email;
     }
 
-    public String getName() { return name; }
-    public String getId() { return id; }
+    public String getName() {
+        return name;
+    }
+    public String getId() {
+        return id;
+    }
 
     @Override
     public String toString() {
@@ -35,6 +40,7 @@ public class CheckDbForUserActivityRequest {
 
     //CHECKSTYLE:OFF:Builder
     public static Builder builder() {
+
         return new Builder();
     }
 
@@ -61,6 +67,7 @@ public class CheckDbForUserActivityRequest {
 
 
         public CheckDbForUserActivityRequest build() {
+
             return new CheckDbForUserActivityRequest(email, name, id);
         }
     }

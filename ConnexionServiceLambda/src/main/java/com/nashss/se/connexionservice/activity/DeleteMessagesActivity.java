@@ -2,10 +2,10 @@ package com.nashss.se.connexionservice.activity;
 
 import com.nashss.se.connexionservice.activity.requests.DeleteMessagesActivityRequest;
 import com.nashss.se.connexionservice.activity.results.DeleteMessagesActivityResult;
-import com.nashss.se.connexionservice.converters.ModelConverter;
 import com.nashss.se.connexionservice.dynamodb.MessageDao;
 import com.nashss.se.connexionservice.dynamodb.models.Message;
 import com.nashss.se.connexionservice.models.MessageModel;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,12 +27,12 @@ public class DeleteMessagesActivity {
      */
     @Inject
     public DeleteMessagesActivity(MessageDao messageDao) {
+
         this.messageDao = messageDao;
     }
 
     /**
-     * This method handles the incoming request by finding the message in the inbox table
-     * with the provided sender email and date and time from the request
+     * This method handles the incoming request by finding the message in the inbox table.
      * <p>
      * It then returns the deleted message
      * <p>
@@ -40,7 +40,8 @@ public class DeleteMessagesActivity {
      *                                      and time the message was sent
      * @return DeleteMessagesActivityResult result object containing the API defined {@link MessageModel}
      */
-    public DeleteMessagesActivityResult handleRequest(final DeleteMessagesActivityRequest deleteMessagesActivityRequest) {
+    public DeleteMessagesActivityResult handleRequest(final DeleteMessagesActivityRequest
+                                                              deleteMessagesActivityRequest) {
 
         log.info("Received DeleteMessagesActivityRequest {}", deleteMessagesActivityRequest);
 
@@ -48,11 +49,10 @@ public class DeleteMessagesActivity {
         deleteMessage.setSentBy(deleteMessagesActivityRequest.getSenderEmail());
         deleteMessage.setDateTimeSent(deleteMessagesActivityRequest.getDateTimeSent());
 
-        messageDao.deleteMessages(deleteMessage);
-        MessageModel deleteMsgModel = new ModelConverter().toMessageModel(deleteMessage);
+        boolean result = messageDao.deleteMessages(deleteMessage);
 
         return DeleteMessagesActivityResult.builder()
-                .withMessage(deleteMsgModel)
+                .withResult(result)
                 .build();
     }
 }
