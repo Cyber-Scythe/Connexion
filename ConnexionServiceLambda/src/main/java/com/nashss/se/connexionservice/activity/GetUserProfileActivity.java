@@ -6,6 +6,7 @@ import com.nashss.se.connexionservice.converters.ModelConverter;
 import com.nashss.se.connexionservice.dynamodb.UserDao;
 import com.nashss.se.connexionservice.dynamodb.models.User;
 import com.nashss.se.connexionservice.models.UserModel;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,6 +28,7 @@ public class GetUserProfileActivity {
      */
     @Inject
     public GetUserProfileActivity(UserDao userDao) {
+
         this.userDao = userDao;
     }
 
@@ -38,7 +40,9 @@ public class GetUserProfileActivity {
      * @param getUserProfileActivityRequest request object containing the user's email
      * @return getUserProfileActivityResult result object containing the API defined {@link UserModel}
      */
-    public GetUserProfileActivityResult handleRequest(final GetUserProfileActivityRequest getUserProfileActivityRequest) {
+    public GetUserProfileActivityResult handleRequest(final GetUserProfileActivityRequest
+                                                              getUserProfileActivityRequest) {
+
         log.info("Received GetUserProfileActivityRequest {}", getUserProfileActivityRequest);
 
         String requestedId = getUserProfileActivityRequest.getId();

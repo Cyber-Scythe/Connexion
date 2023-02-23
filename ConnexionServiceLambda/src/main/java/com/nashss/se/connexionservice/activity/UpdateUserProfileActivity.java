@@ -7,11 +7,16 @@ import com.nashss.se.connexionservice.dynamodb.UserDao;
 import com.nashss.se.connexionservice.dynamodb.models.User;
 import com.nashss.se.connexionservice.metrics.MetricsPublisher;
 import com.nashss.se.connexionservice.models.UserModel;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+
 
 public class UpdateUserProfileActivity {
     private final Logger log = LogManager.getLogger();
@@ -31,16 +36,17 @@ public class UpdateUserProfileActivity {
     }
 
     /**
-     * This method handles the incoming request by retrieving the user, updating it,
-     * and persisting the user.
+     * This method handles the incoming request by retrieving the user, updating, and persisting the user.
      * <p>
      * It then returns the updated user.
      * <p>
-     * @param updateUserProfileActivityRequest request object containing the playlist ID, playlist name, and customer ID
-     *                              associated with it
+     * @param updateUserProfileActivityRequest request object containing the playlist ID, playlist name,
+     *                                         and customer ID associated with it
      * @return updateUserProfileActivityResult result object containing the API defined {@link UserModel}
      */
-    public UpdateUserProfileActivityResult handleRequest(final UpdateUserProfileActivityRequest updateUserProfileActivityRequest) {
+    public UpdateUserProfileActivityResult handleRequest(final UpdateUserProfileActivityRequest
+                                                                 updateUserProfileActivityRequest) {
+
         log.info("Received UpdateUserProfileActivityRequest {}", updateUserProfileActivityRequest);
 
         User user = userDao.getUser(updateUserProfileActivityRequest.getId());
@@ -58,13 +64,32 @@ public class UpdateUserProfileActivity {
             List<String> compatiblePersonalityTypes =
                     userDao.getCompatiblePersonalityTypes(updateUserProfileActivityRequest.getPersonalityType());
 
-            List<String> connexions = userDao.getConnexions(updateUserProfileActivityRequest.getId(), compatiblePersonalityTypes);
-            user.setConnexions(connexions);
+            List<User> connexions = userDao.getConnexions(compatiblePersonalityTypes);
+            List<String> connexionIDs = new ArrayList<>();
+            connexions.forEach(u -> connexionIDs.add(u.getId()));
+            connexionIDs.remove(user.getId());
+
+            user.setConnexions(connexionIDs);
 
         } else {
-            List<String> connexions = userDao.getAllConnexions(user);
+            List<User> connexions = userDao.getAllConnexions(user);
             System.out.println("connexions: " + connexions);
-            user.setConnexions(connexions);
+
+            if (!user.getHobbies().isEmpty() && user.getHobbies() != null) {
+                Map<String, Integer> sortedMap = userDao.sortConnexions(user.getHobbies(), connexions);
+
+                List<String> sortedConnexions = new ArrayList<>(sortedMap.keySet());
+
+                sortedConnexions.remove(user.getId());
+
+                user.setConnexions(sortedConnexions);
+            } else {
+                List<String> connexionIds = new ArrayList<>();
+                for (User u : connexions) {
+                    connexionIds.add(u.getId());
+                }
+                user.setConnexions(connexionIds);
+            }
         }
 
         userDao.saveUser(user);

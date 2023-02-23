@@ -9,36 +9,58 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ModelConverter {
-    /**
+     /**
      * Converts a provided {@link User} into a {@link UserModel} representation.
      *
      * @param user the user to convert
      * @return the converted user
      */
      public UserModel toUserModel(User user) {
-         List<String> hobbies = null;
-         List<String> connexions = null;
+        List<String> hobbies = new ArrayList<>();
+        List<String> connexions = new ArrayList<>();
 
-         if (user.getHobbies() != null) {
-             hobbies = new ArrayList<>(user.getHobbies());
-         }
+        if (user.getHobbies() != null && user.getConnexions() != null) {
+            return UserModel.builder()
+                    .withName(user.getName())
+                    .withEmail(user.getEmail())
+                    .withId(user.getId())
+                    .withAge(user.getAge())
+                    .withCity(user.getCity())
+                    .withState(user.getState())
+                    .withPersonalityType(user.getPersonalityType())
+                    .withHobbies(user.getHobbies())
+                    .withConnexions(user.getConnexions())
+                    .build();
+         } else if (user.getHobbies() == null) {
 
-         if(user.getConnexions() != null) {
-             connexions = new ArrayList<>(user.getConnexions());
-         }
+            hobbies = List.of();
 
-         return UserModel.builder()
-                 .withName(user.getName())
-                 .withEmail(user.getEmail())
-                 .withId(user.getId())
-                 .withAge(user.getAge())
-                 .withCity(user.getCity())
-                 .withState(user.getState())
-                 .withPersonalityType(user.getPersonalityType())
-                 .withHobbies(hobbies)
-                 .withConnexions(connexions)
-                 .build();
+            return UserModel.builder()
+                    .withName(user.getName())
+                    .withEmail(user.getEmail())
+                    .withId(user.getId())
+                    .withAge(user.getAge())
+                    .withCity(user.getCity())
+                    .withState(user.getState())
+                    .withPersonalityType(user.getPersonalityType())
+                    .withConnexions(user.getConnexions())
+                    .build();
+         } else if (user.getConnexions() == null) {
+            connexions = List.of();
+
+            return UserModel.builder()
+                    .withName(user.getName())
+                    .withEmail(user.getEmail())
+                    .withId(user.getId())
+                    .withAge(user.getAge())
+                    .withCity(user.getCity())
+                    .withState(user.getState())
+                    .withPersonalityType(user.getPersonalityType())
+                    .withHobbies(user.getHobbies())
+                    .build();
      }
+     return null;
+}
 
 
     /**

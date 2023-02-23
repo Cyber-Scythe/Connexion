@@ -3,12 +3,18 @@ package com.nashss.se.connexionservice.activity;
 import com.nashss.se.connexionservice.activity.requests.GetConnexionsActivityRequest;
 import com.nashss.se.connexionservice.activity.results.GetConnexionsActivityResult;
 import com.nashss.se.connexionservice.dynamodb.UserDao;
+import com.nashss.se.connexionservice.dynamodb.models.User;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.inject.Inject;
 
-import java.util.List;
 
 /**
  * Implementation of the GetConnexionsActivity for the ConnexionService's GetConnexions API.
@@ -26,6 +32,7 @@ public class GetConnexionsActivity {
      */
     @Inject
     public GetConnexionsActivity(UserDao userDao) {
+
         this.userDao = userDao;
     }
 
@@ -34,22 +41,46 @@ public class GetConnexionsActivity {
      * <p>
      * It then returns the list of connexions (Users).
      * <p>
+     * @param getConnexionsActivityRequest
      * @return GetConnexionsActivityResult result object
      */
-    public GetConnexionsActivityResult handleRequest(final GetConnexionsActivityRequest getConnexionsActivityRequest) {
+    public GetConnexionsActivityResult handleRequest(final GetConnexionsActivityRequest
+                                                             getConnexionsActivityRequest) {
         log.info("Inside GetConnexionsActivityResult handleRequest");
-        System.out.println("currUser PersonalityType: " + getConnexionsActivityRequest.getPersonalityType());
 
-        List<String> compatiblePersonalityTypes =
-                userDao.getCompatiblePersonalityTypes(getConnexionsActivityRequest.getPersonalityType());
+        User currUser = userDao.getUser(getConnexionsActivityRequest.getId());
 
-        List<String> connexionsList = userDao.getConnexions(getConnexionsActivityRequest.getId(), compatiblePersonalityTypes);
+        if (getConnexionsActivityRequest.getPersonalityType() != null &&
+                !getConnexionsActivityRequest.getPersonalityType().isBlank()) {
 
-        System.out.println("connexionsLIst: " + connexionsList);
+            List<String> compatiblePersonalityTypes =
+                    userDao.getCompatiblePersonalityTypes(getConnexionsActivityRequest.getPersonalityType());
 
-        return GetConnexionsActivityResult.builder()
-                .withConnexionsList(connexionsList)
-                .build();
+            List<User> connexionsList = userDao.getConnexions(compatiblePersonalityTypes);
+
+            Map<String, Integer> sortedConnexions = new HashMap<>();
+            sortedConnexions = userDao.sortConnexions(currUser.getHobbies(), connexionsList);
+
+            List<String> sortedConnexionList = new ArrayList<>(sortedConnexions.keySet());
+            sortedConnexionList.remove(getConnexionsActivityRequest.getId());
+
+            return GetConnexionsActivityResult.builder()
+                    .withConnexionsList(sortedConnexionList)
+                    .build();
+
+        } else {
+
+            List<String> connexionIdList = new ArrayList<>();
+            List<User> connexionsList = userDao.getAllConnexions(currUser);
+
+            for (User u : connexionsList) {
+                connexionIdList.add(u.getId());
+            }
+
+            return GetConnexionsActivityResult.builder()
+                    .withConnexionsList(connexionIdList)
+                    .build();
+        }
     }
 }
 

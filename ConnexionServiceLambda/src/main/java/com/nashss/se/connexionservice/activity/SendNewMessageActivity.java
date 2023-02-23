@@ -7,6 +7,7 @@ import com.nashss.se.connexionservice.dynamodb.MessageDao;
 import com.nashss.se.connexionservice.dynamodb.models.Message;
 import com.nashss.se.connexionservice.metrics.MetricsPublisher;
 import com.nashss.se.connexionservice.models.MessageModel;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -34,11 +35,13 @@ public class SendNewMessageActivity {
      * <p>
      * It then returns the message that was sent.
      * <p>
-     * @param sendNewMessageActivityRequest request object containing the playlist ID, playlist name, and customer ID
-     *                              associated with it
+     * @param sendNewMessageActivityRequest request object containing the playlist ID, playlist name,
+     *                                      and customer ID associated with it
      * @return sendNewMessageActivityResult result object containing the API defined {@link MessageModel}
      */
-    public SendNewMessageActivityResult handleRequest(final SendNewMessageActivityRequest sendNewMessageActivityRequest) {
+    public SendNewMessageActivityResult handleRequest(final SendNewMessageActivityRequest
+                                                              sendNewMessageActivityRequest) {
+
         log.info("Received SendNewMessageActivityRequest {}", sendNewMessageActivityRequest);
 
         Message newMessage = new Message();

@@ -1,6 +1,5 @@
 package com.nashss.se.connexionservice.models;
 
-
 import java.util.List;
 import java.util.Objects;
 
@@ -40,28 +39,41 @@ public class UserModel {
     }
 
     public String getName() {
+
         return name;
     }
 
     public String getEmail() {
+
         return email;
     }
 
-    public String getId() { return id; }
-    public int getAge() { return age; }
+    public String getId() {
+        return id;
+    }
+    public int getAge() {
+        return age;
+    }
     public String getCity() {
+
         return city;
     }
 
     public String getState() {
+
         return state;
     }
-    public String getPersonalityType() { return personalityType; }
+    public String getPersonalityType() {
+        return personalityType;
+    }
 
     public List<String> getHobbies() {
+
         return copyToList(hobbies);
     }
-    public List<String> getConnexions() { return copyToList(connexions); }
+    public List<String> getConnexions() {
+        return copyToList(connexions);
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -92,20 +104,38 @@ public class UserModel {
 
     //CHECKSTYLE:OFF:Builder
     public static Builder builder() {
+
         return new Builder();
     }
 
     public String getUserName() {
+
         return name;
     }
-    public String getUserEmail() { return email; }
-    public int getUserAge() { return age; }
-    public String getUserId() { return id; }
-    public String getUserCity() { return city; }
-    public String getUserState() { return state ;}
-    public String getUserPersonalityType() { return personalityType; }
-    public List<String> getUserHobbies() { return hobbies; }
-    public List<String> getUserConnexions() { return connexions; }
+    public String getUserEmail() {
+        return email;
+    }
+    public int getUserAge() {
+        return age;
+    }
+    public String getUserId() {
+        return id;
+    }
+    public String getUserCity() {
+        return city;
+    }
+    public String getUserState() {
+        return state;
+    }
+    public String getUserPersonalityType() {
+        return personalityType;
+    }
+    public List<String> getUserHobbies() {
+        return hobbies;
+    }
+    public List<String> getUserConnexions() {
+        return connexions;
+    }
 
     public static class Builder {
         private String name;

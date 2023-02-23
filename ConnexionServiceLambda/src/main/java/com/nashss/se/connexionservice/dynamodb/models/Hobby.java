@@ -14,6 +14,7 @@ public class Hobby {
     }
 
     public Hobby(String hobby) {
+
         this.hobby = hobby;
     }
 
@@ -24,6 +25,7 @@ public class Hobby {
     }
 
     public void setHobby(String hobby) {
+
         this.hobby = hobby;
     }
 
@@ -41,6 +43,7 @@ public class Hobby {
 
     @Override
     public int hashCode() {
+
         return Objects.hash(hobby);
     }
 

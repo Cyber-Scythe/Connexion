@@ -4,13 +4,16 @@ import com.nashss.se.connexionservice.activity.requests.GetUserInboxActivityRequ
 import com.nashss.se.connexionservice.activity.results.GetUserInboxActivityResult;
 import com.nashss.se.connexionservice.dynamodb.MessageDao;
 import com.nashss.se.connexionservice.dynamodb.models.Message;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.LocalDateTime;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
+
 
 public class GetUserInboxActivity {
     private final Logger log = LogManager.getLogger();
@@ -32,16 +35,17 @@ public class GetUserInboxActivity {
      * <p>
      * It then returns the list of most recent messages for each conversation.
      * <p>
+     * @param getUserInboxActivityRequest
      * @return GetUserInboxActivityResult result object
      */
-    public GetUserInboxActivityResult handleRequest(final GetUserInboxActivityRequest getUserInboxActivityRequest) {
+    public GetUserInboxActivityResult handleRequest(final GetUserInboxActivityRequest
+                                                            getUserInboxActivityRequest) {
         log.info("Inside GetUserInboxActivityResult handleRequest");
 
         List<Message> messages = messageDao.getAllMessages(getUserInboxActivityRequest.getCurrUserEmail());
+
         List<String> conversationUsers = new ArrayList<>();
-
         List<Message> mostRecent = new ArrayList<>();
-
 
         for (Message message : messages) {
             if (message.getSentBy().equals(getUserInboxActivityRequest.getCurrUserEmail())) {
@@ -66,10 +70,6 @@ public class GetUserInboxActivity {
             }
 
             Message recent = allMsg.get(0);
-            System.out.println("Date: " + recent.getDateTimeSent());
-            LocalDateTime now = LocalDateTime.now();
-            System.out.println("DateTime Now: " + now);
-
             LocalDateTime recentDate = LocalDateTime.parse(recent.getDateTimeSent());
 
             for (int i = 1; i < allMsg.size(); i++) {
@@ -88,12 +88,4 @@ public class GetUserInboxActivity {
                 .withMessages(mostRecent)
                 .build();
     }
-
-    public LocalDateTime convertStringToDateTime(String dateTimeSent) {
-        LocalDateTime dateTime = LocalDateTime.parse(dateTimeSent);
-
-        System.out.println(dateTime);
-        return dateTime;
-    }
-
 }

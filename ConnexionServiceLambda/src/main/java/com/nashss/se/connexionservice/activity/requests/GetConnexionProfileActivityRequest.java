@@ -9,10 +9,12 @@ public class GetConnexionProfileActivityRequest {
 
 
     private GetConnexionProfileActivityRequest(String id) {
+
         this.id = id;
     }
 
     public String getId() {
+
         return id;
     }
 
@@ -24,7 +26,9 @@ public class GetConnexionProfileActivityRequest {
     }
 
     //CHECKSTYLE:OFF:Builder
-    public static Builder builder() { return new Builder(); }
+    public static Builder builder() {
+        return new Builder();
+    }
 
     @JsonPOJOBuilder
     public static class Builder {
@@ -36,6 +40,7 @@ public class GetConnexionProfileActivityRequest {
         }
 
         public GetConnexionProfileActivityRequest build() {
+
             return new GetConnexionProfileActivityRequest(id);
         }
     }

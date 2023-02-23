@@ -8,13 +8,6 @@ public class GetHobbiesFromDbActivityRequest {
 
     private GetHobbiesFromDbActivityRequest() {}
 
-    /*
-    @Override
-    public String toString() {
-        return "GetHobbiesFromDbActivityRequest{"'\'' + '}';
-    }
-     */
-
     //CHECKSTYLE:OFF:Builder
     public static Builder builder() {
 

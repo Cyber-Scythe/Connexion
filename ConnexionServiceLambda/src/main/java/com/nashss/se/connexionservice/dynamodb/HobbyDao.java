@@ -2,12 +2,14 @@ package com.nashss.se.connexionservice.dynamodb;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
+
 import com.nashss.se.connexionservice.dynamodb.models.Hobby;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.inject.Inject;
 import java.util.List;
+import javax.inject.Inject;
 
 public class HobbyDao {
 
@@ -21,6 +23,7 @@ public class HobbyDao {
      */
     @Inject
     public HobbyDao(DynamoDBMapper dynamoDbMapper) {
+
         this.dynamoDbMapper = dynamoDbMapper;
     }
 

@@ -4,12 +4,14 @@ import com.nashss.se.connexionservice.activity.requests.GetHobbiesFromDbActivity
 import com.nashss.se.connexionservice.activity.results.GetHobbiesFromDbActivityResult;
 import com.nashss.se.connexionservice.dynamodb.HobbyDao;
 import com.nashss.se.connexionservice.dynamodb.models.Hobby;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * Implementation of the GetHobbiesFromDbActivity for Connexion's GetHobbiesFromDb API.
@@ -27,6 +29,7 @@ public class GetHobbiesFromDbActivity {
      */
     @Inject
     public GetHobbiesFromDbActivity(HobbyDao hobbyDao) {
+
         this.hobbyDao = hobbyDao;
     }
 
@@ -35,9 +38,11 @@ public class GetHobbiesFromDbActivity {
      * <p>
      * It then returns the list of hobbies.
      * <p>
+     * @param getHobbiesFromDbActivityRequest
      * @return GetHobbiesFromDbActivityResult result object
      */
-    public GetHobbiesFromDbActivityResult handleRequest(final GetHobbiesFromDbActivityRequest getHobbiesFromDbActivityRequest) {
+    public GetHobbiesFromDbActivityResult handleRequest(final GetHobbiesFromDbActivityRequest
+                                                                getHobbiesFromDbActivityRequest) {
         log.info("Inside GetCategoriesResult handleRequest");
 
         List<Hobby> hobbies = hobbyDao.getHobbies();

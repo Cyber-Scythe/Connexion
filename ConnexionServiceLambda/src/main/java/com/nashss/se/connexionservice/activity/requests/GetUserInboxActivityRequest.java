@@ -36,22 +36,23 @@ public class GetUserInboxActivityRequest {
 
     @JsonPOJOBuilder
     public static class Builder {
-        private String userId;
-        private String currUserEmail;
+        private String id;
+        private String currEmail;
 
 
         public Builder withUserId(String userId) {
-            this.userId = userId;
+            this.id = userId;
             return this;
         }
         public Builder withCurrUserEmail(String currUserEmail) {
-            this.currUserEmail = currUserEmail;
+            this.currEmail = currUserEmail;
             return this;
         }
 
 
         public GetUserInboxActivityRequest build() {
-            return new GetUserInboxActivityRequest(userId, currUserEmail);
+
+            return new GetUserInboxActivityRequest(id, currEmail);
         }
     }
 }

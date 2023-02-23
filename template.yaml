@@ -81,7 +81,7 @@ Resources:
       CallbackURLs:
         - !If
           - DeployCloudFront
-          - !Sub "https://${CloudfrontDistribution.DomainName}"
+          - !Sub "https://${CloudfrontDistribution.DomainName}/dashboard.html"
           - http://localhost:8000/dashboard.html
       LogoutURLs:
         - !If
@@ -199,21 +199,37 @@ Resources:
                   - logs:PutLogEvents
                   - cloudwatch:PutMetricData
                 Resource: '*'
-        - PolicyName: 'AccessPlaylistsTable'
+        - PolicyName: 'AccessUsersTable'
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
               - Effect: Allow
                 Action: dynamodb:*
-                Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/playlists"
+                Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/users"
 
-        - PolicyName: 'AccessAlbumTracksTable'
+        - PolicyName: 'AccessInboxTable'
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
               - Effect: Allow
                 Action: dynamodb:*
-                Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/album_tracks"
+                Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/inbox"
+
+        - PolicyName: 'AccessHobbiesTable'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: dynamodb:*
+                Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/hobbies"
+
+        - PolicyName: 'AccessInboxGSITable'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: dynamodb:*
+                Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/inbox/index/EmailsSentAndReceivedIndex"
 
   #-----------------------------------------------------
   # Lambda Functions Configuration
@@ -430,8 +446,8 @@ Resources:
       AttributeDefinitions:
         - AttributeName: "id"
           AttributeType: "S"
-#        - AttributeName: "email"
-#          AttributeType: "S"
+        - AttributeName: "email"
+          AttributeType: "S"
 #        - AttributeName: "name"
 #          AttributeType: "S"
 #        - AttributeName: "age"

@@ -41,16 +41,33 @@ public class UpdateUserProfileActivityRequest {
     }
 
     public String getEmail() {
+
         return email;
     }
-    public String getName() { return name; }
-    public String getId() { return id; }
-    public int getAge() { return age; }
-    public String getCity() { return city; }
-    public String getState() { return state; }
-    public String getPersonalityType() { return personalityType; }
-    public List<String> getHobbies() { return copyToList(hobbies); }
-    public List<String> getConnexions() { return copyToList(connexions); }
+    public String getName() {
+        return name;
+    }
+    public String getId() {
+        return id;
+    }
+    public int getAge() {
+        return age;
+    }
+    public String getCity() {
+        return city;
+    }
+    public String getState() {
+        return state;
+    }
+    public String getPersonalityType() {
+        return personalityType;
+    }
+    public List<String> getHobbies() {
+        return copyToList(hobbies);
+    }
+    public List<String> getConnexions() {
+        return copyToList(connexions);
+    }
 
     @Override
     public String toString() {
@@ -70,6 +87,7 @@ public class UpdateUserProfileActivityRequest {
 
     //CHECKSTYLE:OFF:Builder
     public static Builder builder() {
+
         return new Builder();
     }
 

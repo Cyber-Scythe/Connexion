@@ -24,18 +24,25 @@ public class MessageModel {
     }
 
     public String getDateTimeSent() {
+
         return dateTimeSent;
     }
 
-    public String getSentBy() { return sentBy; }
+    public String getSentBy() {
+        return sentBy;
+    }
     public String getReceivedBy() {
+
         return receivedBy;
     }
 
     public String getMessageContent() {
+
         return messageContent;
     }
-    public boolean getReadStatus() { return readStatus; }
+    public boolean getReadStatus() {
+        return readStatus;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -57,19 +64,31 @@ public class MessageModel {
 
     @Override
     public int hashCode() {
+
         return Objects.hash(dateTimeSent, sentBy, receivedBy, messageContent, readStatus);
     }
 
     //CHECKSTYLE:OFF:Builder
     public static MessageModel.Builder builder() {
+
         return new MessageModel.Builder();
     }
 
-    public String getDateTime() { return dateTimeSent; }
-    public String getSender() { return sentBy; }
-    public String getRecipient() { return receivedBy ;}
-    public String getContent() { return messageContent; }
-    public boolean getStatus() { return readStatus; }
+    public String getDateTime() {
+        return dateTimeSent;
+    }
+    public String getSender() {
+        return sentBy;
+    }
+    public String getRecipient() {
+        return receivedBy ;
+    }
+    public String getContent() {
+        return messageContent;
+    }
+    public boolean getStatus() {
+        return readStatus;
+    }
 
 
     public static class Builder {
