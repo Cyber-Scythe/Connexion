@@ -5,38 +5,37 @@ import com.nashss.se.connexionservice.models.MessageModel;
 public class SendNewMessageActivityResult {
     private final MessageModel message;
 
+    /**
+     * Constructor for SendNewMessageActivityResult.
+     * @param message the MessageModel to return as the result
+     */
     public SendNewMessageActivityResult(MessageModel message) {
-
         this.message = message;
     }
 
     public MessageModel getMessage() {
-
         return message;
     }
 
     @Override
     public String toString() {
-        return "SendNewMessageActivityResult{" +
-                "message=" + message +
-                '}';
+        return "SendNewMessageActivityResult{" + "message=" + message + '}';
     }
 
     //CHECKSTYLE:OFF:Builder
     public static Builder builder() {
-        return new Builder(); }
+         return new Builder(); }
 
     public static class Builder {
         private MessageModel message;
 
         public Builder withMessage(MessageModel message) {
-            this.message = message;
-            return this;
+             this.message = message;
+             return this;
         }
 
         public SendNewMessageActivityResult build() {
-
-            return new SendNewMessageActivityResult(message);
+             return new SendNewMessageActivityResult(message);
         }
     }
 }

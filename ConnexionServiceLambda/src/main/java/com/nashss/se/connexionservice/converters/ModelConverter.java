@@ -2,6 +2,7 @@ package com.nashss.se.connexionservice.converters;
 
 import com.nashss.se.connexionservice.dynamodb.models.Message;
 import com.nashss.se.connexionservice.dynamodb.models.User;
+
 import com.nashss.se.connexionservice.models.MessageModel;
 import com.nashss.se.connexionservice.models.UserModel;
 
@@ -9,13 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ModelConverter {
-     /**
+    /**
      * Converts a provided {@link User} into a {@link UserModel} representation.
      *
      * @param user the user to convert
      * @return the converted user
      */
-     public UserModel toUserModel(User user) {
+    public UserModel toUserModel(User user) {
         List<String> hobbies = new ArrayList<>();
         List<String> connexions = new ArrayList<>();
 
@@ -31,7 +32,7 @@ public class ModelConverter {
                     .withHobbies(user.getHobbies())
                     .withConnexions(user.getConnexions())
                     .build();
-         } else if (user.getHobbies() == null) {
+        } else if (user.getHobbies() == null) {
 
             hobbies = List.of();
 
@@ -45,7 +46,7 @@ public class ModelConverter {
                     .withPersonalityType(user.getPersonalityType())
                     .withConnexions(user.getConnexions())
                     .build();
-         } else if (user.getConnexions() == null) {
+        } else if (user.getConnexions() == null) {
             connexions = List.of();
 
             return UserModel.builder()
@@ -58,9 +59,9 @@ public class ModelConverter {
                     .withPersonalityType(user.getPersonalityType())
                     .withHobbies(user.getHobbies())
                     .build();
-     }
-     return null;
-}
+        }
+        return null;
+    }
 
 
     /**

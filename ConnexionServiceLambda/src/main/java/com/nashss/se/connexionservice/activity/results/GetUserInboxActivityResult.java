@@ -8,8 +8,8 @@ public class GetUserInboxActivityResult {
     private final List<Message> messages;
 
     /**
-     * Constructor for GetConnexionsActivityResult.
-     * @param messages the list of connexions to convert
+     * Constructor for GetUserInboxActivityResult.
+     * @param messages the list of messages to return as result
      */
     public GetUserInboxActivityResult(List<Message> messages) {
 

@@ -1,9 +1,10 @@
 package com.nashss.se.connexionservice.dependency;
 
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-
 import com.nashss.se.connexionservice.dynamodb.DynamoDbClientProvider;
+
+import com.amazonaws.regions.Regions;
+
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 
 import dagger.Module;
 import dagger.Provides;

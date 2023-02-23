@@ -1,6 +1,15 @@
 package com.nashss.se.connexionservice.dependency;
 
-import com.nashss.se.connexionservice.activity.*;
+import com.nashss.se.connexionservice.activity.CheckDbForUserActivity;
+import com.nashss.se.connexionservice.activity.DeleteMessagesActivity;
+import com.nashss.se.connexionservice.activity.GetConnexionProfileActivity;
+import com.nashss.se.connexionservice.activity.GetConnexionsActivity;
+import com.nashss.se.connexionservice.activity.GetHobbiesFromDbActivity;
+import com.nashss.se.connexionservice.activity.GetMessagesWithUserActivity;
+import com.nashss.se.connexionservice.activity.GetUserInboxActivity;
+import com.nashss.se.connexionservice.activity.GetUserProfileActivity;
+import com.nashss.se.connexionservice.activity.SendNewMessageActivity;
+import com.nashss.se.connexionservice.activity.UpdateUserProfileActivity;
 
 import dagger.Component;
 

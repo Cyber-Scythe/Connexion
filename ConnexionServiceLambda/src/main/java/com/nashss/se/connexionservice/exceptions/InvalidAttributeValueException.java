@@ -7,7 +7,7 @@ import javax.naming.directory.InvalidAttributesException;
  */
 public class InvalidAttributeValueException extends InvalidAttributesException {
 
-    private static final long serialVersionUID = 8007453316698012851L; // GENERATE NEW ID!
+    private static final long serialVersionUID = 8007453316698012851L;
 
     /**
      * Exception with no message or cause.

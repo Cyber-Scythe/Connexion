@@ -24,7 +24,7 @@ class ViewMessage extends BindingClass {
     async clientLoaded() {
         console.log("inside clientLoaded()");
 
-        var currUser = await this.client.getProfile();
+        const currUser = await this.client.getProfile();
 
         console.log('currUser: ', currUser);
         this.dataStore.set('currUser', currUser);
@@ -65,32 +65,32 @@ class ViewMessage extends BindingClass {
      async populateChat() {
             console.log("populateChat");
 
-            var otherUserEmail = this.dataStore.get('otherUserFromURL');
+            const otherUserEmail = this.dataStore.get('otherUserFromURL');
             console.log('otherUserEmail: ', otherUserEmail);
 
-            var msgWithUser = this.dataStore.get('msgWithUser');
+            const msgWithUser = this.dataStore.get('msgWithUser');
             console.log('msgWithUser: ', msgWithUser);
 
-            var chatMessages = document.getElementById('chat-messages');
+            const chatMessages = document.getElementById('chat-messages');
 
-            var currUser = this.dataStore.get('currUser');
+            let currUser = this.dataStore.get('currUser');
 
 
-            for (var i = 0; i < msgWithUser.length; i++) {
+            for (let i = 0; i < msgWithUser.length; i++) {
                 console.log('sentBy: ', msgWithUser[i].sentBy);
                 console.log('receivedBy: ', msgWithUser[i].receivedBy);
 
                 if (msgWithUser[i].sentBy === currUser.email) {
-                    var currUserDiv1 = document.createElement('div');
+                    let currUserDiv1 = document.createElement('div');
                     currUserDiv1.className = 'chat-message-right pb-4';
                     currUserDiv1.id = 'curr-user-msg' + i;
 
                     chatMessages.appendChild(currUserDiv1);
 
-                    var div2 = document.createElement('div');
+                    let div2 = document.createElement('div');
                     currUserDiv1.appendChild(div2);
 
-                    var profilePic = document.createElement('img');
+                    let profilePic = document.createElement('img');
                     profilePic.className = 'rounded-circle mr-1';
                     profilePic.width = 40;
                     profilePic.height = 40;
@@ -102,13 +102,13 @@ class ViewMessage extends BindingClass {
                         profilePic.alt = msgWithUser[i].receivedBy;
                     }
 
-                    var dateTimeDiv = document.createElement('div');
+                    let dateTimeDiv = document.createElement('div');
                     dateTimeDiv.className = 'text-muted small text-nowrap mt-2';
                     dateTimeDiv.id = 'dateTime';
 
                     dateTimeDiv.innerHTML = msgWithUser[i].dateTimeSent;
 
-                    var userEmailDiv = document.createElement('div');
+                    let userEmailDiv = document.createElement('div');
                     userEmailDiv.id = 'user-email';
                     userEmailDiv.innerHTML = msgWithUser[i].sentBy
 
@@ -116,32 +116,32 @@ class ViewMessage extends BindingClass {
                     div2.appendChild(userEmailDiv);
                     div2.appendChild(dateTimeDiv);
 
-                    var contentDiv3 = document.createElement('div');
+                    let contentDiv3 = document.createElement('div');
                     contentDiv3.className = 'flex-shrink-1 bg-light rounded py-2 px-3 mr-3';
                     contentDiv3.innerHTML = msgWithUser[i].messageContent;
 
                     currUserDiv1.appendChild(contentDiv3);
 
-                    var youDiv = document.createElement('div');
+                    let youDiv = document.createElement('div');
                     youDiv.className = 'font-weight-bold mb-1';
 
                     contentDiv3.appendChild(youDiv);
 
                  } else {
 
-                    var currUserDiv1 = document.createElement('div');
+                    let currUserDiv1 = document.createElement('div');
                     currUserDiv1.className = 'chat-message-left pb-4';
                     currUserDiv1.id = 'other-user-msg' + i;
 
                     chatMessages.appendChild(currUserDiv1);
 
-                    var div2 = document.createElement('div');
+                    let div2 = document.createElement('div');
                     div2.id = 'div2';
                     div2.className = 'chat-message-left pb-4';
 
                     currUserDiv1.appendChild(div2);
 
-                    var profilePic = document.createElement('img');
+                    let profilePic = document.createElement('img');
                     profilePic.className = 'rounded-circle mr-1';
                     profilePic.width = 40;
                     profilePic.height = 40;
@@ -153,13 +153,13 @@ class ViewMessage extends BindingClass {
                         profilePic.alt = msgWithUser[i].receivedBy;
                     }
 
-                    var dateTimeDiv = document.createElement('div');
+                    let dateTimeDiv = document.createElement('div');
                     dateTimeDiv.className = 'text-muted small text-nowrap mt-2';
                     dateTimeDiv.id = 'dateTime';
 
                     dateTimeDiv.innerHTML = msgWithUser[i].dateTimeSent;
 
-                    var userEmailDiv = document.createElement('div');
+                    let userEmailDiv = document.createElement('div');
                     userEmailDiv.id = 'user-email';
                     userEmailDiv.innerHTML = msgWithUser[i].sentBy
 
@@ -168,26 +168,25 @@ class ViewMessage extends BindingClass {
                     div2.appendChild(userEmailDiv);
                     div2.appendChild(dateTimeDiv);
 
-                    var contentDiv3 = document.createElement('div');
+                    let contentDiv3 = document.createElement('div');
                     contentDiv3.className = 'flex-shrink-1 bg-light rounded py-2 px-3 mr-3';
                     contentDiv3.innerHTML = msgWithUser[i].messageContent;
-                    contentDiv3.id = 'message-content';
 
                     currUserDiv1.appendChild(contentDiv3);
 
-                    var youDiv = document.createElement('div');
+                    let youDiv = document.createElement('div');
                     youDiv.className = 'font-weight-bold mb-1';
 
                     contentDiv3.appendChild(youDiv);
                  }
             }
 
-            var messageBtn = document.getElementById('send-msg-btn');
+            let messageBtn = document.getElementById('send-msg-btn');
 
             messageBtn.addEventListener('click', async () => {
-                var recipientEmail = this.dataStore.get('otherUserFromURL');
-                var messageContent = document.getElementById('message-content').value;
-                var readStatus = false;
+                let recipientEmail = this.dataStore.get('otherUserFromURL');
+                let messageContent = document.getElementById('message-content').value;
+                let readStatus = false;
 
                 console.log('recipient email: ', recipientEmail)
                 console.log("messageContent: ", messageContent);

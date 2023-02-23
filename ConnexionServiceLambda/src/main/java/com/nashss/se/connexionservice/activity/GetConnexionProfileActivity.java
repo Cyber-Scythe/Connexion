@@ -37,7 +37,7 @@ public class GetConnexionProfileActivity {
      * <p>
      * It then returns the compatible user.
      * <p>
-     * @param getConnexionProfileActivityRequest
+     * @param getConnexionProfileActivityRequest The request made.
      * @return GetConnexionsActivityResult result object
      */
     public GetConnexionProfileActivityResult handleRequest(final GetConnexionProfileActivityRequest

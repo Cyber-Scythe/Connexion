@@ -5,6 +5,10 @@ import com.nashss.se.connexionservice.models.UserModel;
 public class GetUserProfileActivityResult {
     private final UserModel user;
 
+    /**
+     * Constructor for GetUserProfileActivityResult.
+     * @param user the UserModel to return as result
+     */
     private GetUserProfileActivityResult(UserModel user) {
 
         this.user = user;

@@ -7,7 +7,7 @@ package com.nashss.se.connexionservice.exceptions;
  * when it should not.
  */
 public class InvalidAttributeException extends RuntimeException {
-    private static final long serialVersionUID = -7534807710372458849L; // GENERATE NEW ID!
+    private static final long serialVersionUID = -7534807710372458849L;
 
     /**
      * Exception with no message or cause.

@@ -16,7 +16,19 @@ public class UserModel {
     private final List<String> hobbies;
     private final List<String> connexions;
 
-
+    /**
+     * Constructor for UserModel object.
+     * <p>
+     * @param name The name of the user
+     * @param email The email of the user
+     * @param id The id of the user
+     * @param age The user's age
+     * @param city The city the user lives in
+     * @param state The state the user lives in
+     * @param personalityType The personality type of the user
+     * @param hobbies A list of user hobbies
+     * @param connexions A list of the user's connexions
+     */
     public UserModel(String name,
                       String email,
                       String id,

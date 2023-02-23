@@ -1,10 +1,11 @@
 package com.nashss.se.connexionservice.dynamodb;
 
+import com.nashss.se.connexionservice.dynamodb.models.Message;
+
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 
-import com.nashss.se.connexionservice.dynamodb.models.Message;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.inject.Inject;
 
 
@@ -32,7 +34,7 @@ public class MessageDao {
 
     /**
      * Saves new message to inbox table.
-     * @param message
+     * @param message The message to send.
      * @return message that was saved
      */
     public Message sendMessage(Message message) {
@@ -45,7 +47,7 @@ public class MessageDao {
      * Retrieves all messages between two users in inbox table.
      * <p>
      * If not found, throws MessageNotFoundException.
-     * @param currUserEmail
+     * @param currUserEmail The current user's email.
      * @return All messages between two users in inbox table
      */
     public List<Message> getAllMessages(String currUserEmail) {
@@ -67,8 +69,8 @@ public class MessageDao {
      * Retrieves all messages between two users in inbox table.
      * <p>
      * If not found, throws MessageNotFoundException.
-     * @param senderEmail
-     * @param recipientEmail
+     * @param senderEmail The sender's email
+     * @param recipientEmail The recipient's email
      * @return All messages between two users in inbox table
      */
     public List<Message> getMessagesWithUser(String senderEmail, String recipientEmail) {
@@ -89,7 +91,7 @@ public class MessageDao {
 
     /**
      * Deletes a message from the database.
-     * @param message
+     * @param message The message to delete
      * @return true
      */
     public boolean deleteMessages(Message message) {
@@ -97,3 +99,4 @@ public class MessageDao {
         return true;
     }
 }
+

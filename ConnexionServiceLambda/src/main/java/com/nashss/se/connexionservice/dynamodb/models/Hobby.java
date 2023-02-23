@@ -5,14 +5,24 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
 import java.util.Objects;
 
+/**
+ * Represents a record in the hobby table.
+ */
 @DynamoDBTable(tableName = "hobbies")
 public class Hobby {
     private String hobby;
 
+    /**
+     * Empty constructor for Hobby object.
+     */
     public Hobby() {
 
     }
 
+    /**
+     * Constructor for Hobby object.
+     * @param hobby The name of a hobby
+     */
     public Hobby(String hobby) {
 
         this.hobby = hobby;

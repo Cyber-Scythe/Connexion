@@ -41,8 +41,8 @@ public class GetConnexionsActivity {
      * <p>
      * It then returns the list of connexions (Users).
      * <p>
-     * @param getConnexionsActivityRequest
-     * @return GetConnexionsActivityResult result object
+     * @param getConnexionsActivityRequest The request made.
+     * @return GetConnexionsActivityResult The result object to return.
      */
     public GetConnexionsActivityResult handleRequest(final GetConnexionsActivityRequest
                                                              getConnexionsActivityRequest) {
