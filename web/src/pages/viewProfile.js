@@ -67,7 +67,6 @@ class ViewProfile extends BindingClass {
         document.getElementById('hobbies-list').innerHTML = user.hobbies;
 
        // Code to get profile picture from S3 bucket and set it as value
-       // of 'profile-picture'
     }
 }
 

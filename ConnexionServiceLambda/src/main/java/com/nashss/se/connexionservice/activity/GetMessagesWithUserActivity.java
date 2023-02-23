@@ -2,14 +2,18 @@ package com.nashss.se.connexionservice.activity;
 
 import com.nashss.se.connexionservice.activity.requests.GetMessagesWithUserActivityRequest;
 import com.nashss.se.connexionservice.activity.results.GetMessagesWithUserActivityResult;
+
 import com.nashss.se.connexionservice.dynamodb.MessageDao;
 import com.nashss.se.connexionservice.dynamodb.models.Message;
+
 import com.nashss.se.connexionservice.utils.LocalDateTimeComparator;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -33,7 +37,7 @@ public class GetMessagesWithUserActivity {
      * <p>
      * It then returns the list of messages (Message).
      * <p>
-     * @param getMessagesWithUserActivityRequest
+     * @param getMessagesWithUserActivityRequest The request made.
      * @return GetMessagesFromUserActivityResult result object
      */
     public GetMessagesWithUserActivityResult handleRequest(final GetMessagesWithUserActivityRequest
@@ -52,6 +56,11 @@ public class GetMessagesWithUserActivity {
                 .build();
     }
 
+    /**
+     * Sorts messages by the date and time they were sent.
+     * @param messages The list of messages to sort.
+     * @return List of messages.
+     */
     public List<Message> sortedMessages(List<Message> messages) {
         Collections.sort(messages, new LocalDateTimeComparator());
         return messages;

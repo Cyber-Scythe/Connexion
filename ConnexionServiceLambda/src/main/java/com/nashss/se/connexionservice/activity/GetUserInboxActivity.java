@@ -2,12 +2,14 @@ package com.nashss.se.connexionservice.activity;
 
 import com.nashss.se.connexionservice.activity.requests.GetUserInboxActivityRequest;
 import com.nashss.se.connexionservice.activity.results.GetUserInboxActivityResult;
+
 import com.nashss.se.connexionservice.dynamodb.MessageDao;
 import com.nashss.se.connexionservice.dynamodb.models.Message;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.joda.time.LocalDateTime;
+
+import java.time.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +37,7 @@ public class GetUserInboxActivity {
      * <p>
      * It then returns the list of most recent messages for each conversation.
      * <p>
-     * @param getUserInboxActivityRequest
+     * @param getUserInboxActivityRequest The request made.
      * @return GetUserInboxActivityResult result object
      */
     public GetUserInboxActivityResult handleRequest(final GetUserInboxActivityRequest

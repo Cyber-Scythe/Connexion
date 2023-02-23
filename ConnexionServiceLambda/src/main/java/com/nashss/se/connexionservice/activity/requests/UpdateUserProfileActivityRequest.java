@@ -20,6 +20,18 @@ public class UpdateUserProfileActivityRequest {
     private final List<String> connexions;
 
 
+    /**
+     * Constructor for UpdateUserProfileActivityRequest.
+     * @param email user's email
+     * @param name user's name
+     * @param id user's ID
+     * @param age user's age
+     * @param city user's city
+     * @param state user's state
+     * @param personalityType user's personality type
+     * @param hobbies List of user's hobbies
+     * @param connexions List of user's connexions
+     */
     public UpdateUserProfileActivityRequest(String email,
                                               String name,
                                               String id,

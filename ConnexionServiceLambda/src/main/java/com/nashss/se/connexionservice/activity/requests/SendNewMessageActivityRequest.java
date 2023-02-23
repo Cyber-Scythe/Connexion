@@ -11,6 +11,14 @@ public class SendNewMessageActivityRequest {
     private final String messageContent;
     private final boolean readStatus;
 
+    /**
+     * Constructor for SendNewMessageActivityRequest.
+     * @param senderEmail The sender's email
+     * @param recipientEmail Recipient's email
+     * @param dateTimeSent The date and time sent
+     * @param messageContent The message content
+     * @param readStatus Whether the message has been read or not.
+     */
     public SendNewMessageActivityRequest(String senderEmail,
                                          String recipientEmail,
                                          String dateTimeSent,
@@ -27,19 +35,19 @@ public class SendNewMessageActivityRequest {
         return senderEmail;
     }
 
-   public String getRecipientEmail() {
+    public String getRecipientEmail() {
         return recipientEmail;
     }
 
-   public String getDateTimeSent() {
+    public String getDateTimeSent() {
         return dateTimeSent;
     }
 
-   public String getMessageContent() {
+    public String getMessageContent() {
         return messageContent;
-   }
+    }
 
-   public boolean getReadStatus() {
+    public boolean getReadStatus() {
         return readStatus;
     }
 

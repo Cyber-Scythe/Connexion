@@ -47,12 +47,12 @@ public class GetMessagesWithUserActivityTest {
         Message msg2 = new Message();
         msg2.setSentBy(currUser.getEmail());
         msg2.setReceivedBy(otherUserEmail);
-        msg2.setDateTimeSent(LocalDateTime.now().toString());
+        msg2.setDateTimeSent("2023-02-23T11:08:54.970761");
         msg2.setMessageContent("content");
         msg2.setReadStatus(true);
 
-        List<Message> messageList = List.of(msg2, msg1);
-        ;
+        List<Message> messageList = List.of(msg1, msg2);
+        
         when(messageDao.getMessagesWithUser(currUser.getEmail(), otherUserEmail)).thenReturn(messageList);
 
         GetMessagesWithUserActivityRequest request = GetMessagesWithUserActivityRequest.builder()

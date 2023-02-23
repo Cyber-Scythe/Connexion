@@ -38,7 +38,7 @@ public class GetHobbiesFromDbActivity {
      * <p>
      * It then returns the list of hobbies.
      * <p>
-     * @param getHobbiesFromDbActivityRequest
+     * @param getHobbiesFromDbActivityRequest The request made.
      * @return GetHobbiesFromDbActivityResult result object
      */
     public GetHobbiesFromDbActivityResult handleRequest(final GetHobbiesFromDbActivityRequest

@@ -1,11 +1,16 @@
 package com.nashss.se.connexionservice.dynamodb.models;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
 import java.io.Serializable;
-import java.util.*;
 
-import static com.nashss.se.connexionservice.utils.CollectionUtils.*;
+import java.util.List;
+import java.util.Objects;
+
+import static com.nashss.se.connexionservice.utils.CollectionUtils.copyToList;
 
 /**
  * Represents a record in the users table.
@@ -188,10 +193,9 @@ public class User implements Serializable {
     /**
      * Sets the connexions for this User as a copy of input, or null if input is null.
      *
-     * @param connexions HashMap of connexions for this user
+     * @param connexions List of String connexions for this user
      */
     public void setConnexions(List<String> connexions) {
-        // See comment in getConnexions
         if (null == connexions) {
             this.connexions = null;
         } else {
