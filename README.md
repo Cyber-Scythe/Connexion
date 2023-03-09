@@ -1,84 +1,240 @@
-# Unit 5 Project Intro
+<!-- PROJECT SHIELDS -->
+<!--
+*** I'm using markdown "reference style" links for readability.
+*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
+*** See the bottom of this document for the declaration of the reference variables
+*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
+*** https://www.markdownguide.org/basic-syntax/#reference-style-links
+-->
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
 
-Welcome to the Unit 5 Project. This project is a starting point that you'll be making extensive changes to as you design and build your own application. The code provided here is a starting point meant to remind you of patterns that we've been using, as well as show you a few new patterns that you might find useful. This document has 2 main sections:
 
-- Deliverables
-- Infrastructure
 
-> **NOTE:** There's a lot to this project, so we've split out the more tactical "how to" guidance into a [separate README](./README-SETUP.md) that you'll want to review and follow the included instructions for after you read through this one.
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/github_username/repo_name">
+    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  </a>
 
-## Deliverables
+<h3 align="center">Connexion</h3>
 
-These are the required deliverables/reviews that you and your team will need to create during the project. _The status of each of these will be tracked in the GitHub project that your team is using._
+  <p align="center">
+    Social media has done so much to bring people together, but it is missing an integral part that allows people to make meaningful, genuine connections.
+    According to Myers Briggs, personality compatability is what lays the foundation for meaninful relationships. Connexion is a social media platform, in
+    it's infancy, that matches users based on their personality type and ranks them by the hobbies they have in common. Unlike traditional social media       platforms, users can only see other users that they have matched with. This does away with the issue of "friend collecting".
+  </p>
+  <p>
+    <br />
+    <a href="[https://github.com/github_username/repo_name](https://github.com/Cyber-Scythe/Connexion)"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="[https://github.com/github_username/repo_name](https://github.com/Cyber-Scythe/Connexion)">View Demo</a>
+    ·
+    <a href="[https://github.com/github_username/repo_name/issues](https://github.com/Cyber-Scythe/Connexion/issues)">Report Bug</a>
+    ·
+    <a href="[https://github.com/github_username/repo_name/issues](https://github.com/Cyber-Scythe/Connexion/issues)">Request Feature</a>
+  </p>
+</div>
 
-### Team Deliverables
 
-* **Design Document: Problem Statement** Your team’s technical design specification. Complete [this template](resources/design-document.md). This should explain the product you'll be creating and what problem it solves.
-* **Design Document: Peer Team Review** Another team will review your technical design to help improve it. Each team will review at least one other teams design.
-* **Design Document: Instructor Review** One of the instructors will review your technical design after you've create it and reviewed it with another team.
-* **Team Charter:** Statements of how your team will work to ensure constructive collaboration, fairness, that everyone is learning and contributing. Complete [this template](resources/team-charter.md).
-* **Working Product:** Your project, as a working website deployed to AWS.
-* **Team Reflection:** A final retrospective with a few questions to answer as a team to reflect on what you have accomplished and learned throughout the project. Complete [this template](resources/team-reflection.md).
 
-### Individual Deliverables
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
 
-* **Accomplishment Tracking:** You'll be keeping a log of your individual accomplishments and lessons learned throughout this project week-by-week. Keeping a high level record of your accomplishments throughout your career is useful for your career growth and promotion. Use [this template](resources/individual-accomplishments-template.md) as a starting point, but you can keep this log in whatever tool/location you'd like.
 
-## Technical Learning Objectives
 
-This project is very open-ended and you/your team will be doing a lot of creative thinking to decide what you want to build. That said, there are several technical learning objectives that each team must meet. You should review the [Technical Learning Objectives](./resources/technical-objectives.md) as you familiarize yourself with the project. As part of the team reflection/retrospective you'll fill out this document with your team to document how you met the different objectives.
+<!-- ABOUT THE PROJECT -->
+## About The Project
+![Connexion-Screenshot](https://user-images.githubusercontent.com/10260229/224134983-d7376fb2-9da4-4003-aac4-f926de455a83.jpg)
+<br>
+  Connexion is a social media platform that is in it's infancy. Connexion matches users based on the Myers Briggs personality compatability model.
+Users can only see and interact with users they match with, doing away with the issue of "friend collecting" that we so often see with today's
+popular social media platforms.
 
-## Project Starter Infrastructure
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-Your team has been provided with a website, hosted by [CloudFront](https://aws.amazon.com/cloudfront/), that talks to an Amazon API Gateway endpoint. (A web front-end is likely new for several of you, as your unit projects so far have been all service development.) The Amazon API Gateway connects to a Lambda service, which stores its data in DynamoDB, an architecture that we’ve used several times on unit projects so far. The starter code provided contains a website that uses the playlist service you created in Unit 3. Below, Image 1 describes the architecture of the starter project.
 
-![Image 1: The architecture of your starter project](resources/images/architecture_diagram.png)
 
-*Image 1: Architecture diagram for the starter project*
+### Built With
 
-### Introduction to the Starter Code
+* [![Node][Node.js]][Next-url]
+* [![React][React.js]][React-url]
+* [![Vue][Vue.js]][Vue-url]
+* [![Angular][Angular.io]][Angular-url]
+* [![Svelte][Svelte.dev]][Svelte-url]
+* [![Laravel][Laravel.com]][Laravel-url]
+* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
+* [![JQuery][JQuery.com]][JQuery-url]
 
-Unlike our unit projects in the past, this project will have two code bases.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-[One code base](./MusicPlaylistServiceLambda) will be for your Lambda service code, similar to what we’ve seen previously. This will contain code that designs and runs your service APIs, as well as packages to interact with and test your service.
 
-The [second code base](./web) will contain code for your website:
 
-* HTML: The content of your web pages
-* CSS: The styling and formatting of your web pages
-* JavaScript: The code that runs when a user interacts with the web pages, some of which triggers the browser to send requests to the service
+<!-- GETTING STARTED -->
+## Getting Started
 
-Often times these are separated into different repositories, but for simplicity’s sake we've kept them in the same repository for this project.
+This is an example of how you may give instructions on setting up your project locally.
+To get a local copy up and running follow these simple example steps.
 
-_Both of these should be considered starting points/example code. You will end up removing/replacing all of it as you build your own project._
+### Prerequisites
 
-### Deploying
+This is an example of how to list things you need to use the software and how to install them.
+* npm
+  ```sh
+  npm install npm@latest -g
+  ```
 
-We'll be using GitHub Actions to deploy the code to AWS. One of the first tasks that you'll do as a team is to configure the repository for this. Once that's completed your code should build and deploy as described in the [next README](./README-SETUP.md).
+### Installation
 
-### AWS Resources
+1. Get a free API Key at [https://example.com](https://example.com)
+2. Clone the repo
+   ```sh
+   git clone https://github.com/github_username/repo_name.git
+   ```
+3. Install NPM packages
+   ```sh
+   npm install
+   ```
+4. Enter your API in `config.js`
+   ```js
+   const API_KEY = 'ENTER YOUR API';
+   ```
 
-Each team has one AWS account they will share to deploy their website and service. This is where all of your changes will be merged together and visible. Your team's account will be named something like `SE_Unit_5_Group_TEAMNAME` and will be available for you to configure like you've done in previous units.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Your website!
 
-To access your website, you'll need to build it first. The [next README](./README-SETUP.md) has instructions on the different ways we'll be doing this.
 
-## How Your Website Works
+<!-- USAGE EXAMPLES -->
+## Usage
 
-Creating each page of your website requires a surprising amount of interactions between different JavaScript files and between our frontend and our backend. Our view playlist page makes 3 separate calls to our MusicPlaylistService.
+Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
-Let’s look at one piece - adding the header to our page. This requires the full end to end flow of HTML to JS to backend service all the way back to updating our HTML.
+_For more examples, please refer to the [Documentation](https://example.com)_
 
-![Image 2: The end to end flow of HTML to JS to the backend service, and the return to HTML.](resources/images/sequence_diagram.png)
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-*Image 2: The end to end flow of HTML to JS to the backend service, and the return to HTML*
 
-Two important things to call out:
 
-1. To call our backend we are always going through our `MusicPlaylistClient`.
-2. The `DataStore` uses a different pattern than we’ve seen previously. It has two member variables - the state, which is a JavaScript object that should hold all of the data being used across a webpage, and a list of listeners. The listeners are methods in other objects. Anytime `set` or `setState` is called it loops through all of those methods and executes each one. So in each of those listeners the first thing we do is check to see if the data that they rely on is null. Then, if it’s not null, we update the html to reflect the new data. You can take a look at the `addPlaylistToPage()` method in `viewPlaylist.js` for an example of this.
+<!-- ROADMAP -->
+## Roadmap
 
-## Project Setup
+- [ ] Feature 1
+- [ ] Feature 2
+- [ ] Feature 3
+    - [ ] Nested Feature
 
-This document has provided an overview of the project as a whole. For more specifics on how to configure the project and your GitHub repo/AWS account, continue by reading [README-SETUP.md](./README-SETUP.md).
+See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- CONTRIBUTING -->
+## Contributing
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- LICENSE -->
+## License
+
+Distributed under the MIT License. See `LICENSE.txt` for more information.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- CONTACT -->
+## Contact
+
+Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+
+Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- ACKNOWLEDGMENTS -->
+## Acknowledgments
+
+* []()
+* []()
+* []()
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[contributors-shield]: https://img.shields.io/github/contributors/github_username/repo_name.svg?style=for-the-badge
+[contributors-url]: https://github.com/github_username/repo_name/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/github_username/repo_name.svg?style=for-the-badge
+[forks-url]: https://github.com/github_username/repo_name/network/members
+[stars-shield]: https://img.shields.io/github/stars/github_username/repo_name.svg?style=for-the-badge
+[stars-url]: https://github.com/github_username/repo_name/stargazers
+[issues-shield]: https://img.shields.io/github/issues/github_username/repo_name.svg?style=for-the-badge
+[issues-url]: https://github.com/github_username/repo_name/issues
+[license-shield]: https://img.shields.io/github/license/github_username/repo_name.svg?style=for-the-badge
+[license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://linkedin.com/in/linkedin_username
+[product-screenshot]: images/screenshot.png
+[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
+[Next-url]: https://nextjs.org/
+[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React-url]: https://reactjs.org/
+[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
+[Vue-url]: https://vuejs.org/
+[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
+[Angular-url]: https://angular.io/
+[Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00
+[Svelte-url]: https://svelte.dev/
+[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
+[Laravel-url]: https://laravel.com
+[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
+[Bootstrap-url]: https://getbootstrap.com
+[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
+[JQuery-url]: https://jquery.com 
