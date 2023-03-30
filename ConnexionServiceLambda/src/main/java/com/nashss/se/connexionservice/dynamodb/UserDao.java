@@ -5,14 +5,10 @@ import com.nashss.se.connexionservice.metrics.MetricsPublisher;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
-import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedScanList;
 
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -44,7 +40,8 @@ public class UserDao {
      * @return the stored user
      */
     public User getUser(String id) {
-        return this.dynamoDbMapper.load(User.class, id);
+        User user = this.dynamoDbMapper.load(User.class, id);
+        return user;
     }
 
 
@@ -67,20 +64,18 @@ public class UserDao {
      */
     public List<User> getAllConnexions(User currUser) {
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
-        PaginatedScanList<User> scanResult = dynamoDbMapper.scan(User.class, scanExpression);
-
-        scanResult.remove(currUser);
-        return scanResult;
+        return dynamoDbMapper.scan(User.class, scanExpression);
     }
 
 
     /**
      * Perform a search (via a "scan") of the users table for users matching the given criteria.
      * "personalityType" attribute is searched.
+     * @param currUser The current user.
      * @param personalityTypes A list of compatible personality types.
      * @return a List of User objects that match the search criteria.
      */
-    public List<User> getConnexions(List<String> personalityTypes) {
+    public List<User> getConnexions(User currUser, List<String> personalityTypes) {
         Map<String, AttributeValue> valueMap = new HashMap<>();
 
         for (int i = 0; i < personalityTypes.size(); i++) {
@@ -104,42 +99,28 @@ public class UserDao {
      * @return a List of personality types compatible with the given personality type.
      */
     public List<String> getCompatiblePersonalityTypes(String personalityType) {
+        String pType = personalityType.toUpperCase();
+
         Map<String, List<String>> personalityMap = new HashMap<>();
         personalityMap.put("ESTP", List.of("ISTP", "ESFJ", "ISFJ", "ESTP", "ENFJ", "INFJ"));
-        personalityMap.put("estp", List.of("ISTP", "ESFJ", "ISFJ", "ESTP", "ENFJ", "INFJ"));
         personalityMap.put("ISTP", List.of("ESTP", "ESFJ", "ISFJ", "ISTP", "ENFJ", "INFJ"));
-        personalityMap.put("istp", List.of("ESTP", "ESFJ", "ISFJ", "ISTP", "ENFJ", "INFJ"));
         personalityMap.put("ESFP", List.of("ISFP", "ESTJ", "ISTJ", "ESFP", "ENTJ", "INFJ"));
-        personalityMap.put("esfp", List.of("ISFP", "ESTJ", "ISTJ", "ESFP", "ENTJ", "INFJ"));
         personalityMap.put("ISFP", List.of("ESFP", "ESTJ", "ISTJ", "ISFP", "ENTJ", "INTJ"));
-        personalityMap.put("isfp", List.of("ESFP", "ESTJ", "ISTJ", "ISFP", "ENTJ", "INTJ"));
         personalityMap.put("ESTJ", List.of("ESFP", "ISFP", "ISTJ", "ESTJ", "ENFP", "INFP"));
-        personalityMap.put("estj", List.of("ESFP", "ISFP", "ISTJ", "ESTJ", "ENFP", "INFP"));
         personalityMap.put("ISTJ", List.of("ESFP", "ISFP", "ESTJ", "ISTJ", "ENFP", "INFP"));
-        personalityMap.put("istj", List.of("ESFP", "ISFP", "ESTJ", "ISTJ", "ENFP", "INFP"));
         personalityMap.put("ESFJ", List.of("ESTP", "ISTP", "ISFJ", "ESFJ", "ENTP", "INTP"));
-        personalityMap.put("esfj", List.of("ESTP", "ISTP", "ISFJ", "ESFJ", "ENTP", "INTP"));
         personalityMap.put("ISFJ", List.of("ESTP", "ISTP", "ESFJ", "ISFJ", "ENTP", "INTP"));
-        personalityMap.put("isfj", List.of("ESTP", "ISTP", "ESFJ", "ISFJ", "ENTP", "INTP"));
         personalityMap.put("ENFP", List.of("INFP", "ENTJ", "INTJ", "ESTJ", "ISTJ", "ENFP"));
-        personalityMap.put("enfp", List.of("INFP", "ENTJ", "INTJ", "ESTJ", "ISTJ", "ENFP"));
         personalityMap.put("INFP", List.of("ENFP", "ENTJ", "INTJ", "ESTJ", "ISTJ", "INFP"));
-        personalityMap.put("infp", List.of("ENFP", "ENTJ", "INTJ", "ESTJ", "ISTJ", "INFP"));
         personalityMap.put("ENFJ", List.of("INFJ", "ENTP", "INTP", "ESTP", "ISTP", "ENFJ"));
-        personalityMap.put("enfj", List.of("INFJ", "ENTP", "INTP", "ESTP", "ISTP", "ENFJ"));
         personalityMap.put("INFJ", List.of("ENFJ", "ENTP", "INTP", "ESTP", "ISTP", "INFJ"));
-        personalityMap.put("infj", List.of("ENFJ", "ENTP", "INTP", "ESTP", "ISTP", "INFJ"));
         personalityMap.put("ENTP", List.of("ENFJ", "INFJ", "INTP", "ESFJ", "ISFJ", "ENTP"));
-        personalityMap.put("entp", List.of("ENFJ", "INFJ", "INTP", "ESFJ", "ISFJ", "ENTP"));
         personalityMap.put("INTP", List.of("ENFJ", "INFJ", "ENTP", "ESFJ", "ISFJ", "INTP"));
-        personalityMap.put("intp", List.of("ENFJ", "INFJ", "ENTP", "ESFJ", "ISFJ", "INTP"));
         personalityMap.put("ENTJ", List.of("ENFP", "INFP", "ENTJ", "ESFP", "ISFP", "ENTJ"));
-        personalityMap.put("entj", List.of("ENFP", "INFP", "ENTJ", "ESFP", "ISFP", "ENTJ"));
         personalityMap.put("INTJ", List.of("ENFP", "INFP", "ENTJ", "ESFP", "ISFP", "INTJ"));
-        personalityMap.put("intj", List.of("ENFP", "INFP", "ENTJ", "ESFP", "ISFP", "INTJ"));
 
-        if (personalityType != null && personalityMap.containsKey(personalityType)) {
-            return personalityMap.get(personalityType);
+        if (pType != null && personalityMap.containsKey(pType)) {
+            return personalityMap.get(pType);
         }
 
         return null;
@@ -152,8 +133,8 @@ public class UserDao {
      * @return a Map of compatible users in order from most compatible to least
      *
      */
-    public Map<String, Integer> sortConnexions(List<String> currUserHobbies, List<User> connexions) {
-        Map<String, Integer> connexionTreeMap = new TreeMap<>();
+    public Map<User, Integer> sortConnexions(List<String> currUserHobbies, List<User> connexions) {
+        Map<User, Integer> connexionMap = new HashMap<>();
 
         for (User user : connexions) {
             if (user.getHobbies() != null && !user.getHobbies().isEmpty()) {
@@ -165,14 +146,38 @@ public class UserDao {
                         count++;
                     }
                 }
-                connexionTreeMap.put(user.getId(), count);
+                connexionMap.put(user, count);
             } else {
-                connexionTreeMap.put(user.getId(), 0);
+                connexionMap.put(user, 0);
             }
         }
-        return connexionTreeMap;
+
+        List<Map.Entry<User, Integer>> valueList =
+                new ArrayList<Map.Entry<User, Integer>>(connexionMap.entrySet());;
+
+        Comparator<Map.Entry<User, Integer>> valueComparator =
+                new Comparator<Map.Entry<User,Integer>>() {
+            @Override public int compare(
+                    Map.Entry<User, Integer> e1, Map.Entry<User, Integer> e2) {
+                Integer v1 = e1.getValue();
+                Integer v2 = e2.getValue();
+                return v1.compareTo(v2); }
+        };
+
+        Collections.sort(valueList, valueComparator);
+
+        LinkedHashMap<User, Integer> sortedByValue
+                = new LinkedHashMap<User, Integer>(valueList.size());
+
+        for(Map.Entry<User, Integer> entry : valueList) {
+            sortedByValue.put(entry.getKey(), entry.getValue());
+        }
+
+        return sortedByValue;
     }
 }
+
+
 
 
 

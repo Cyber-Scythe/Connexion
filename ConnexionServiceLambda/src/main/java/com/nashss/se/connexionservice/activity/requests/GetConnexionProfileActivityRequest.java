@@ -3,6 +3,8 @@ package com.nashss.se.connexionservice.activity.requests;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
+import java.util.List;
+
 @JsonDeserialize(builder = GetConnexionProfileActivityRequest.Builder.class)
 public class GetConnexionProfileActivityRequest {
     private final String id;
@@ -32,16 +34,16 @@ public class GetConnexionProfileActivityRequest {
 
     @JsonPOJOBuilder
     public static class Builder {
-        private String id;
+        private String userId;
 
-        public Builder withId(String id) {
-            this.id = id;
+        public Builder withId(String userId) {
+            this.userId = userId;
             return this;
         }
 
         public GetConnexionProfileActivityRequest build() {
 
-            return new GetConnexionProfileActivityRequest(id);
+            return new GetConnexionProfileActivityRequest(userId);
         }
     }
 }

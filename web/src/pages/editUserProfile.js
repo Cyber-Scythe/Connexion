@@ -1,8 +1,12 @@
 import ConnexionClient from '../api/connexionClient';
 import Header from '../components/header';
-import BindingClass from "../util/bindingClass";
-import DataStore from "../util/DataStore";
-
+import Authenticator from '../api/authenticator';
+import BindingClass from '../util/bindingClass';
+import DataStore from '../util/DataStore';
+import AWS from 'aws-sdk';
+import https from "https";
+import { HttpRequest } from "@aws-sdk/protocol-http";
+import * as fs from 'fs';
 
 /**
  * Logic needed for the view profile page of the website.
@@ -11,7 +15,11 @@ class EditUserProfile extends BindingClass {
     constructor() {
         super();
 
-        this.bindClassMethods(['mount', 'populateHobbiesList', 'prepopulateProfile'], this);
+        this.bindClassMethods(['mount',
+                               'populateHobbiesList',
+                               'prepopulateProfile',
+                               'previewImage',
+                               'putInS3Bucket'], this);
 
         // Create a new datastore
         this.dataStore = new DataStore();
@@ -41,6 +49,8 @@ class EditUserProfile extends BindingClass {
      * Add the header to the page and load the ConnexionClient.
      */
      mount() {
+        const fileUpload = document.getElementById('file-upload').addEventListener("change", this.previewImage);
+
         this.header.addHeaderToPage();
         this.client = new ConnexionClient();
         this.clientLoaded();
@@ -130,7 +140,12 @@ class EditUserProfile extends BindingClass {
 
         let saveButton = document.getElementById('save-btn');
         saveButton.addEventListener('click', async (evt) => {
+
              evt.preventDefault();
+
+             const curUser = this.dataStore.get('currUser');
+             const userId = curUser.id;
+
              const username = document.getElementById('input-name').value;
              const age = document.getElementById('input-age').value;
              const personalityType = document.getElementById('input-personality-type').value;
@@ -159,21 +174,73 @@ class EditUserProfile extends BindingClass {
 
             console.log("userHobbies: ", userHobbies);
             const currUser = this.dataStore.get('currUser');
+            const photoData = this.dataStore.get('photoData');
+            const presignedUrl = this.dataStore.get('presignedUrl');
+
+            // *** PUT PHOTO IN S3 BUCKET ***
+            await this.putInS3Bucket(presignedUrl, photoData);
 
             await this.client.updateUserProfile(currUser.id, username, age, city, state, personalityType, userHobbies, connexions);
 
             const user = this.dataStore.get('currUser');
             console.log('user.id: ', user.id);
 
-            location.href = '/view_profile.html?user=' + user.id + '';
+           // location.href = '/view_profile.html?user=' + user.id + '';
         });
+    }
+
+     /**
+     * Create an arrow function that will be called when an image is selected.
+     */
+     async previewImage(evt) {
+        let imageFiles = event.target.files;
+        let imageFilesLength = imageFiles.length;
+
+        let imageSrc;
+
+        if (imageFilesLength > 0) {
+
+            imageSrc = URL.createObjectURL(imageFiles[0]);
+
+            // *** GET PRE-SIGNED URL ***
+            const user = this.dataStore.get('currUser');
+            const presignedUrl = await this.client.getPresignedUrl(user.id);
+            console.log('Pre-signed URL: ', presignedUrl);
+            this.dataStore.set('presignedUrl', presignedUrl);
+
+            const imagePreviewElement = document.querySelector("#preview-selected-image");
+            imagePreviewElement.src = imageSrc;
+            imagePreviewElement.style.display = "block";
+
+            const imageName = imageFiles[0].name;
+            const fileType = imageFiles[0].type;
+
+            console.log('IMAGE FILE: ', imageFiles[0]);
+            console.log("FILE TYPE: ", fileType);
+            console.log("IMAGE SRC: ", imageSrc);
+
+            this.dataStore.set('photoData', imageFiles[0]);
+        }
+    }
+
+    async putInS3Bucket(url, data) {
+          const axios = require('axios');
+
+          axios.put(url, { data: data })
+            .then(response => {
+              console.log(response.data.url);
+              console.log(response.data.explanation);
+            })
+            .catch(error => {
+              console.log(error);
+            });
     }
 }
 
 /**
  * Main method to run when the page contents have loaded.
  */
- const main = async () => {
+export const main = async () => {
     const editUserProfile = new EditUserProfile();
     editUserProfile.mount();
 };

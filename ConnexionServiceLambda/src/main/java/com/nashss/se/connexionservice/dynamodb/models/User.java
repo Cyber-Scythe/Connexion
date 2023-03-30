@@ -65,6 +65,7 @@ public class User implements Serializable {
         this.hobbies = hobbies;
         this.connexions = connexions;
     }
+
     @DynamoDBHashKey(attributeName = "id")
     public String getId() {
         return id;

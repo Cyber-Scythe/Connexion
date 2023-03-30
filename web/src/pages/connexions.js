@@ -32,9 +32,7 @@ class Connexions extends BindingClass {
 
         console.log("personalityTYpe: ", currUser.personalityType);
 
-        const connexions = await this.client.getConnexions(currUser.personalityType, (error) => {
-            console.log(`Error: ${error.message}`);
-        });
+        const connexions = await this.client.getConnexions(currUser.personalityType);
         console.log("curr user connexions: ", connexions);
 
         this.dataStore.set('connexions', connexions);
@@ -58,21 +56,34 @@ class Connexions extends BindingClass {
         console.log("addConnexionsToPage");
 
         const connexions = this.dataStore.get('connexions');
+        console.log('Inside addConnexionsToPage() -> connexions: ', connexions);
+
         const currUser = this.dataStore.get('currUser');
 
         if (connexions == null) {
             return;
         }
 
+        let currUserHobbies = currUser.hobbies;
+
+
+        for (let i = 0; i < connexions.length; i++) {
+            let count = 0;
+            for (let a = 0; a < currUserHobbies.length; a++) {
+                if (connexions[i].hobbies.includes(currUserHobbies[a])) {
+                    count++;
+               }
+            }
+            console.log('num common hobbies: ', count);
+        }
+
         let rowRemovable = document.getElementById('row-removable');
 
         for (let i = 0; i < connexions.length; i++) {
-            if (connexions[i] !== currUser.id) {
+            if (connexions[i].id !== currUser.id) {
 
-                let userId = connexions[i];
+                let userId = connexions[i].id;
                 console.log("userID: ", userId);
-
-                const user = await this.client.getConnexionProfile(userId);
 
                 let div = document.createElement('div');
                                 div.className = 'col-xl-3 col-md-6 mb-4';
@@ -122,15 +133,15 @@ class Connexions extends BindingClass {
                 span.className = 'h6 font-weight-bold mb-0';
                 span.type = 'span';
                 span.id = 'user-name' + i;
-                span.value = user.name;
-                span.innerHTML = user.name;
+                span.value = connexions[i].name;
+                span.innerHTML = connexions[i].name;
                 span.addEventListener('click', async() => {
-                    location.href = '/view_profile.html?user=' + user.id + '';
+                    location.href = '/view_profile.html?user=' + userId + '';
                 });
 
                 div4.appendChild(span);
 
-                let userLocation = user.city + ", " + user.state;
+                let userLocation = connexions[i].city + ", " + connexions[i].state;
                 let div5 = document.createElement('div');
                 div5.type = 'div';
                 div5.id = userLocation;
@@ -148,10 +159,10 @@ class Connexions extends BindingClass {
                 msgButton.id = 'message-btn-' + i;
                 msgButton.innerText = "Message";
 
-                console.log('user.email: ', user.email);
-                let email = user.email;
+                console.log('user.email: ', connexions[i].email);
+                let email = connexions[i].email;
                 msgButton.onclick = function (email) {
-                         let encodedEmail = encodeURIComponent(user.email);
+                         let encodedEmail = encodeURIComponent(connexions[i].email);
                          location.href = '/view_message.html?otherUser=' + encodedEmail + '';
                 };
 

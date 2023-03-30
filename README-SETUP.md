@@ -63,7 +63,7 @@ In this scenario you will run both the backend and frontend locally on your lapt
    - Build the Java code: `sam build`
    - Create an S3 bucket: `aws s3 mb s3://nss-s3-c##-u5-project-YOUR.NAME` (Replace `c##` with your cohort number, e.g. `c01` for Cohort 1, and replace `YOUR.NAME` with your first and last name.)
       > **NOTES:** 
-      > - S3 bucket names must be lower case.  
+      > - S3 bucket names must be lowercase.  
       > - You only need to do this once.
    - Deploy the SAM template: `sam deploy --s3-bucket __BUCKET_FROM_ABOVE__ --parameter-overrides S3Bucket=__BUCKET_FROM_ABOVE__ FrontendDeployment=local`
 
@@ -139,7 +139,7 @@ Before this scenario will work, you need to perform a few steps:
 
 1. Create an S3 bucket: `aws s3 mb s3://nss-s3-c##-u5-project-YOUR.TEAM.NAME` (Replace `c##` with your cohort number, e.g. `c01` for Cohort 1, and replace `YOUR.TEAM.NAME` with your team's name.)
 
-    > **NOTE:** S3 bucket names must be lower case.
+    > **NOTE:** S3 bucket names must be lowercase.
 
 1. Deploy the Lambda service (aka the backend). _NOTE that the primary purpose of deploying this now (with your group AWS account) is to create several of the resources that we need to plug into the GitHub Actions configuration. This is the only time that you'll deploy manually to your AWS account._:
     - Build the Java code: `sam build`

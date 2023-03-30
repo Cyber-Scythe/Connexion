@@ -9,6 +9,8 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Collections;
+
 public class GetConnexionProfileLambda
         extends LambdaActivityRunner<GetConnexionProfileActivityRequest, GetConnexionProfileActivityResult>
         implements RequestHandler<AuthenticatedLambdaRequest<GetConnexionProfileActivityRequest>,
@@ -18,16 +20,19 @@ public class GetConnexionProfileLambda
     @Override
     public LambdaResponse handleRequest(AuthenticatedLambdaRequest<GetConnexionProfileActivityRequest> input,
                                             Context context) {
+
         return super.runActivity(() -> {
-                //GetConnexionsActivityRequest unauthenticatedRequest =
-                // input.fromBody(GetConnexionsActivityRequest.class);
-                return input.fromPath(path ->
-                        GetConnexionProfileActivityRequest.builder()
+            GetConnexionProfileActivityRequest pathData = input.fromPath(path ->
+                    GetConnexionProfileActivityRequest.builder()
                                 .withId(path.get("userId"))
                                 .build());
+
+            return GetConnexionProfileActivityRequest.builder()
+                        .withId(pathData.getId())
+                        .build();
             }, (request, serviceComponent) ->
                     serviceComponent.provideGetConnexionProfileActivity().handleRequest(request)
-            );
+        );
     }
 }
 

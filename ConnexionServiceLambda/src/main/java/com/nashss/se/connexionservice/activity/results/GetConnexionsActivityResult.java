@@ -1,20 +1,23 @@
 package com.nashss.se.connexionservice.activity.results;
 
+import com.nashss.se.connexionservice.dynamodb.models.User;
+import com.nashss.se.connexionservice.models.UserModel;
+
 import java.util.List;
 
 public class GetConnexionsActivityResult {
-    private final List<String> connexionsList;
+    private final List<UserModel> connexionsList;
 
     /**
      * Constructor for GetConnexionsActivityResult.
      * @param connexionsList the list of connexions to convert
      */
-    public GetConnexionsActivityResult(List<String> connexionsList) {
+    public GetConnexionsActivityResult(List<UserModel> connexionsList) {
 
         this.connexionsList = connexionsList;
     }
 
-    public List<String> getConnexions() {
+    public List<UserModel> getConnexions() {
 
         return connexionsList;
     }
@@ -32,9 +35,9 @@ public class GetConnexionsActivityResult {
     }
 
     public static class Builder {
-        private List<String> connexionsList;
+        private List<UserModel> connexionsList;
 
-        public Builder withConnexionsList(List<String> connexionsList) {
+        public Builder withConnexionsList(List<UserModel> connexionsList) {
             this.connexionsList = connexionsList;
             return this;
         }

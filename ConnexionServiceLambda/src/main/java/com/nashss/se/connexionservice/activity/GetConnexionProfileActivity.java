@@ -43,12 +43,13 @@ public class GetConnexionProfileActivity {
     public GetConnexionProfileActivityResult handleRequest(final GetConnexionProfileActivityRequest
                                                                    getConnexionProfileActivityRequest) {
         log.info("Inside GetConnexionsActivityResult handleRequest");
+        String userId = getConnexionProfileActivityRequest.getId();
 
-        User compatibleUser = userDao.getUser(getConnexionProfileActivityRequest.getId());
+        User compatibleUser = userDao.getUser(userId);
         UserModel userModel = new ModelConverter().toUserModel(compatibleUser);
 
         return GetConnexionProfileActivityResult.builder()
-                .withUser(userModel)
+                .withUserModel(userModel)
                 .build();
     }
 }

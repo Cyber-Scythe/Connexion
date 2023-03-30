@@ -2,12 +2,15 @@ package com.nashss.se.connexionservice.activity;
 
 import com.nashss.se.connexionservice.activity.requests.GetConnexionProfileActivityRequest;
 import com.nashss.se.connexionservice.activity.results.GetConnexionProfileActivityResult;
+import com.nashss.se.connexionservice.converters.ModelConverter;
 import com.nashss.se.connexionservice.dynamodb.UserDao;
 import com.nashss.se.connexionservice.dynamodb.models.User;
+import com.nashss.se.connexionservice.models.UserModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,6 +20,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class GetConnexionProfileActivityTest {
     @Mock
     private UserDao userDao;
+    UserModel userModel;
 
     private GetConnexionProfileActivity getConnexionProfileActivity;
 
@@ -51,6 +55,8 @@ public class GetConnexionProfileActivityTest {
         user.setHobbies(expectedHobbies);
         user.setConnexions(expectedConnexions);
 
+        userModel = new ModelConverter().toUserModel(user);
+
         when(userDao.getUser(expectedId)).thenReturn(user);
 
         GetConnexionProfileActivityRequest request = GetConnexionProfileActivityRequest.builder()
@@ -61,14 +67,6 @@ public class GetConnexionProfileActivityTest {
         GetConnexionProfileActivityResult result = getConnexionProfileActivity.handleRequest(request);
 
         // THEN
-        assertEquals(expectedId, result.getUser().getId());
-        assertEquals(expectedName, result.getUser().getName());
-        assertEquals(expectedEmail, result.getUser().getEmail());
-        assertEquals(expectedAge, result.getUser().getAge());
-        assertEquals(expectedCity, result.getUser().getCity());
-        assertEquals(expectedState, result.getUser().getState());
-        assertEquals(expectedPersonalityType, result.getUser().getPersonalityType());
-        assertEquals(expectedHobbies, result.getUser().getHobbies());
-        assertEquals(expectedConnexions, result.getUser().getConnexions());
+        assertEquals(userModel, result.getUserModel());
     }
 }

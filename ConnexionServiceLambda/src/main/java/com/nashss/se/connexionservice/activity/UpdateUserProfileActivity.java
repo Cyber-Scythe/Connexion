@@ -17,7 +17,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-
 public class UpdateUserProfileActivity {
     private final Logger log = LogManager.getLogger();
     private final UserDao userDao;
@@ -62,12 +61,12 @@ public class UpdateUserProfileActivity {
 
         if (!updateUserProfileActivityRequest.getPersonalityType().isBlank()) {
             List<String> compatiblePersonalityTypes =
-                    userDao.getCompatiblePersonalityTypes(updateUserProfileActivityRequest.getPersonalityType());
+                    userDao.getCompatiblePersonalityTypes(updateUserProfileActivityRequest
+                            .getPersonalityType());
 
-            List<User> connexions = userDao.getConnexions(compatiblePersonalityTypes);
+            List<User> connexions = userDao.getConnexions(user, compatiblePersonalityTypes);
             List<String> connexionIDs = new ArrayList<>();
             connexions.forEach(u -> connexionIDs.add(u.getId()));
-            connexionIDs.remove(user.getId());
 
             user.setConnexions(connexionIDs);
 
@@ -76,13 +75,18 @@ public class UpdateUserProfileActivity {
             System.out.println("connexions: " + connexions);
 
             if (!user.getHobbies().isEmpty() && user.getHobbies() != null) {
-                Map<String, Integer> sortedMap = userDao.sortConnexions(user.getHobbies(), connexions);
+                Map<User, Integer> sortedMap = userDao.sortConnexions(user.getHobbies(), connexions);
 
-                List<String> sortedConnexions = new ArrayList<>(sortedMap.keySet());
+                List<User> sortedConnexions = new ArrayList<>(sortedMap.keySet());
 
-                sortedConnexions.remove(user.getId());
+                sortedConnexions.remove(user);
 
-                user.setConnexions(sortedConnexions);
+                List<String> connexionsIdList = new ArrayList<>();
+                for (User u : sortedConnexions) {
+                    connexionsIdList.add(u.getId());
+                }
+
+                user.setConnexions(connexionsIdList);
             } else {
                 List<String> connexionIds = new ArrayList<>();
                 for (User u : connexions) {
@@ -98,5 +102,4 @@ public class UpdateUserProfileActivity {
                 .withUser(new ModelConverter().toUserModel(user))
                 .build();
     }
-
 }

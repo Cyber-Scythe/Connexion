@@ -2,8 +2,10 @@ package com.nashss.se.connexionservice.activity;
 
 import com.nashss.se.connexionservice.activity.requests.GetConnexionsActivityRequest;
 import com.nashss.se.connexionservice.activity.results.GetConnexionsActivityResult;
+import com.nashss.se.connexionservice.converters.ModelConverter;
 import com.nashss.se.connexionservice.dynamodb.UserDao;
 import com.nashss.se.connexionservice.dynamodb.models.User;
+import com.nashss.se.connexionservice.models.UserModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -50,23 +52,26 @@ public class GetConnexionsActivityTest {
 
         List<User> userList = List.of(user, u1, u2, u3);
         List<User> allUsers = List.of(u1, u2, u3);
+        List<UserModel> userModelAllUsers = new ModelConverter().toUserModelList(allUsers);
 
         List<String> compatiblePersonalityTypeList = List.of("ENFP", "INFP", "ENTJ", "ESFP", "ISFP", "INTJ");
 
-        Map<String, Integer> sortedConnexions = new TreeMap<>();
-        sortedConnexions.put(u1.getId(), 2);
-        sortedConnexions.put(u2.getId(), 1);
-        sortedConnexions.put(u3.getId(), 0);
+        Map<User, Integer> sortedConnexions = new HashMap<>();
+        sortedConnexions.put(u1, 2);
+        sortedConnexions.put(u2, 1);
+        sortedConnexions.put(u3, 0);
+
+        List<String> sortedConnexionIdList = new ArrayList<>();
+        for (User u : sortedConnexions.keySet()) {
+            sortedConnexionIdList.add(u.getId());
+        }
 
         when(userDao.getUser(user.getId())).thenReturn(user);
         when(userDao.getCompatiblePersonalityTypes(user.getPersonalityType())).
                 thenReturn(compatiblePersonalityTypeList);
-        when(userDao.getConnexions(compatiblePersonalityTypeList)).thenReturn(userList);
-        when(userDao.sortConnexions(user.getHobbies(), userList)).thenReturn(sortedConnexions);
+        when(userDao.getConnexions(user, compatiblePersonalityTypeList)).thenReturn(allUsers);
+        when(userDao.sortConnexions(user.getHobbies(), allUsers)).thenReturn(sortedConnexions);
         when(userDao.getAllConnexions(user)).thenReturn(allUsers);
-
-        List<String> sortedConnexionList = new ArrayList<>(sortedConnexions.keySet());
-        sortedConnexionList.remove(user.getId());
 
         GetConnexionsActivityRequest request = GetConnexionsActivityRequest.builder()
                 .withId(user.getId())
@@ -77,6 +82,6 @@ public class GetConnexionsActivityTest {
         GetConnexionsActivityResult result = getConnexionsActivity.handleRequest(request);
 
         // THEN
-        assertEquals(sortedConnexionList, result.getConnexions());
+        assertEquals(userModelAllUsers, result.getConnexions());
     }
 }
