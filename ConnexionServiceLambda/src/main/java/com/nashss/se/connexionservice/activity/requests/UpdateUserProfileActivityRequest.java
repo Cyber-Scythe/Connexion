@@ -33,14 +33,14 @@ public class UpdateUserProfileActivityRequest {
      * @param connexions List of user's connexions
      */
     public UpdateUserProfileActivityRequest(String email,
-                                              String name,
-                                              String id,
-                                              int age,
-                                              String city,
-                                              String state,
-                                              String personalityType,
-                                              List<String> hobbies,
-                                              List<String> connexions) {
+                                            String name,
+                                            String id,
+                                            int age,
+                                            String city,
+                                            String state,
+                                            String personalityType,
+                                            List<String> hobbies,
+                                            List<String> connexions) {
         this.email = email;
         this.name = name;
         this.id = id;
@@ -51,6 +51,7 @@ public class UpdateUserProfileActivityRequest {
         this.hobbies = hobbies;
         this.connexions = connexions;
     }
+
 
     public String getEmail() {
 

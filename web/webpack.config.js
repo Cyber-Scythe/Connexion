@@ -48,5 +48,21 @@ module.exports = {
       // overlay shows a full-screen overlay in the browser when there are js compiler errors or warnings
       overlay: true,
     },
+  },
+  resolve: {
+    fallback: {
+      "fs": false,
+      "tls": false,
+      "net": false,
+      "path": false,
+      "zlib": false,
+      "http": require.resolve("stream-http"),
+      "https": require.resolve("https"),
+      "https": false,
+      "stream": false,
+      "crypto": false,
+      "https": require.resolve("https-browserify"),
+      "crypto-browserify": require.resolve('crypto-browserify'),
+    }
   }
 }

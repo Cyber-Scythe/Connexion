@@ -4,7 +4,6 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedScanList;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.nashss.se.connexionservice.dynamodb.models.Message;
 import com.nashss.se.connexionservice.dynamodb.models.User;
 import com.nashss.se.connexionservice.metrics.MetricsPublisher;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +14,6 @@ import org.mockito.Mock;
 
 import java.util.*;
 
-import static com.nashss.se.connexionservice.utils.CollectionUtils.copyToList;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -111,6 +109,9 @@ public class UserDaoTest {
     public void getConnexions_scanWithFilterExpression_returnsListOfConnexions() {
         // GIVEN
         List<String> personalityTypes = List.of("T1", "T2", "T3", "T4", "T5", "T6");
+        User user = new User();
+        user.setId("101010111");
+        user.setName("E47");
 
         when(dynamoDBMapper.scan(eq(User.class), any())).thenReturn(scanResult);
 
@@ -118,7 +119,7 @@ public class UserDaoTest {
                 ArgumentCaptor.forClass(DynamoDBScanExpression.class);
 
         // WHEN
-        List<User> scanList = userDao.getConnexions(personalityTypes);
+        List<User> scanList = userDao.getConnexions(user, personalityTypes);
 
         // THEN
         verify(dynamoDBMapper).scan(eq(User.class), scanExpressionArgumentCaptor.capture());
@@ -138,7 +139,7 @@ public class UserDaoTest {
     @Test
     public void sortConnexions_sortsListOfConnexions_returnsMapOfSortedUsers() {
         // GIVEN
-        Map<String, Integer> connexionTreeMap = new TreeMap<>();
+        Map<User, Integer> connexionMap = new HashMap<>();
 
         List<String> currUserHobbies = List.of("hobby1", "hobby2", "hobby3", "hobby4");
 
@@ -150,14 +151,17 @@ public class UserDaoTest {
                              List.of("hobby1"), null);
         List<User> userList = List.of(u1, u2);
 
-        connexionTreeMap.put(u1.getId(), 2);
-        connexionTreeMap.put(u2.getId(), 1);
+        connexionMap.put(u1, 2);
+        connexionMap.put(u2, 1);
 
         // WHEN
-        Map<String, Integer> sortedMap = userDao.sortConnexions(currUserHobbies, userList);
+        Map<User, Integer> sortedMap = userDao.sortConnexions(currUserHobbies, userList);
+        List<User> sortedUserList = new ArrayList<>(sortedMap.keySet());
+        Collections.reverse(sortedUserList);
 
         // THEN
-        assertEquals(connexionTreeMap, sortedMap);
+        assertEquals(connexionMap, sortedMap);
+        assertEquals(userList, sortedUserList);
     }
 }
 

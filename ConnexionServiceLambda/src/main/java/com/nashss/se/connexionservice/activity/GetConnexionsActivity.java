@@ -2,16 +2,16 @@ package com.nashss.se.connexionservice.activity;
 
 import com.nashss.se.connexionservice.activity.requests.GetConnexionsActivityRequest;
 import com.nashss.se.connexionservice.activity.results.GetConnexionsActivityResult;
+import com.nashss.se.connexionservice.converters.ModelConverter;
 import com.nashss.se.connexionservice.dynamodb.UserDao;
 import com.nashss.se.connexionservice.dynamodb.models.User;
+
+import com.nashss.se.connexionservice.models.UserModel;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.inject.Inject;
 
@@ -49,6 +49,7 @@ public class GetConnexionsActivity {
         log.info("Inside GetConnexionsActivityResult handleRequest");
 
         User currUser = userDao.getUser(getConnexionsActivityRequest.getId());
+        System.out.println("CurrUser: " + currUser);
 
         if (getConnexionsActivityRequest.getPersonalityType() != null &&
                 !getConnexionsActivityRequest.getPersonalityType().isBlank()) {
@@ -56,31 +57,43 @@ public class GetConnexionsActivity {
             List<String> compatiblePersonalityTypes =
                     userDao.getCompatiblePersonalityTypes(getConnexionsActivityRequest.getPersonalityType());
 
-            List<User> connexionsList = userDao.getConnexions(compatiblePersonalityTypes);
+            List<User> connexionsList = new ArrayList<>(userDao.getConnexions(currUser, compatiblePersonalityTypes));
+            List<UserModel> userModelConnexionsList = new ModelConverter().toUserModelList(connexionsList);
 
-            Map<String, Integer> sortedConnexions = new HashMap<>();
+            Map<User, Integer> sortedConnexions = new HashMap<>();
             sortedConnexions = userDao.sortConnexions(currUser.getHobbies(), connexionsList);
-
-            List<String> sortedConnexionList = new ArrayList<>(sortedConnexions.keySet());
-            sortedConnexionList.remove(getConnexionsActivityRequest.getId());
+            List<User> sortedConnexionList = new ArrayList<>(sortedConnexions.keySet());
+            Collections.reverse(sortedConnexionList);
 
             return GetConnexionsActivityResult.builder()
-                    .withConnexionsList(sortedConnexionList)
+                    .withConnexionsList(userModelConnexionsList)
                     .build();
 
         } else {
 
-            List<String> connexionIdList = new ArrayList<>();
             List<User> connexionsList = userDao.getAllConnexions(currUser);
-
-            for (User u : connexionsList) {
-                connexionIdList.add(u.getId());
-            }
+            List<UserModel> UserModelConnexionsList = new ModelConverter().toUserModelList(connexionsList);
 
             return GetConnexionsActivityResult.builder()
-                    .withConnexionsList(connexionIdList)
+                    .withConnexionsList(UserModelConnexionsList)
                     .build();
         }
+    }
+
+    /**
+     * Gets the profile information for each user.
+     * @param connexionIdList The list of connexion user IDs
+     * @return List of user profiles
+     */
+    public List<User> getConnexionProfileInfo(List<String> connexionIdList) {
+        List<User> connexionProfileList = new ArrayList<>();
+
+        for (String id : connexionIdList) {
+            User user = userDao.getUser(id);
+            connexionProfileList.add(user);
+        }
+
+        return connexionProfileList;
     }
 }
 

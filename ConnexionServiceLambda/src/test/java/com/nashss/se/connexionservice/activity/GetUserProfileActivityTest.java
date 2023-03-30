@@ -62,4 +62,33 @@ public class GetUserProfileActivityTest {
         assertEquals(user.getHobbies(), result.getUser().getHobbies());
         assertEquals(user.getConnexions(), result.getUser().getConnexions());
     }
+
+//    @Test
+//    public void handleRequest_userNotFound_createsAndSavesNewUser() {
+//        // GIVEN
+//        String expectedId = "expectedId";
+//        String expectedName = "expectedName";
+//        String expectedEmail = "expectedEmail";
+//
+//        User expectedUser = new User();
+//        expectedUser.setId(expectedId);
+//        expectedUser.setName(expectedName);
+//        expectedUser.setEmail(expectedEmail);
+//
+//        when(userDao.getUser(expectedId)).thenReturn(null);
+//
+//        GetUserProfileActivityRequest request = GetUserProfileActivityRequest.builder()
+//                .withId(expectedId)
+//                .withName(expectedName)
+//                .withEmail(expectedEmail)
+//                .build();
+//
+//        // WHEN
+//        GetUserProfileActivityResult result = getUserProfileActivity.handleRequest(request);
+//
+//        // THEN
+//        assertEquals(expectedId, result.getUser().getId());
+//        assertEquals(expectedName, result.getUser().getName());
+//        assertEquals(expectedEmail, result.getUser().getEmail());
+//    }
 }

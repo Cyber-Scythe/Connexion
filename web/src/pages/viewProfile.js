@@ -9,7 +9,7 @@ import DataStore from "../util/DataStore";
 class ViewProfile extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['clientLoaded', 'mount', 'addProfileInfoToPage'], this);
+        this.bindClassMethods(['clientLoaded', 'mount', 'getFromS3Bucket', 'addProfileInfoToPage'], this);
 
         this.dataStore = new DataStore();
 
@@ -35,7 +35,7 @@ class ViewProfile extends BindingClass {
             user = await this.client.getProfile();
         }
 
-        this.dataStore.set('user', user);
+        this.dataStore.set('userModel', user);
         this.addProfileInfoToPage();
     }
 
@@ -52,7 +52,10 @@ class ViewProfile extends BindingClass {
      * When the profile is updated in the datastore, update the profile metadata on the page.
      */
     addProfileInfoToPage() {
-        const user = this.dataStore.get('user');
+        console.log('inside addProfileInfoToPage()');
+
+        let user = this.dataStore.get('userModel');
+        console.log('user: ', user);
 
         if (user == null) {
             return;
@@ -67,6 +70,25 @@ class ViewProfile extends BindingClass {
         document.getElementById('hobbies-list').innerHTML = user.hobbies;
 
        // Code to get profile picture from S3 bucket and set it as value
+       // Get S3 download URL
+        const downloadUrl = this.axios.getPresignedDownloadUrl(user.id);
+        const key = user.id + 'profile-photo';
+
+        const profilePic = await this.getFromS3Bucket(downloadUrl, key);
+        document.getElementById('profile-picture').value = profilePic;
+    }
+
+    async getFromS3Bucket(downloadUrl, key) {
+        const axios = require('axios');
+
+        axios.get(downloadUrl, key)
+            .then(response => {
+              console.log(response.data.url);
+              console.log(response.data.explanation);
+            })
+            .catch(error => {
+               console.log(error);
+            });
     }
 }
 

@@ -1,5 +1,6 @@
 package com.nashss.se.connexionservice.lambda;
 
+import com.google.gson.JsonParser;
 import com.nashss.se.connexionservice.activity.requests.UpdateUserProfileActivityRequest;
 import com.nashss.se.connexionservice.activity.results.UpdateUserProfileActivityResult;
 
@@ -22,6 +23,7 @@ public class UpdateUserProfileLambda
         return super.runActivity(() -> {
             UpdateUserProfileActivityRequest unauthenticatedRequest =
                             input.fromBody(UpdateUserProfileActivityRequest.class);
+
             return input.fromUserClaims(claims -> UpdateUserProfileActivityRequest.builder()
                     .withId(claims.get("sub"))
                     .withName(unauthenticatedRequest.getName())

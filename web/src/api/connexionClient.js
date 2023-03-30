@@ -22,9 +22,10 @@ export default class ConnexionClient extends BindingClass {
                                'logout',
                                'getProfile',
                                'getProfileByEmail',
-                               'getConnexions',
                                'getConnexionProfile',
+                               'getConnexions',
                                'updateUserProfile',
+                               'getPresignedUrl',
                                'getHobbiesList',
                                'getAllMessages',
                                'getMessagesWithUser',
@@ -140,12 +141,12 @@ export default class ConnexionClient extends BindingClass {
     async getConnexionProfile(userId, errorCallback) {
      try {
           const token = await this.getTokenOrThrow("Only authenticated users can view profiles");
-          const response = await this.axiosClient.get(`/index/${userId}`,{
+          const response = await this.axiosClient.get(`/index/${userId}`, {
                 headers: {
                   Authorization: `Bearer ${token}`
                 }
             });
-         return response.data.user;
+         return response.data.userModel;
 
        } catch (error) {
          this.handleError(error, errorCallback)
@@ -221,6 +222,48 @@ export default class ConnexionClient extends BindingClass {
                 }
             });
             return response.data.user;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+        }
+    }
+
+   /**
+    * Get pre-signed URL.
+    * @param userId The user ID of the current user.
+    * @param errorCallback (Optional) A function to execute if the call fails.
+    * @returns A pre-signed URL for user to upload photo with.
+    */
+    async getPresignedUrl(userId, errorCallback) {
+        try {
+            const token = await this.getTokenOrThrow("Only authenticated users can upload a photo.");
+            const response = await this.axiosClient.get(`/index/${userId}/url`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+            });
+
+            return response.data.result;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+        }
+    }
+
+   /**
+    * Get pre-signed download URL.
+    * @param userId The user ID of the current user.
+    * @param errorCallback (Optional) A function to execute if the call fails.
+    * @returns A pre-signed URL for user to download photo from.
+    */
+    async getPresignedDownloadUrl(userId, errorCallback) {
+        try {
+            const token = await this.getTokenOrThrow("Only authenticated users can upload a photo.");
+            const response = await this.axiosClient.get(`/index/${userId}/downloadUrl`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+            });
+
+            return response.data.result;
         } catch (error) {
             this.handleError(error, errorCallback)
         }

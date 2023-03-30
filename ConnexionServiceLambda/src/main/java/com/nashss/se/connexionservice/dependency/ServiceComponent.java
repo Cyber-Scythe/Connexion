@@ -1,15 +1,6 @@
 package com.nashss.se.connexionservice.dependency;
 
-import com.nashss.se.connexionservice.activity.CheckDbForUserActivity;
-import com.nashss.se.connexionservice.activity.DeleteMessagesActivity;
-import com.nashss.se.connexionservice.activity.GetConnexionProfileActivity;
-import com.nashss.se.connexionservice.activity.GetConnexionsActivity;
-import com.nashss.se.connexionservice.activity.GetHobbiesFromDbActivity;
-import com.nashss.se.connexionservice.activity.GetMessagesWithUserActivity;
-import com.nashss.se.connexionservice.activity.GetUserInboxActivity;
-import com.nashss.se.connexionservice.activity.GetUserProfileActivity;
-import com.nashss.se.connexionservice.activity.SendNewMessageActivity;
-import com.nashss.se.connexionservice.activity.UpdateUserProfileActivity;
+import com.nashss.se.connexionservice.activity.*;
 
 import dagger.Component;
 
@@ -21,13 +12,6 @@ import javax.inject.Singleton;
 @Singleton
 @Component(modules = {DaoModule.class, MetricsModule.class})
 public interface ServiceComponent {
-
-    /**
-     * Provides the relevant activity.
-     * @return CheckDbForUserActivity
-     */
-    CheckDbForUserActivity provideCheckDbForUserActivity();
-
 
     /**
      * Provides the relevant activity.
@@ -82,4 +66,10 @@ public interface ServiceComponent {
      * @return DeleteMessagesActivity
      */
     DeleteMessagesActivity provideDeleteMessagesActivity();
+
+    /**
+     * Provides the relevant activity.
+     * @return UpdateUserPhotoActivity
+     */
+    GetPresignedUrlActivity provideGetPresignedUrlActivity();
 }

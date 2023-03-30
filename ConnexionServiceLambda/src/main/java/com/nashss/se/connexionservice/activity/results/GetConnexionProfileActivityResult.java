@@ -10,7 +10,7 @@ public class GetConnexionProfileActivityResult {
         this.user = user;
     }
 
-    public UserModel getUser() {
+    public UserModel getUserModel() {
 
         return user;
     }
@@ -29,16 +29,16 @@ public class GetConnexionProfileActivityResult {
     }
 
     public static class Builder {
-        private UserModel user;
+        private UserModel userModel;
 
-        public Builder withUser(UserModel user) {
-            this.user = user;
+        public Builder withUserModel(UserModel userModel) {
+            this.userModel = userModel;
             return this;
         }
 
         public GetConnexionProfileActivityResult build() {
 
-            return new GetConnexionProfileActivityResult(user);
+            return new GetConnexionProfileActivityResult(userModel);
         }
     }
 }
