@@ -33,7 +33,7 @@ public class GetPresignedDownloadUrlActivity {
      * <p>
      * It then returns the updated user.
      * <p>
-     * @param getPresignedDownloadUrlActivityRequest 
+     * @param getPresignedDownloadUrlActivityRequest
      * @return getPresignedDownloadUrlActivityResult result object containing the pre-signed URL to
      *      *                                       upload to an S3 bucket
      */

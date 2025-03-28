@@ -5,7 +5,7 @@ public class GetPresignedDownloadUrlActivityResult {
 
     /**
      * Constructor for UpdateUserPhotoActivityResult.
-     * @param result the result of put request.
+     * @param downloadUrl the result of put request.
      */
     public GetPresignedDownloadUrlActivityResult(String downloadUrl) {
 

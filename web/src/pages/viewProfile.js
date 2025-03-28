@@ -9,7 +9,7 @@ import DataStore from "../util/DataStore";
 class ViewProfile extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['clientLoaded', 'mount', 'getFromS3Bucket', 'addProfileInfoToPage'], this);
+        this.bindClassMethods(['clientLoaded', 'mount', 'getFromS3Bucket', 'addProfileInfoToPage', 'encode'], this);
 
         this.dataStore = new DataStore();
 
@@ -51,7 +51,7 @@ class ViewProfile extends BindingClass {
     /**
      * When the profile is updated in the datastore, update the profile metadata on the page.
      */
-    addProfileInfoToPage() {
+    async addProfileInfoToPage() {
         console.log('inside addProfileInfoToPage()');
 
         let user = this.dataStore.get('userModel');
@@ -71,24 +71,46 @@ class ViewProfile extends BindingClass {
 
        // Code to get profile picture from S3 bucket and set it as value
        // Get S3 download URL
-        const downloadUrl = this.axios.getPresignedDownloadUrl(user.id);
-        const key = user.id + 'profile-photo';
+        const downloadUrl = await this.client.getPresignedDownloadUrl(user.id);
+        this.dataStore.set('downloadUrl', downloadUrl);
 
+        console.log('user.id: ', user.id);
+        console.log('download url: ', downloadUrl);
+
+        const key = user.id + 'profile-photo';
+        console.log('key: ', key);
+
+        this.dataStore.set('key', key);
+
+        // THIS IS WHERE WE WILL TRY TO GET THE PHOTO FROM OUR S3 BUCKET
         const profilePic = await this.getFromS3Bucket(downloadUrl, key);
-        document.getElementById('profile-picture').value = profilePic;
+       // const profileImage = await this.encode(profilePic);
+
+        document.getElementById('profile-picture').src = downloadUrl;
     }
 
-    async getFromS3Bucket(downloadUrl, key) {
+    async getFromS3Bucket(downloadUrl) {
         const axios = require('axios');
 
-        axios.get(downloadUrl, key)
+        axios.get(downloadUrl)
             .then(response => {
+              const bodyContents = response.Body;
               console.log(response.data.url);
               console.log(response.data.explanation);
+              console.log('data :' + response.request.data);
+
+              return response.request.data;
             })
             .catch(error => {
                console.log(error);
             });
+    }
+
+
+    encode(data) {
+        var pic = [];
+        pic.push(data);
+        return pic.join("");
     }
 }
 

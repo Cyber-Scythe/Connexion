@@ -73,14 +73,14 @@ public class GetUserProfileActivity {
             userDao.saveUser(newUser);
             userModel = new ModelConverter().toUserModel(newUser);
 
-            createS3Bucket(getUserProfileActivityRequest.getId());
+            // createS3Bucket(getUserProfileActivityRequest.getId());
         }
 
         return GetUserProfileActivityResult.builder()
                 .withUser(userModel)
                 .build();
     }
-
+/*
     private void createS3Bucket(String userId) {
 
         AmazonS3 s3 = AmazonS3ClientBuilder.standard()
@@ -108,6 +108,7 @@ public class GetUserProfileActivity {
             }
         }
     }
+ */
 
 }
 

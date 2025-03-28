@@ -2,17 +2,20 @@ import ConnexionClient from '../api/connexionClient';
 import Header from '../components/header';
 import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
+import Inbox from "../pages/inbox";
 
 /**
- * Logic needed for the view connexions page of the website.
+ * Logic needed for the view playlist page of the website.
  */
 class Connexions extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['clientLoaded', 'mount', 'addConnexionsToPage'], this);
+        this.bindClassMethods(['clientLoaded', 'mount', 'addConnexionsToPage', 'getConnexionProfile', 'sendNewMessage'], this);
 
         this.dataStore = new DataStore();
+
         this.header = new Header(this.dataStore);
+        this.inbox = new Inbox();
 
         console.log("connexions constructor");
     }
@@ -28,11 +31,11 @@ class Connexions extends BindingClass {
         }));
 
         console.log("curr user: ", currUser);
-        this.dataStore.set('currUser', currUser);
-
         console.log("personalityTYpe: ", currUser.personalityType);
 
-        const connexions = await this.client.getConnexions(currUser.personalityType);
+        const connexions = await this.client.getConnexions(currUser.personalityType, (error) => {
+            console.log(`Error: ${error.message}`);
+        });
         console.log("curr user connexions: ", connexions);
 
         this.dataStore.set('connexions', connexions);
@@ -48,128 +51,118 @@ class Connexions extends BindingClass {
         this.clientLoaded();
     }
 
+    /**
+    * Get profile metadata for connexion
+    */
+    async getConnexionProfile(userId) {
+        return await this.client.getConnexionProfile(userId, (error) => {
+                            console.log(`Error: ${error.message}`);
+                    });
+    }
+
 
     /**
-     * When the connexions are updated in the datastore, update the connexions metadata on the page.
+     * When the connexions updated in the datastore, update the connexions metadata on the page.
      */
     async addConnexionsToPage() {
         console.log("addConnexionsToPage");
 
         const connexions = this.dataStore.get('connexions');
-        console.log('Inside addConnexionsToPage() -> connexions: ', connexions);
-
-        const currUser = this.dataStore.get('currUser');
 
         if (connexions == null) {
             return;
         }
 
-        let currUserHobbies = currUser.hobbies;
+        var rowRemovable = document.getElementById('row-removable');
 
+        for (var i = 0; i < connexions.length; i++) {
+            console.log("connexion: ", connexions[i]);
 
-        for (let i = 0; i < connexions.length; i++) {
-            let count = 0;
-            for (let a = 0; a < currUserHobbies.length; a++) {
-                if (connexions[i].hobbies.includes(currUserHobbies[a])) {
-                    count++;
-               }
-            }
-            console.log('num common hobbies: ', count);
-        }
+            var userId = connexions[i];
 
-        let rowRemovable = document.getElementById('row-removable');
+            const user = await this.getConnexionProfile(userId);
+            console.log("user: ", user);
 
-        for (let i = 0; i < connexions.length; i++) {
-            if (connexions[i].id !== currUser.id) {
+            var div = document.createElement('div');
+                            div.className = 'col-xl-3 col-md-6 mb-4';
+                            div.type = 'div';
+                            div.id = 'col' + i;
 
-                let userId = connexions[i].id;
-                console.log("userID: ", userId);
+            rowRemovable.appendChild(div);
 
-                let div = document.createElement('div');
-                                div.className = 'col-xl-3 col-md-6 mb-4';
-                                div.type = 'div';
-                                div.id = 'col' + i;
+            var card = document.createElement('card');
+                       card.className = 'card';
+                       card.type = 'card';
+                       card.id = 'card' + i;
 
-                rowRemovable.appendChild(div);
+            div.appendChild(card);
 
-                let card = document.createElement('card');
-                           card.className = 'card';
-                           card.type = 'card';
-                           card.id = 'card' + i;
+            var div2 = document.createElement('div');
+                       div2.className = 'card-body p-3';
+                       div2.type = 'card';
+                       div2.id = 'card' + i;
 
-                div.appendChild(card);
+            card.appendChild(div2);
 
-                let div2 = document.createElement('div');
-                           div2.className = 'card-body p-3';
-                           div2.type = 'card';
-                           div2.id = 'card' + i;
+            var div3 = document.createElement('div')
+            div3.className = 'd-flex align-items-center';
+            div3.type = 'div';
+            div3.id = 'div' + i;
 
-                card.appendChild(div2);
+            card.appendChild(div3);
 
-                let div3 = document.createElement('div')
-                div3.className = 'd-flex align-items-center';
-                div3.type = 'div';
-                div3.id = 'div' + i;
+            var spaceDiv = document.createElement('div');
+            spaceDiv.type = 'div';
+            spaceDiv.id = 'space-div' + i;
 
-                card.appendChild(div3);
+            var img = document.createElement('img');
+            img.className = 'avatar avata-sm';
+            img.type = 'img';
+            img.id = 'profile-picture' + i;
+            img.src = 'images/alien.png'
 
-                let spaceDiv = document.createElement('div');
-                spaceDiv.type = 'div';
-                spaceDiv.id = 'space-div' + i;
+            card.appendChild(spaceDiv);
+            spaceDiv.appendChild(img);
 
-                let img = document.createElement('img');
-                img.className = 'avatar avata-sm';
-                img.type = 'img';
-                img.id = 'profile-picture' + i;
-                img.src = 'images/alien.png'
+            var div4 = document.createElement('div');
+            card.appendChild(div4);
 
-                card.appendChild(spaceDiv);
-                spaceDiv.appendChild(img);
+            var span = document.createElement('span');
+            span.className = 'h6 font-weight-bold mb-0';
+            span.type = 'span';
+            span.id = 'user-name' + i;
+            span.value = user.name;
+            span.innerHTML = user.name;
 
-                let div4 = document.createElement('div');
-                card.appendChild(div4);
+            div4.appendChild(span);
 
-                let span = document.createElement('span');
-                span.className = 'h6 font-weight-bold mb-0';
-                span.type = 'span';
-                span.id = 'user-name' + i;
-                span.value = connexions[i].name;
-                span.innerHTML = connexions[i].name;
-                span.addEventListener('click', async() => {
-                    location.href = '/view_profile.html?user=' + userId + '';
-                });
+            var userLocation = user.city + ", " + user.state;
+            var div5 = document.createElement('div');
+            div5.type = 'div';
+            div5.id = userLocation;
+            div5.innerHTML = userLocation;
 
-                div4.appendChild(span);
+            card.appendChild(div5);
 
-                let userLocation = connexions[i].city + ", " + connexions[i].state;
-                let div5 = document.createElement('div');
-                div5.type = 'div';
-                div5.id = userLocation;
-                div5.innerHTML = userLocation;
+            var br = document.createElement('br');
+            br.type = 'br';
+            card.appendChild(br);
 
-                card.appendChild(div5);
+            var msgButton = document.createElement('button');
+            msgButton.className = 'message-btn';
+            msgButton.type = 'button';
+            msgButton.id = 'message-btn-' + i;
+            msgButton.innerHTML = "Message";
+            msgButton.href = this.sendNewMessage(connexions[i].email);
 
-                let br = document.createElement('br');
-                br.type = 'br';
-                card.appendChild(br);
-
-                let msgButton = document.createElement('button');
-                msgButton.className = 'message-btn';
-                msgButton.type = 'button';
-                msgButton.id = 'message-btn-' + i;
-                msgButton.innerText = "Message";
-
-                console.log('user.email: ', connexions[i].email);
-                let email = connexions[i].email;
-                msgButton.onclick = function (email) {
-                         let encodedEmail = encodeURIComponent(connexions[i].email);
-                         location.href = '/view_message.html?otherUser=' + encodedEmail + '';
-                };
-
-                card.appendChild(msgButton);
-            }
+            card.appendChild(msgButton);
         }
     }
+
+    sendNewMessage(recipientEmail) {
+        this.inbox.sendNewMessage(recipientEmail);
+    }
+
 }
 
 /**

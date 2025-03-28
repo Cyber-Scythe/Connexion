@@ -26,6 +26,7 @@ export default class ConnexionClient extends BindingClass {
                                'getConnexions',
                                'updateUserProfile',
                                'getPresignedUrl',
+                               'getPresignedDownloadUrl',
                                'getHobbiesList',
                                'getAllMessages',
                                'getMessagesWithUser',
@@ -237,6 +238,7 @@ export default class ConnexionClient extends BindingClass {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can upload a photo.");
             const response = await this.axiosClient.get(`/index/${userId}/url`, {
+
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
@@ -254,7 +256,7 @@ export default class ConnexionClient extends BindingClass {
     * @param errorCallback (Optional) A function to execute if the call fails.
     * @returns A pre-signed URL for user to download photo from.
     */
-    async getPresignedDownloadUrl(userId, errorCallback) {
+    async getPresignedDownloadUrl(userId) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can upload a photo.");
             const response = await this.axiosClient.get(`/index/${userId}/downloadUrl`, {
@@ -263,7 +265,7 @@ export default class ConnexionClient extends BindingClass {
                 },
             });
 
-            return response.data.result;
+            return response.data.downloadUrl;
         } catch (error) {
             this.handleError(error, errorCallback)
         }

@@ -101,6 +101,12 @@ class EditUserProfile extends BindingClass {
     async prepopulateProfile() {
         const user = this.dataStore.get('currUser');
 
+        // Need to download user's profile pic from S3 here...
+        /*
+        * --- CHANGE MADE HERE ---
+        */
+        await this.client.getPresignedDownloadUrl(user.id);
+
         let username = document.getElementById('input-name');
         username.value = user.name;
 
@@ -147,10 +153,19 @@ class EditUserProfile extends BindingClass {
              const userId = curUser.id;
 
              const username = document.getElementById('input-name').value;
+             /*
+             *  Age should be changed to birthdate so that it will update on it's on.
+             *  Code that calculates the user's age will also need to be implemented.
+             */
              const age = document.getElementById('input-age').value;
              const personalityType = document.getElementById('input-personality-type').value;
              const city = document.getElementById('input-city').value;
              const state = document.getElementById('input-state').value;
+
+             /*
+             *  Connexions will be pulled from the database and populated...
+             *
+             */
              const connexions = null;
 
              const hobbyList = this.dataStore.get('hobbies');
@@ -173,19 +188,18 @@ class EditUserProfile extends BindingClass {
              }
 
             console.log("userHobbies: ", userHobbies);
+
             const currUser = this.dataStore.get('currUser');
-            const photoData = this.dataStore.get('photoData');
+            const profilePic = this.dataStore.get('photoData');
             const presignedUrl = this.dataStore.get('presignedUrl');
 
             // *** PUT PHOTO IN S3 BUCKET ***
-            await this.putInS3Bucket(presignedUrl, photoData);
-
             await this.client.updateUserProfile(currUser.id, username, age, city, state, personalityType, userHobbies, connexions);
 
             const user = this.dataStore.get('currUser');
             console.log('user.id: ', user.id);
 
-           // location.href = '/view_profile.html?user=' + user.id + '';
+            location.href = '/view_profile.html?user=' + user.id + '';
         });
     }
 
@@ -205,7 +219,9 @@ class EditUserProfile extends BindingClass {
             // *** GET PRE-SIGNED URL ***
             const user = this.dataStore.get('currUser');
             const presignedUrl = await this.client.getPresignedUrl(user.id);
+
             console.log('Pre-signed URL: ', presignedUrl);
+
             this.dataStore.set('presignedUrl', presignedUrl);
 
             const imagePreviewElement = document.querySelector("#preview-selected-image");
@@ -219,21 +235,25 @@ class EditUserProfile extends BindingClass {
             console.log("FILE TYPE: ", fileType);
             console.log("IMAGE SRC: ", imageSrc);
 
+            this.dataStore.set('presignedUrl', presignedUrl);
+            this.dataStore.set('imageSrc', imageSrc);
             this.dataStore.set('photoData', imageFiles[0]);
+
+            let photoData = this.dataStore.get('photoData');
+            await this.putInS3Bucket(presignedUrl, imageFiles[0]);
+
+            //document.getElementById('profile-picture').src = photoData;
         }
     }
 
-    async putInS3Bucket(url, data) {
+    async putInS3Bucket(url, image) {
           const axios = require('axios');
 
-          axios.put(url, { data: data })
-            .then(response => {
-              console.log(response.data.url);
-              console.log(response.data.explanation);
-            })
-            .catch(error => {
-              console.log(error);
-            });
+         axios.put(url, image, {
+           headers: {
+             'Content-Type': image.type
+           }
+         });
     }
 }
 

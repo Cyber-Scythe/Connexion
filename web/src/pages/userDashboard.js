@@ -24,6 +24,7 @@ class UserDashboard extends BindingClass {
      * Once the client is loaded, get the user metadata.
      */
      async clientLoaded() {
+        console.log("clientLoaded method");
 
         const user = await this.client.getProfile((error) => {
                           console.log(`Error: ${error.message}`);
