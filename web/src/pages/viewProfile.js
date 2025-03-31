@@ -87,6 +87,7 @@ class ViewProfile extends BindingClass {
        // const profileImage = await this.encode(profilePic);
 
         document.getElementById('profile-picture').src = downloadUrl;
+        document.getElementById('profile-picture').style.borderRadius = '50%';
     }
 
     async getFromS3Bucket(downloadUrl) {

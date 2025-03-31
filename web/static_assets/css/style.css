@@ -342,6 +342,22 @@
     border-top: 1px solid rgba(0, 0, 0, .1);
   }
 
+  .buttn {
+    background-color: #5603ad;
+    border: none;
+    color: white;
+    padding: 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    vertical-align: middle;
+    position: relative;
+    float: right;
+    border-radius: 50%;
+  }
+
   .btn {
     font-size: 1rem;
     font-weight: 600;
@@ -1023,6 +1039,7 @@ a {
 /* The container <div> - needed to position the dropdown content */
 .dropdown {
   position: relative;
+  float: right;
   display: inline-block;
 }
 
