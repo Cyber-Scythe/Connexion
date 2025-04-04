@@ -23,6 +23,7 @@ module.exports = {
     usedExports: true
   },
   entry: {
+    landing: path.resolve(__dirname, 'src', 'pages', 'landing.js'),
     viewProfile: path.resolve(__dirname, 'src', 'pages', 'viewProfile.js'),
     createPlaylist: path.resolve(__dirname, 'src', 'pages', 'createPlaylist.js'),
     viewPlaylist: path.resolve(__dirname, 'src', 'pages', 'viewPlaylist.js'),

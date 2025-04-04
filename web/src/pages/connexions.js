@@ -2,7 +2,7 @@ import ConnexionClient from '../api/connexionClient';
 import Header from '../components/header';
 import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
-import Inbox from "../pages/inbox";
+import userInbox from "../pages/inbox";
 
 /**
  * Logic needed for the view playlist page of the website.
@@ -15,7 +15,7 @@ class Connexions extends BindingClass {
         this.dataStore = new DataStore();
 
         this.header = new Header(this.dataStore);
-        this.inbox = new Inbox();
+        this.userInbox = new UserInbox();
 
         console.log("connexions constructor");
     }
@@ -160,7 +160,7 @@ class Connexions extends BindingClass {
     }
 
     sendNewMessage(recipientEmail) {
-        this.inbox.sendNewMessage(recipientEmail);
+        this.userInbox.sendNewMessage(recipientEmail);
     }
 
 }
