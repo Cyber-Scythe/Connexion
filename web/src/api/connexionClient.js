@@ -20,6 +20,7 @@ export default class ConnexionClient extends BindingClass {
                                'getIdentity',
                                'login',
                                'logout',
+                               'signUp',
                                'getProfile',
                                'getProfileByEmail',
                                'getConnexionProfile',
@@ -77,6 +78,10 @@ export default class ConnexionClient extends BindingClass {
 
     async logout() {
         this.authenticator.logout();
+    }
+
+    async signUp() {
+        this.authenticator.signUp();
     }
 
     async getTokenOrThrow(unauthenticatedErrorMessage) {

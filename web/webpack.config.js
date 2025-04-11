@@ -24,6 +24,7 @@ module.exports = {
   },
   entry: {
     landing: path.resolve(__dirname, 'src', 'pages', 'landing.js'),
+    welcome: path.resolve(__dirname, 'src', 'pages', 'welcome.js')
     viewProfile: path.resolve(__dirname, 'src', 'pages', 'viewProfile.js'),
     createPlaylist: path.resolve(__dirname, 'src', 'pages', 'createPlaylist.js'),
     viewPlaylist: path.resolve(__dirname, 'src', 'pages', 'viewPlaylist.js'),

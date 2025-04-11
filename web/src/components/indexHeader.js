@@ -1,5 +1,9 @@
+import * as cognitoClient from 'aws-sdk/clients/cognitoidentityserviceprovider';
+import { CognitoIdentityProviderClient, InitiateAuthCommand } from "@aws-sdk/client-cognito-identity-provider";
+import { useState } from 'react';
 import ConnexionClient from '../api/connexionClient';
 import BindingClass from "../util/bindingClass";
+
 
 /**
  * The header component for the website.
@@ -7,10 +11,17 @@ import BindingClass from "../util/bindingClass";
 export default class IndexHeader extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['addHeaderToPage',
-                               'createLoginButton'], this);
+
+        const methodsToBind = ['addHeaderToPage', 'handleLogin', 'createSignInButton'];
+        this.bindClassMethods(methodsToBind, this);
 
         this.client = new ConnexionClient();
+
+        const config = { region:  'us-east-2' }
+        const cognitoClientIdentityProvider = new cognitoClient(config);
+
+        console.log("indexHeader constructor");
+
     }
 
     /**
@@ -19,78 +30,44 @@ export default class IndexHeader extends BindingClass {
     async addHeaderToPage() {
         const currentUser = await this.client.getIdentity();
 
-        //const siteTitle = this.createSiteTitle();
-        //console.log("siteTitle: " + siteTitle);
-
-        const loginButton = this.createLoginButton(currentUser);
-
-        const header = document.getElementById('header');
-        const headerHome = document.getElementById('header_home');
-
-        //headerHome.appendChild(siteTitle);
-        headerHome.appendChild(loginButton);
-
-        header.appendChild(headerHome);
+        const signInButton = this.createSignInButton();
+        const signUpLink = document.getElementById('sign-up-link');
+        signUpLink.addEventListener('click', window.location.href = '/welcome.html')
     }
 
-/*
-    createUserInfoForHeader(currentUser) {
-        const userInfo = document.createElement('div');
-        userInfo.classList.add('user');
+    async handleLogin() {
+        const username = document.getElementById('email-input').value;
+        const password = document.getElementById('pass-input').value;
+        const clientId = "ubklaouam3eupblmrptdd1bn0";
 
-        const childContent = currentUser
-            ? this.createLogoutButton(currentUser)
-            : this.createLoginButton();
+        //const initiateAuth = ({ username, password, clientId }) => {
+        const client = new CognitoIdentityProviderClient({region:  'us-east-2'});
 
-        userInfo.appendChild(childContent);
+        const command = new InitiateAuthCommand({
+            AuthFlow: "USER_PASSWORD_AUTH" || "USER_SRP_AUTH" || "CUSTOM_AUTH" || "REFRESH_TOKEN_AUTH",
+            AuthParameters: {
+              USERNAME: username,
+              PASSWORD: password,
+            },
+            ClientId: clientId,
+          });
 
-        return userInfo;
+            const response = await client.send(command);
+            console.log(response);
+
+            if(response.AuthenticationResult.AccessToken != null) {
+                window.location.href = '/dashboard.html';
+            }
+
+            return response;
     }
 
-    createSiteTitle() {
-        const logoImage = document.createElement('img');
-        logoImage.src = 'images/logo-transparent-bg.png';
-        logoImage.classList.add('header_home');
-        logoImage.height = 150;
-        logoImage.width = 150;
-        logoImage.align = 'left';
+    createSignInButton() {
+        const signInButton = document.getElementById('sign-in-button');
+        signInButton.textContent = 'Sign In';
+        signInButton.addEventListener('click', this.handleLogin);
 
-        const siteTitleDiv = document.createElement('div');
-        siteTitleDiv.classList.add('site-title');
-        siteTitleDiv.appendChild(logoImage);
-        //siteTitleDiv.appendChild(dropdown);
-
-        return siteTitleDiv;
+        return signInButton;
     }
-*/
-
-    createLoginButton(currentUser) {
-        const loginButtonDiv = document.createElement('div');
-        loginButtonDiv.classList.add('header_home');
-
-        const button = document.createElement('a');
-        button.classList.add('button');
-        button.href = '#';
-        button.innerText = 'Log In';
-        button.id = 'login-button';
-        button.float = 'right';
-        button.addEventListener('click', this.client.login);
-
-        loginButtonDiv.appendChild(button);
-        return loginButtonDiv;
-    }
-/*
-    createButton(text, clickHandler) {
-        const button = document.createElement('a');
-        button.classList.add('button');
-        button.href = '#';
-        button.innerText = text;
-
-        button.addEventListener('click', async () => {
-            await clickHandler();
-        });
-
-        return button;
-    }
-*/
 }
+

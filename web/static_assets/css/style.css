@@ -109,6 +109,12 @@
     color: var(--error-color);
 }
 
+.logo-card {
+    max-width: 250px;
+    display: flex;
+    float: left;
+}
+
 .card-content {
     max-width: 500px;
 }
@@ -511,6 +517,15 @@
     flex: 1 1 auto;
   }
 
+  .card-gradient {
+    width: 190px;
+    height: 254px;
+    border-radius: 1rem;
+    background-color: #4158D0;
+    background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+    box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+  }
+
   .card-header {
     margin-bottom: 0;
     padding: 1.25rem 1.5rem;
@@ -813,7 +828,7 @@
 
   .main-content {
     position: relative;
-    align: center;
+    align: left;
     padding: 10px 10px;
   }
 
@@ -1965,4 +1980,295 @@ body{margin-top:20px;}
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.InputContainer {
+  width: 210px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to bottom,rgb(227, 213, 255),rgb(255, 231, 231));
+  border-radius: 30px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.075);
+}
+
+.input {
+  width: 200px;
+  height: 40px;
+  border: none;
+  outline: none;
+  caret-color: rgb(255, 81, 0);
+  background-color: rgb(255, 255, 255);
+  border-radius: 30px;
+  padding-left: 15px;
+  letter-spacing: 0.8px;
+  color: rgb(19, 19, 19);
+  font-size: 13.4px;
+}
+
+button {
+  color: #090909;
+  padding: 0.7em 1.7em;
+  font-size: 18px;
+  border-radius: 0.5em;
+  background: #e8e8e8;
+  cursor: pointer;
+  border: 2px solid #e8e8e8;
+  transition: all 0.3s;
+  box-shadow: 3px 3px 6px #c5c5c5, -3px -3px 6px #ffffff;
+}
+
+button:hover {
+  border: 1px solid white;
+}
+
+button:active {
+  box-shadow: 4px 4px 12px #c5c5c5, -4px -4px 12px #ffffff;
+}
+
+/* From Uiverse.io by alexruix */
+.main {
+  position: relative;
+  float: right;
+  display: flex;
+  flex-direction: column;
+  background-color: #240046;
+  max-height: 420px;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 7px 7px 10px 3px #24004628;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px;
+}
+
+/*checkbox to switch from sign up to login*/
+#chk {
+  display: none;
+}
+
+/*Login*/
+.login {
+  position: relative;
+  width: 250px;
+  height: 330px;
+}
+
+.login label {
+  margin: 25% 0 5%;
+}
+
+label {
+  color: #fff;
+  font-size: 2rem;
+  justify-content: center;
+  display: flex;
+  font-weight: bold;
+  cursor: pointer;
+  transition: .5s ease-in-out;
+}
+
+.input {
+  width: 200px;
+  height: 40px;
+  background: #e0dede;
+  padding: 5px;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+}
+
+/*Register*/
+.register {
+  background: #eee;
+  border-radius: 60% / 10%;
+  transform: translateY(5%);
+  transition: .8s ease-in-out;
+}
+
+.register label {
+  color: #573b8a;
+  transform: scale(.6);
+}
+
+#chk:checked ~ .register {
+  transform: translateY(-60%);
+}
+
+#chk:checked ~ .register label {
+  transform: scale(1);
+  margin: 10% 0 5%;
+}
+
+#chk:checked ~ .login label {
+  transform: scale(.6);
+  margin: 5% 0 5%;
+}
+/*Button*/
+.form button {
+  width: 100px;
+  height: 45px;
+  margin: 12px auto 10%;
+  color: #fff;
+  background: #573b8a;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: .2s ease-in;
+}
+
+.form button:hover {
+  background-color: #6d44b8;
+}
+
+/* From Uiverse.io by javadpg */
+.card1 {
+  background-color: black;
+  width: 350px;
+  height: 400px;
+  position: relative;
+  float: right;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  box-shadow: 4px 4px 38px;
+  margin-right: 20px;
+}
+
+.card1::before {
+  content: "";
+  position: absolute;
+  z-index: -19;
+  width: 362px;
+  height: 412px;
+  margin: auto;
+  background: rgb(4,0,255);
+  background: linear-gradient(135deg, rgba(4,0,255,1) 0%, rgba(136,0,255,1) 35%, rgba(209,0,255,1) 100%);
+  border-radius: 6px;
+}
+
+.card1::after {
+  content: "";
+  position: absolute;
+  z-index: -19;
+  width: 362px;
+  height: 412px;
+  margin: auto;
+  background: rgb(4,0,255);
+  background: linear-gradient(135deg, rgba(4,0,255,1) 0%, rgba(136,0,255,1) 35%, rgba(209,0,255,1) 100%);
+  border-radius: 6px;
+  filter: blur(20px);
+  transition: 2s;
+}
+
+.card1:hover::after {
+  animation: cardafter 2.5s infinite forwards;
+}
+
+@keyframes cardafter {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+/* From Uiverse.io by Yaya12085 */
+.form {
+  background-color: #fff;
+  position: relative;
+  padding: 1rem;
+  max-width: 350px;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.form-title {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  text-align: center;
+  color: #000;
+}
+
+.input-container {
+  position: relative;
+}
+
+.input-container input, .form button {
+  outline: none;
+  border: 1px solid #e5e7eb;
+  margin: 8px 0;
+}
+
+.input-container input {
+  background-color: #fff;
+  padding: 1rem;
+  padding-right: 3rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  width: 300px;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.input-container span {
+  display: grid;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  padding-left: 1rem;
+  padding-right: 2rem;
+  place-content: center;
+}
+
+.input-container span svg {
+  color: #9CA3AF;
+  width: 1rem;
+  height: 1rem;
+}
+
+.submit {
+  display: block;
+  position: relative;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  padding-left: 1.15rem;
+  padding-right: 1.25rem;
+  background-color: #4F46E5;
+  color: #ffffff;
+  font-size: 0.7rem;
+  line-height: 1.25rem;
+  font-weight: 200;
+  width: 100%;
+  border-radius: 0.5rem;
+  text-transform: uppercase;
+}
+
+.signup-link {
+  color: #6B7280;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  text-align: center;
+}
+
+.signup-link a {
+  text-decoration: underline;
 }

@@ -2,7 +2,7 @@ import ConnexionClient from '../api/connexionClient';
 import IndexHeader from '../components/indexHeader';
 import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
-
+import { Auth } from 'aws-amplify';
 
 
 export default class Landing extends BindingClass {
@@ -11,7 +11,7 @@ export default class Landing extends BindingClass {
 
         this.bindClassMethods(['mount'], this);
 
-        // Create a enw datastore with an initial "empty" state.
+        // Create a new datastore with an initial "empty" state.
         this.dataStore = new DataStore();
         this.indexHeader = new IndexHeader(this.dataStore);
 
@@ -23,13 +23,8 @@ export default class Landing extends BindingClass {
      */
     mount() {
         this.indexHeader.addHeaderToPage();
-
-        this.dataStore = new DataStore();
-       // this.dataStore.addChangeListener(this.editProfile);
-       // this.dataStore.addChangeListener(this.viewInbox);
-       // this.dataStore.addChangeListener(this.viewConnexions);
-
         this.client = new ConnexionClient();
+
     }
 }
 

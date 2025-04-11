@@ -83,6 +83,8 @@ Resources:
           - DeployCloudFront
           - !Sub "https://${CloudfrontDistribution.DomainName}/dashboard.html"
           - http://localhost:8000/dashboard.html
+          - !Sub "https://${CloudfrontDistribution.DomainName}/welcome.html"
+          - http://localhost:8000/welcome.html
       LogoutURLs:
         - !If
           - DeployCloudFront
@@ -597,4 +599,8 @@ Outputs:
   CognitoRedirectSignout:
     Description: "The URL of the deployed front-end application (COGNITO_REDIRECT_SIGNOUT)."
     Value: !Sub "https://${CloudfrontDistribution.DomainName}/index.html"
+    Condition: DeployCloudFront
+  CognitoRedirectSignup:
+    Description: "The URL of the deployed front-end application (COGNITO_REDIRECT_SIGNUP)."
+    Value: !Sub "https://${CloudfrontDistribution.DomainName}/welcome.html"
     Condition: DeployCloudFront

@@ -12,6 +12,7 @@
     "run-remote": "API_LOCATION=remote webpack-dev-server --mode=development --hot"
   },
   "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.782.0",
     "aws-amplify": "^5.0.7",
     "axios": "^1.1.2",
     "crypto-browserify": "^3.12.0",
