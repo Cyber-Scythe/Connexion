@@ -22,12 +22,17 @@ public class ModelConverter {
 
         if (user.getHobbies() != null && user.getConnexions() != null) {
             return UserModel.builder()
-                    .withName(user.getName())
+                    .withFirstName(user.getFirstName())
+                    .withLastName(user.getLastName())
+                    .withGender(user.getGender())
                     .withEmail(user.getEmail())
                     .withId(user.getId())
-                    .withAge(user.getAge())
+                    .withBirthMonth(user.getBirthMonth())
+                    .withBirthDay(user.getBirthDay())
+                    .withBirthYear(user.getBirthYear())
                     .withCity(user.getCity())
                     .withState(user.getState())
+                    .withCountry(user.getCountry())
                     .withPersonalityType(user.getPersonalityType())
                     .withHobbies(user.getHobbies())
                     .withConnexions(user.getConnexions())
@@ -37,12 +42,16 @@ public class ModelConverter {
             hobbies = List.of();
 
             return UserModel.builder()
-                    .withName(user.getName())
+                    .withFirstName(user.getFirstName())
+                    .withLastName(user.getLastName())
                     .withEmail(user.getEmail())
                     .withId(user.getId())
-                    .withAge(user.getAge())
+                    .withBirthMonth(user.getBirthMonth())
+                    .withBirthDay(user.getBirthDay())
+                    .withBirthYear(user.getBirthYear())
                     .withCity(user.getCity())
                     .withState(user.getState())
+                    .withCountry(user.getCountry())
                     .withPersonalityType(user.getPersonalityType())
                     .withConnexions(user.getConnexions())
                     .build();
@@ -50,12 +59,16 @@ public class ModelConverter {
             connexions = List.of();
 
             return UserModel.builder()
-                    .withName(user.getName())
+                    .withFirstName(user.getFirstName())
+                    .withLastName(user.getLastName())
                     .withEmail(user.getEmail())
                     .withId(user.getId())
-                    .withAge(user.getAge())
+                    .withBirthMonth(user.getBirthMonth())
+                    .withBirthDay(user.getBirthDay())
+                    .withBirthYear(user.getBirthYear())
                     .withCity(user.getCity())
                     .withState(user.getState())
+                    .withCountry(user.getCountry())
                     .withPersonalityType(user.getPersonalityType())
                     .withHobbies(user.getHobbies())
                     .build();

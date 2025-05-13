@@ -19,12 +19,18 @@ import static com.nashss.se.connexionservice.utils.CollectionUtils.copyToList;
 public class User implements Serializable {
     public static final String PERSONALITY_TYPE_INDEX = "PersonalityTypeIndex";
     private String id;
-    private String name;
     private String email;
-    private int age;
+    private String firstName;
+    private String lastName;
+    private String gender;
+    private int birthMonth;
+    private int birthDay;
+    private int birthYear;
     private String city;
     private String state;
+    private String country;
     private String personalityType;
+    private String aboutMe;
     private List<String> hobbies;
     private List<String> connexions;
 
@@ -37,31 +43,49 @@ public class User implements Serializable {
     /**
      * Constructor with parameters for User POJO.
      * @param id for user ID
-     * @param name the user's name
+     * @param firstName the user's first name
+     * @param lastName the user's last name
+     * @param gender the user's gender
      * @param email email address of user
-     * @param age user's age
+     * @param birthMonth the user's birth month
+     * @param birthDay the user's birth Day
+     * @param birthYear the user's birth year
      * @param city city the user lives in
      * @param state state the user lives in
+     * @param country country the user lives in
      * @param personalityType user's personality type
+     * @param aboutMe user's About Me
      * @param hobbies list of user's hobbies
      * @param connexions List of user's connexions
      */
     public User(String id,
-                String name,
                 String email,
-                int age,
+                String firstName,
+                String lastName,
+                String gender,
+                int birthMonth,
+                int birthDay,
+                int birthYear,
                 String city,
                 String state,
+                String country,
                 String personalityType,
                 List<String> hobbies,
+                String aboutMe,
                 List<String> connexions) {
         this.id = id;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
         this.email = email;
-        this.age = age;
+        this.birthMonth = birthMonth;
+        this.birthDay = birthDay;
+        this.birthYear = birthYear;
         this.city = city;
         this.state = state;
+        this.country = country;
         this.personalityType = personalityType;
+        this.aboutMe = aboutMe;
         this.hobbies = hobbies;
         this.connexions = connexions;
     }
@@ -76,15 +100,24 @@ public class User implements Serializable {
     }
 
     // "name" is a reserved word in DDB, so the attribute in the table is called "userName".
-    @DynamoDBAttribute(attributeName = "userName")
-    public String getName() {
+    @DynamoDBAttribute(attributeName = "userFirstName")
+    public String getFirstName() {
 
-        return name;
+        return firstName;
     }
 
-    public void setName(String name) {
+    @DynamoDBAttribute(attributeName = "userFirstName")
+    public String getLastName() {
+        return lastName;
+    }
 
-        this.name = name;
+    public void setFirstName(String firstName) {
+
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     @DynamoDBAttribute(attributeName = "email")
@@ -98,15 +131,45 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    @DynamoDBAttribute(attributeName = "age")
-    public int getAge() {
+    @DynamoDBAttribute(attributeName = "birthMonth")
+    public int getBirthMonth() {
 
-        return age;
+        return birthMonth;
     }
 
-    public void setAge(int age) {
+    public void setBirthMonth(int birthMonth) {
 
-        this.age = age;
+        this.birthMonth = birthMonth;
+    }
+
+    @DynamoDBAttribute(attributeName = "birthDay")
+    public int getBirthDay() {
+
+        return birthDay;
+    }
+
+    public void setBirthDay(int birthDay) {
+        this.birthDay = birthDay;
+    }
+
+    @DynamoDBAttribute(attributeName = "birthYear")
+    public int getBirthYear() {
+
+        return birthYear;
+    }
+
+    public void setBirthYear(int birthYear) {
+        this.birthYear = birthYear;
+    }
+
+    @DynamoDBAttribute(attributeName = "gender")
+    public String getGender() {
+
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     @DynamoDBAttribute(attributeName = "city")
@@ -131,6 +194,17 @@ public class User implements Serializable {
         this.state = state;
     }
 
+    @DynamoDBAttribute(attributeName = "country")
+    public String getCountry() {
+
+        return country;
+    }
+
+    public void setCountry(String country) {
+
+        this.country = country;
+    }
+
     @DynamoDBIndexHashKey(globalSecondaryIndexName = PERSONALITY_TYPE_INDEX,
             attributeName = "personalityType")
     public String getPersonalityType() {
@@ -139,6 +213,14 @@ public class User implements Serializable {
 
     public void setPersonalityType(String personalityType) {
         this.personalityType = personalityType;
+    }
+
+    @DynamoDBAttribute(attributeName = "aboutMe")
+    public String getAboutMe() {
+        return aboutMe;
+    }
+    public void setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
     }
 
     /**
@@ -218,18 +300,25 @@ public class User implements Serializable {
 
         User user = (User) o;
         return id.equals(user.id) &&
-                name.equals(user.name) &&
                 email.equals(user.email) &&
-                age == user.age &&
+                firstName.equals(user.firstName) &&
+                lastName.equals(user.lastName) &&
+                gender.equals(user.gender) &&
+                birthMonth == user.birthMonth &&
+                birthDay == user.birthDay &&
+                birthYear == user.birthYear &&
                 city.equals(user.city) &&
                 state.equals(user.state) &&
+                country.equals(user.country) &&
+                personalityType.equals(user.personalityType) &&
                 Objects.equals(hobbies, user.hobbies) &&
+                aboutMe.equals(user.aboutMe) &&
                 Objects.equals(connexions, user.connexions);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, age, city, state,
-                            personalityType, hobbies, connexions);
+        return Objects.hash(id, email, firstName, lastName, gender, birthMonth, birthDay, birthYear, city, state,
+                            country, personalityType, hobbies, aboutMe, connexions);
     }
 }

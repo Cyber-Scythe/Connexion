@@ -10,12 +10,18 @@ import static com.nashss.se.connexionservice.utils.CollectionUtils.copyToList;
 @JsonDeserialize(builder = UpdateUserProfileActivityRequest.Builder.class)
 public class UpdateUserProfileActivityRequest {
     private final String email;
-    private final String name;
+    private final String firstName;
+    private final String lastName;
+    private final String gender;
     private final String id;
-    private final int age;
+    private final int birthMonth;
+    private final int birthDay;
+    private final int birthYear;
     private final String city;
     private final String state;
+    private final String country;
     private final String personalityType;
+    private final String aboutMe;
     private final List<String> hobbies;
     private final List<String> connexions;
 
@@ -23,31 +29,49 @@ public class UpdateUserProfileActivityRequest {
     /**
      * Constructor for UpdateUserProfileActivityRequest.
      * @param email user's email
-     * @param name user's name
+     * @param firstName user's first name
+     * @param lastName user's last name
+     * @param gender user's gender
      * @param id user's ID
-     * @param age user's age
+     * @param birthMonth user's birth month
+     * @param birthDay user's birth day
+     * @param birthYear user's birth year
      * @param city user's city
      * @param state user's state
+     * @param country user's country
      * @param personalityType user's personality type
+     * @param aboutMe user's About Me
      * @param hobbies List of user's hobbies
      * @param connexions List of user's connexions
      */
-    public UpdateUserProfileActivityRequest(String email,
-                                            String name,
-                                            String id,
-                                            int age,
+    public UpdateUserProfileActivityRequest(String id,
+                                            String email,
+                                            String firstName,
+                                            String lastName,
+                                            String gender,
+                                            int birthMonth,
+                                            int birthDay,
+                                            int birthYear,
                                             String city,
                                             String state,
+                                            String country,
                                             String personalityType,
                                             List<String> hobbies,
+                                            String aboutMe,
                                             List<String> connexions) {
-        this.email = email;
-        this.name = name;
         this.id = id;
-        this.age = age;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.birthMonth = birthMonth;
+        this.birthDay = birthDay;
+        this.birthYear = birthYear;
         this.city = city;
         this.state = state;
+        this.country = country;
         this.personalityType = personalityType;
+        this.aboutMe = aboutMe;
         this.hobbies = hobbies;
         this.connexions = connexions;
     }
@@ -57,24 +81,29 @@ public class UpdateUserProfileActivityRequest {
 
         return email;
     }
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
+
+    public String getLastName() { return lastName; }
+    public String getGender() { return gender; }
     public String getId() {
         return id;
     }
-    public int getAge() {
-        return age;
-    }
+    public int getBirthMonth() { return birthMonth; }
+    public int getBirthDay() { return birthDay; }
+    public int getBirthYear() { return birthYear; }
     public String getCity() {
         return city;
     }
     public String getState() {
         return state;
     }
+    public String getCountry() { return country; }
     public String getPersonalityType() {
         return personalityType;
     }
+    public String getAboutMe() { return aboutMe; }
     public List<String> getHobbies() {
         return copyToList(hobbies);
     }
@@ -85,14 +114,20 @@ public class UpdateUserProfileActivityRequest {
     @Override
     public String toString() {
         return "UpdateUserProfileActivityRequest{" +
-                "email='" + email + '\'' +
-                "name='" + name + '\'' +
                 "id='" + id + '\'' +
-                "age='" + age + '\'' +
+                "email='" + email + '\'' +
+                "firstName='" + firstName + '\'' +
+                "lastName='" + lastName + '\'' +
+                "gender='" + gender + '\'' +
+                "birthMonth='" + birthMonth + '\'' +
+                "birthDay='" + birthDay + '\'' +
+                "birthYear='" + birthYear + '\'' +
                 "city='" + city + '\'' +
                 "state='" + state + '\'' +
+                "country='" + country + '\'' +
                 "personalityType='" + personalityType + '\'' +
                 "hobbies='" + hobbies + '\'' +
+                "aboutMe='" + aboutMe + '\'' +
                 "connexions='" + connexions + '\'' +
                 '}';
     }
@@ -107,12 +142,18 @@ public class UpdateUserProfileActivityRequest {
     @JsonPOJOBuilder
     public static class Builder {
         private String email;
-        private String name;
+        private String firstName;
+        private String lastName;
+        private String gender;
         private String id;
-        private int age;
+        private int birthMonth;
+        private int birthDay;
+        private int birthYear;
         private String city;
         private String state;
+        private String country;
         private String personalityType;
+        private String aboutMe;
         private List<String> hobbies;
         private List<String> connexions;
 
@@ -121,8 +162,18 @@ public class UpdateUserProfileActivityRequest {
             return this;
         }
 
-        public Builder withName(String name) {
-            this.name = name;
+        public Builder withFirstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public Builder withLastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public Builder withGender(String gender) {
+            this.gender = gender;
             return this;
         }
 
@@ -131,11 +182,20 @@ public class UpdateUserProfileActivityRequest {
             return this;
         }
 
-        public Builder withAge(int age) {
-            this.age = age;
+        public Builder withBirthMonth(int birthMonth) {
+            this.birthMonth = birthMonth;
             return this;
         }
 
+        public Builder withBirthDay(int birthDay) {
+            this.birthDay = birthDay;
+            return this;
+        }
+
+        public Builder withBirthYear(int birthYear) {
+            this.birthYear = birthYear;
+            return this;
+        }
         public Builder withCity(String city) {
             this.city = city;
             return this;
@@ -146,11 +206,20 @@ public class UpdateUserProfileActivityRequest {
             return this;
         }
 
+        public Builder withCountry(String country) {
+            this.country = country;
+            return this;
+        }
+
         public Builder withPersonalityType(String personalityType) {
             this.personalityType = personalityType;
             return this;
         }
 
+        public Builder withAboutMe(String aboutMe) {
+            this.aboutMe = aboutMe;
+            return this;
+        }
         public Builder withHobbies(List<String> hobbies) {
             this.hobbies = copyToList(hobbies);
             return this;
@@ -163,8 +232,21 @@ public class UpdateUserProfileActivityRequest {
 
 
         public UpdateUserProfileActivityRequest build() {
-            return new UpdateUserProfileActivityRequest(email, name, id, age, city, state,
-                    personalityType, hobbies, connexions);
+            return new UpdateUserProfileActivityRequest(id,
+                                                        email,
+                                                        firstName,
+                                                        lastName,
+                                                        gender,
+                                                        birthMonth,
+                                                        birthDay,
+                                                        birthYear,
+                                                        city,
+                                                        state,
+                                                        country,
+                                                        personalityType,
+                                                        hobbies,
+                                                        aboutMe,
+                                                        connexions);
         }
     }
 }

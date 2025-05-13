@@ -71,7 +71,8 @@ class ViewProfile extends BindingClass {
 
        // Code to get profile picture from S3 bucket and set it as value
        // Get S3 download URL
-        const downloadUrl = await this.client.getPresignedDownloadUrl(user.id);
+       const token = localStorage.getItem('token');
+        const downloadUrl = await this.client.getPresignedDownloadUrl(token, user.id);
         this.dataStore.set('downloadUrl', downloadUrl);
 
         console.log('user.id: ', user.id);

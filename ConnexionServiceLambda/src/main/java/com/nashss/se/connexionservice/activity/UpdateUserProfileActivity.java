@@ -50,14 +50,30 @@ public class UpdateUserProfileActivity {
 
         User user = userDao.getUser(updateUserProfileActivityRequest.getId());
 
-        user.setId(updateUserProfileActivityRequest.getId());
-        user.setName(updateUserProfileActivityRequest.getName());
-        user.setEmail(updateUserProfileActivityRequest.getEmail());
-        user.setPersonalityType(updateUserProfileActivityRequest.getPersonalityType());
-        user.setAge(updateUserProfileActivityRequest.getAge());
-        user.setCity(updateUserProfileActivityRequest.getCity());
-        user.setState(updateUserProfileActivityRequest.getState());
-        user.setHobbies(updateUserProfileActivityRequest.getHobbies());
+        if (user != null) {
+           UserModel userModel = new ModelConverter().toUserModel(user);
+        } else {
+
+            User newUser = new User();
+
+            newUser.setId(updateUserProfileActivityRequest.getId());
+            newUser.setFirstName(updateUserProfileActivityRequest.getFirstName());
+            newUser.setLastName(updateUserProfileActivityRequest.getLastName());
+            newUser.setGender(updateUserProfileActivityRequest.getGender());
+            newUser.setEmail(updateUserProfileActivityRequest.getEmail());
+            newUser.setPersonalityType(updateUserProfileActivityRequest.getPersonalityType());
+            newUser.setBirthMonth(updateUserProfileActivityRequest.getBirthMonth());
+            newUser.setBirthDay(updateUserProfileActivityRequest.getBirthDay());
+            newUser.setBirthYear(updateUserProfileActivityRequest.getBirthYear());
+            newUser.setCity(updateUserProfileActivityRequest.getCity());
+            newUser.setState(updateUserProfileActivityRequest.getState());
+            newUser.setCountry(updateUserProfileActivityRequest.getCountry());
+            newUser.setAboutMe(updateUserProfileActivityRequest.getAboutMe());
+            newUser.setHobbies(updateUserProfileActivityRequest.getHobbies());
+
+            userDao.saveUser(newUser);
+            UserModel userModel = new ModelConverter().toUserModel(newUser);
+        }
 
         if (!updateUserProfileActivityRequest.getPersonalityType().isBlank()) {
             List<String> compatiblePersonalityTypes =

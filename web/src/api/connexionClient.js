@@ -100,9 +100,13 @@ export default class ConnexionClient extends BindingClass {
     * @param errorCallback (Optional) A function to execute if the call fails.
     * @returns The user's metadata.
     */
-    async getProfile(errorCallback) {
+    async getProfile(token, errorCallback) {
      try {
-          const token = await this.getTokenOrThrow("Only authenticated users can view profiles");
+          //const token = await this.getTokenOrThrow("Only authenticated users can view profiles");
+          if (token == null) {
+            throw new Error("Only authenticated users can view profiles");
+          }
+
           const response = await this.axiosClient.get(`/index`, {
                 headers: {
                   Authorization: `Bearer ${token}`
@@ -165,9 +169,12 @@ export default class ConnexionClient extends BindingClass {
     * @param errorCallback (Optional) A function to execute if the call fails.
     * @returns The list of hobbies.
     */
-    async getHobbiesList(errorCallback) {
+    async getHobbiesList(token, errorCallback) {
        try {
-           const token = await this.getTokenOrThrow("Only authenticated users can retrieve hobbies from db.");
+           if (token == null) {
+            throw new Error("Only authenticated users can view hobbies");
+           }
+
            const response = await this.axiosClient.get(`/index/hobbies`, {
                        headers: {
                            Authorization: `Bearer ${token}`
@@ -201,26 +208,40 @@ export default class ConnexionClient extends BindingClass {
 
    /**
     * Update the user's profile.
-    * @param name The name of the user to add to profile.
-    * @param age The age of the current user.
+    * @param userId The user ID of the current user.
+    * @param firstName The name of the user to add to profile.
+    * @param lastName The name of the user to add to profile.
+    * @param birthMonth The birth month of the current user.
+    * @param birthDay The birth day of the current user.
+    * @param birthYear The birth year of the current user.
+    * @param gender The gender of the current user.
     * @param city The city that the user lives in.
     * @param state The state that the user lives in.
+    * @param country The country that the user lives in.
     * @param personalityType the personalityType of the user
     * @hobbies list of the user's hobbies
     * @connexions list of the user's connexions
     * @param errorCallback (Optional) A function to execute if the call fails.
     * @returns The updated user profile.
     */
-    async updateUserProfile(userId, name, age, city, state, personalityType, hobbies, connexions, errorCallback) {
+    async updateUserProfile(userId, email, firstName, lastName, gender, birthMonth, birthDay, birthYear, city, state, country, personalityType, hobbies, aboutMe, connexions, token, errorCallback) {
         try {
-            const token = await this.getTokenOrThrow("Only authenticated users can edit their profile.");
+
             const response = await this.axiosClient.post(`/index/update/${userId}`, {
-                name: name,
-                age: age,
+                id:  userId,
+                email: email,
+                firstName: firstName,
+                lastName: lastName,
+                gender: gender,
+                birthMonth: birthMonth,
+                birthDay: birthDay,
+                birthYear: birthYear,
                 city: city,
                 state: state,
+                country: country,
                 personalityType: personalityType,
                 hobbies: hobbies,
+                aboutMe: aboutMe,
                 connexions: connexions
             },{
                 headers: {
@@ -229,6 +250,7 @@ export default class ConnexionClient extends BindingClass {
             });
             return response.data.user;
         } catch (error) {
+            console.error(error.response.data);
             this.handleError(error, errorCallback)
         }
     }
@@ -261,9 +283,12 @@ export default class ConnexionClient extends BindingClass {
     * @param errorCallback (Optional) A function to execute if the call fails.
     * @returns A pre-signed URL for user to download photo from.
     */
-    async getPresignedDownloadUrl(userId) {
+    async getPresignedDownloadUrl(token, userId, errorCallback) {
         try {
-            const token = await this.getTokenOrThrow("Only authenticated users can upload a photo.");
+            if(token == null) {
+                throw new Error("Only authenticated users can upload a photo.");
+            }
+
             const response = await this.axiosClient.get(`/index/${userId}/downloadUrl`, {
                 headers: {
                     Authorization: `Bearer ${token}`

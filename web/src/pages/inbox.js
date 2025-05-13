@@ -224,7 +224,7 @@ export default class Inbox extends BindingClass {
  * Main method to run when the page contents have loaded.
  */
 const main = async () => {
-    const userInbox = new UserInbox();
+    const inbox = new Inbox();
     inbox.mount();
 };
 

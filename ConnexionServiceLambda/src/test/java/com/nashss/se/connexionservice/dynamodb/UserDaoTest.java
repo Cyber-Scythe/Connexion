@@ -57,19 +57,22 @@ public class UserDaoTest {
     public void getUser_userIdNotFound_createsNewUser() {
         // GIVEN
         String nonexistentUserId = "NotReal";
-        String nonexistentName = "name";
+        String nonexistentFirstName = "nonexistentFirstName";
+        String nonexistentLastName = "nonexistentLastName";
         String nonexistentEmail = "email";
 
         User newUser = new User();
         newUser.setId(nonexistentUserId);
-        newUser.setName(nonexistentName);
+        newUser.setFirstName(nonexistentFirstName);
+        newUser.setLastName(nonexistentLastName);
         newUser.setEmail(nonexistentEmail);
 
         when(dynamoDBMapper.load(User.class, nonexistentUserId)).thenReturn(newUser);
 
         // WHEN + THEN
         assertEquals(newUser.getId(), nonexistentUserId);
-        assertEquals(newUser.getName(), nonexistentName);
+        assertEquals(newUser.getFirstName(), nonexistentFirstName);
+        assertEquals(newUser.getLastName(), nonexistentLastName);
         assertEquals(newUser.getEmail(), nonexistentEmail);
     }
 
@@ -89,8 +92,7 @@ public class UserDaoTest {
     @Test
     public void getAllConnexions_callsScan_ReturnsAllUsers() {
         // GIVEN
-        User currUser = new User("id", "name", "email", 1, "city", "state", "TYPE",
-                                List.of("hobby1", "hobby2", "hobby3", "hobby4"), null);
+        User currUser = new User("id", "email", "firstName", "lastName", "gender", 2, 15, 1990, "city", "state", "Country", "TYPE", List.of("hobby1", "hobby2", "hobby3", "hobby4"), "This is my AboutMe", null);
 
         when(dynamoDBMapper.scan(eq(User.class), any())).thenReturn(scanResult);
 
@@ -111,7 +113,8 @@ public class UserDaoTest {
         List<String> personalityTypes = List.of("T1", "T2", "T3", "T4", "T5", "T6");
         User user = new User();
         user.setId("101010111");
-        user.setName("E47");
+        user.setFirstName("E47");
+        user.setLastName("E47");
 
         when(dynamoDBMapper.scan(eq(User.class), any())).thenReturn(scanResult);
 
@@ -143,12 +146,12 @@ public class UserDaoTest {
 
         List<String> currUserHobbies = List.of("hobby1", "hobby2", "hobby3", "hobby4");
 
-        User u1 = new User("8gffhrgdujff-7fhr", "u1", "u1@mail.com",
-                            32, "city", "state", "TYPE2",
-                            List.of("hobby2", "hobby3"), null);
-        User u2 = new User("353-h7d-4hyfje", "u2", "u2@mail.com",
-                        32, "city", "state", "TYPE1",
-                             List.of("hobby1"), null);
+        User u1 = new User("8gffhrgdujff-7fhr", "u1First", "u1Last", "u1Gender", "u1@mail.com",
+                            2, 15, 1990, "city", "state", "country", "TYPE2", List.of("hobby2", "hobby3"), "aboutME here", null);
+
+        User u2 = new User("353-h7d-4hyfje", "u2First", "u2Last", "u2Gender", "u2@mail.com",
+                        10, 9, 1992, "city", "state", "country", "TYPE1", List.of("hobby1"), "aboutME here", null);
+
         List<User> userList = List.of(u1, u2);
 
         connexionMap.put(u1, 2);

@@ -138,6 +138,7 @@ export default class Header extends BindingClass {
         notificationsButton.href = '/notifications.html';
         notificationsButton.width = 30;
         notificationsButton.height = 30;
+        notificationsButton.style.marginRight = '100px';
         notificationsButton.appendChild(notificationImg);
 
         navigationButtons.appendChild(notificationsButton);
@@ -158,6 +159,7 @@ export default class Header extends BindingClass {
         profilePic.width = 70;
         profilePic.align = 'right';
         profilePic.id = 'header-profile-picture';
+        profilePic.style.right = '10px';
 
         const dropdownContent = document.createElement('div');
         dropdownContent.classList.add('dropdown-content');
