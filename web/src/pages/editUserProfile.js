@@ -18,6 +18,7 @@ class EditUserProfile extends BindingClass {
         this.bindClassMethods(['mount',
                                'populateHobbiesList',
                                'prepopulateProfile',
+                               'getFromS3Bucket',
                                'previewImage',
                                'putInS3Bucket',
                                'findCities'], this);
@@ -36,30 +37,19 @@ class EditUserProfile extends BindingClass {
      async clientLoaded() {
         console.log("clientLoaded method");
 
-        const session = localStorage.getItem("session");
-        console.log("session: " + session);
-
         const token = localStorage.getItem("token");
         console.log("token: " + token);
 
-        if (session == null) {
-            const currUser = await this.client.getProfile(token);
-            console.log("currUser: " + currUser.id);
-            this.dataStore.set('currUser', currUser);
 
-             const hobbies = await this.client.getHobbiesList(token);
-             this.dataStore.set('hobbies', hobbies);
-        } else {
-            const currUser = await this.client.getProfile(session);
-            this.dataStore.set('currUser', currUser);
+        const currUser = await this.client.getProfile(token);
+        console.log("currUser: " + currUser.id);
+        this.dataStore.set('currUser', currUser);
 
-             const hobbies = await this.client.getHobbiesList(session);
-             this.dataStore.set('hobbies', hobbies);
-        }
+        const hobbies = await this.client.getHobbiesList(token);
+        this.dataStore.set('hobbies', hobbies);
+
 
         this.populateHobbiesList();
-
-
         this.prepopulateProfile();
     }
 
@@ -83,14 +73,14 @@ class EditUserProfile extends BindingClass {
 
         console.log("jsonHobbyList: " + jsonHobbyList);
 
-           if (jsonHobbyList.length == 0) {
-               document.getElementById("hobbies-list").innerHTML = "Return list is empty.";
+           if (jsonHobbyList.length !== 0) {
+               //document.getElementById("hobbies-list").innerHTML = "Return list is empty.";
 
                for (let i = 0; i < jsonHobbyList.length; i++) {
 
                     let hobby = jsonHobbyList[i];
 
-                    if (hobby != null) {
+                    if (hobby != null && hobby !== "empty") {
                         document.getElementById("hobbies-list").innerHTML += hobby + "<br>";
                     }
 
@@ -114,30 +104,37 @@ class EditUserProfile extends BindingClass {
            }
     }
 
-   /*
-    * Pre-populate user's profile with data already stored in the database
-    */
+   /**
+    * prepopulateProfile function. Function gets data from database and S3 bucket to fill the user's profile with
+    * information that is already stored in the database and S3 bucket.
+    **/
     async prepopulateProfile() {
+        console.log("prepopulateProfile method");
+
         let profileCompletion = 0; // initial percentage of profile that is complete
         const completionCircle = document.getElementById('profileProgressCircle--0');
 
         const user = this.dataStore.get('currUser');
-
         const token = localStorage.getItem("token");
-        const session = localStorage.getItem("session");
+
 
         console.log("user from prepopulateProfile(): " + user.id);
         // Need to download user's profile pic from S3 here. If 'profilePic != null, profileCompletion += 10'.
-        /*
+        /**
         * --- CHANGE MADE HERE ---
         */
-        let downloadUrl = null;
+        const downloadUrl = await this.client.getPresignedDownloadUrl(token, user.id);
+        const profilePic = await this.getFromS3Bucket(downloadUrl, key);
 
-        if (session == null) {
-            downloadUrl = await this.client.getPresignedDownloadUrl(token, user.id);
+        if(profilePic != null) {
+            profileCompletion += 10;
+            const profilePicElement = document.getElementById('preview-selected-image');
+            profilePicElement.src = profilePic;
         } else {
-            downloadUrl = await this.client.getPresignedDownloadUrl(session, user.id);
+            const profilePicElement = document.getElementById('preview-selected-image');
+            profilePicElement.src = images/alien.png;
         }
+
 
         const firstName = localStorage.getItem("firstName");
         if (user.firstName != null || firstName != null) {
@@ -165,32 +162,32 @@ class EditUserProfile extends BindingClass {
         let age = document.getElementById('input-age');
         age.value = userAge;
 
-        if (user.personalityType !== null) {
+        if (user.personalityType !== null || user.personalityType !== "empty") {
             let personalityType = document.getElementById('input-personality-type');
             personalityType.value = user.personalityType;
             profileCompletion += 10;
         }
 
-        if (user.city !== null) {
+        if (user.city !== null || user.city !== "empty") {
             let city = document.getElementById('input-city');
             city.value = user.city;
             profileCompletion += 10;
         }
 
-        if (user.state !== null) {
+        if (user.state !== null || user.state !== "empty") {
             let state = document.getElementById('input-state');
             state.value = user.state;
             profileCompletion += 10;
         }
 
-        if (user.country !== null) {
+        if (user.country !== null || user.country !== "empty") {
             let country = document.getElementById('input-country');
             country.value = user.country;
             profileCompletion += 10;
         }
 
         let hobbyList = this.dataStore.get('hobbies');
-        if (user.hobbies !== null) {
+        if (user.hobbies !== null || user.hobbies !== "empty") {
             profileCompletion += 10;
 
             for (let a = 0; a < user.hobbies.length; a++) {
@@ -261,13 +258,33 @@ class EditUserProfile extends BindingClass {
             const presignedUrl = this.dataStore.get('presignedUrl');
 
             // *** PUT PHOTO IN S3 BUCKET ***
-            await this.client.updateUserProfile(currUser.id, username, age, city, state, personalityType, userHobbies, connexions);
+            await this.client.updateUserProfile(currUser.id, email, firstName, lastName, birthMonth, birthDay, birthYear, city, state, country, personalityType, userHobbies, aboutMe, connexions);
 
             const user = this.dataStore.get('currUser');
             console.log('user.id: ', user.id);
 
             location.href = '/view_profile.html?user=' + user.id + '';
         });
+    }
+
+    /**
+    * Gets an image from an S3 bucket and returns it.
+    */
+    async getFromS3Bucket(downloadUrl) {
+            const axios = require('axios');
+
+            axios.get(downloadUrl)
+                .then(response => {
+                  const bodyContents = response.Body;
+                  console.log(response.data.url);
+                  console.log(response.data.explanation);
+                  console.log('data :' + response.request.data);
+
+                  return response.request.data;
+                })
+                .catch(error => {
+                   console.log(error);
+                });
     }
 
      /**

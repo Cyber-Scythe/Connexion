@@ -286,7 +286,7 @@ export default class ConnexionClient extends BindingClass {
     async getPresignedDownloadUrl(token, userId, errorCallback) {
         try {
             if(token == null) {
-                throw new Error("Only authenticated users can upload a photo.");
+                throw new Error("Only authenticated users can download a photo.");
             }
 
             const response = await this.axiosClient.get(`/index/${userId}/downloadUrl`, {
@@ -394,6 +394,54 @@ export default class ConnexionClient extends BindingClass {
                    this.handleError(error, errorCallback)
                }
     }
+
+    /**
+     * Create profile for a new user.
+     * @param userId The user ID of the current user.
+     * @param firstName The name of the user to add to profile.
+     * @param lastName The name of the user to add to profile.
+     * @param birthMonth The birth month of the current user.
+     * @param birthDay The birth day of the current user.
+     * @param birthYear The birth year of the current user.
+     * @param gender The gender of the current user.
+     * @param city The city that the user lives in.
+     * @param state The state that the user lives in.
+     * @param country The country that the user lives in.
+     * @param personalityType the personalityType of the user
+     * @hobbies list of the user's hobbies
+     * @connexions list of the user's connexions
+     * @param errorCallback (Optional) A function to execute if the call fails.
+     * @returns The new user profile.
+     */
+     async createNewUser(userId, email, firstName, lastName, gender, birthMonth, birthDay, birthYear, city, state, country, personalityType, hobbies, aboutMe, connexions, token, errorCallback) {
+         try {
+                  const response = await this.axiosClient.post(`/index/create/${userId}`, {
+                    id:  userId,
+                    email: email,
+                    firstName: firstName,
+                    lastName: lastName,
+                    gender: gender,
+                    birthMonth: birthMonth,
+                    birthDay: birthDay,
+                    birthYear: birthYear,
+                    city: city,
+                    state: state,
+                    country: country,
+                    personalityType: personalityType,
+                    hobbies: hobbies,
+                    aboutMe: aboutMe,
+                    connexions: connexions
+                },{
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                return response.data.user;
+            } catch (error) {
+                console.error(error.response.data);
+                this.handleError(error, errorCallback)
+            }
+     }
 
    /**
     * Helper method to log the error and run any error functions.

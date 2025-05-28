@@ -85,8 +85,8 @@ public class User implements Serializable {
         this.state = state;
         this.country = country;
         this.personalityType = personalityType;
-        this.aboutMe = aboutMe;
         this.hobbies = hobbies;
+        this.aboutMe = aboutMe;
         this.connexions = connexions;
     }
 
@@ -106,14 +106,14 @@ public class User implements Serializable {
         return firstName;
     }
 
-    @DynamoDBAttribute(attributeName = "userFirstName")
-    public String getLastName() {
-        return lastName;
-    }
-
     public void setFirstName(String firstName) {
 
         this.firstName = firstName;
+    }
+
+    @DynamoDBAttribute(attributeName = "userLastName")
+    public String getLastName() {
+        return lastName;
     }
 
     public void setLastName(String lastName) {

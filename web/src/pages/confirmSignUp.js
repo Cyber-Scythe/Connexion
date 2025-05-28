@@ -3,8 +3,10 @@ import ConnexionClient from '../api/connexionClient';
 import Header from '../components/header';
 import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
-import { CognitoIdentityProviderClient, ConfirmSignUpCommand } from "@aws-sdk/client-cognito-identity-provider";
-import { CognitoUserSession, CognitoAccessToken } from 'amazon-cognito-identity-js';
+import { CognitoIdentityProviderClient, ConfirmSignUpCommand, AuthFlowType, InitiateAuthCommand } from "@aws-sdk/client-cognito-identity-provider";
+
+
+
  /**
   * Logic needed for the confirmSignUp page of the website.
   */
@@ -12,7 +14,7 @@ import { CognitoUserSession, CognitoAccessToken } from 'amazon-cognito-identity-
      constructor() {
          super();
 
-         this.bindClassMethods(['mount', 'confirmSignUp', 'resendConfirmationCode', 'updateUserInfo'], this);
+         this.bindClassMethods(['mount', 'confirmSignUp', 'resendConfirmationCode', 'signIn'], this);
 
          // Create a new datastore
          this.dataStore = new DataStore();
@@ -74,14 +76,11 @@ import { CognitoUserSession, CognitoAccessToken } from 'amazon-cognito-identity-
                 console.log("session: " + response.Session);
                 localStorage.setItem('session', response.Session);
 
-                const token = response.Session;
-
-
-
                 console.log("Successfully confirmed signup!")
 
                 const userId = localStorage.getItem('userId');
                 const email = localStorage.getItem('email');
+                const pass = localStorage.getItem('password');
                 const firstName = localStorage.getItem('firstName');
                 const lastName = localStorage.getItem('lastName');
                 const gender = localStorage.getItem('gender');
@@ -90,37 +89,35 @@ import { CognitoUserSession, CognitoAccessToken } from 'amazon-cognito-identity-
                 const birthYear = localStorage.getItem('birthYear');
 
 
-                 var personalityType = null;
-                 var aboutMe = null;
-                 var hobbies = null;
-                 var connexions = null;
-                 var city = null;
-                 var state = null;
-                 var country = null;
+                 const personalityType = "empty";
+                 const aboutMe = "empty";
+                 const hobbies = [];
+                 hobbies.push("empty");
 
-                 const updatedUser = this.updateUserInfo(userId,
-                                                email,
-                                                firstName,
-                                                lastName,
-                                                gender,
-                                                birthMonth,
-                                                birthDay,
-                                                birthYear,
-                                                city,
-                                                state,
-                                                country,
-                                                personalityType,
-                                                hobbies,
-                                                aboutMe,
-                                                connexions,
-                                                token);
+                 const connexions = [];
+                 connexions.push("empty");
 
-                console.log("updatedUser: " + updatedUser);
+                 const city = "empty";
+                 const state = "empty";
+                 const country = "empty";
 
-                if(updatedUser) {
-                    console.log("user updated");
-                    // window.location.href = '/edit_profile.html';
-                }
+               const signInResponse = await this.signIn(email, pass);
+
+               if (signInResponse.AuthenticationResult) {
+                   // Authentication successful
+                   console.log("New User Authentication successful");
+                   console.log("Sign In Response: " + signInResponse.AuthenticationResult.AccessToken);
+                   localStorage.setItem('token', signInResponse.AuthenticationResult.AccessToken);
+                   //localStorage.setItem('refreshToken', signInResponse.AuthenticationResult.RefreshToken);
+
+                   const createNewUserResponse = await this.client.createNewUser(userId, email, firstName, lastName, gender, birthMonth, birthDay, birthYear, city, state, country, personalityType, hobbies, aboutMe, connexions, signInResponse.AuthenticationResult.AccessToken);
+
+                   if (createNewUserResponse) {
+                       console.log("Successfully created new user!");
+                       window.location.href = '/edit_profile2.html';
+                   }
+
+               }
             }
         } catch (error) {
             if (error.code == "CodeMismatchException") {
@@ -158,8 +155,8 @@ import { CognitoUserSession, CognitoAccessToken } from 'amazon-cognito-identity-
             const response = await client.send(command);
             console.log('response: ' + response.$metadata.httpResponseCode);
 
-            if (response.session) {
-                console.log("session: " + response.session);
+            if (response.Session) {
+                console.log("session: " + response.Session);
                 console.log("Successfully resent confirmation code!");
             }
         } catch (error) {
@@ -168,60 +165,30 @@ import { CognitoUserSession, CognitoAccessToken } from 'amazon-cognito-identity-
         }
      }
 
-     /**
-         * Function updates user's info in the database with the information provided by the user during sign up.
-         * @param userId The user ID of the current user.
-         * @param firstName The first name of the current user.
-         * @param lastName The last name of the current user.
-         * @param gender The gender of the current user.
-         * @param birthMonth The birth month of the current user.
-         * @param birthDay The birth day of the current user.
-         * @param birthYear The birth year of the current user.
-         * @param city The city of the current user.
-         * @param state The state of the current user.
-         * @param country The country of the current user.
-         * @param personalityType The personality type of the current user.
-         * @param aboutMe The about me section of the current user.
-         * @param hobbies The hobbies of the current user.
-         * @param connexions The connexions of the current user.
-         * @returns The updated user.
-         */
-         async updateUserInfo(userId,
-                              email,
-                              firstName,
-                              lastName,
-                              birthMonth,
-                              birthDay,
-                              birthYear,
-                              gender,
-                              city,
-                              state,
-                              country,
-                              personalityType,
-                              aboutMe,
-                              hobbies,
-                              connexions,
-                              token) {
 
-             const user = await this.client.updateUserProfile(userId,
-                                                             email,
-                                                             firstName,
-                                                             lastName,
-                                                             birthMonth,
-                                                             birthDay,
-                                                             birthYear,
-                                                             gender,
-                                                             city,
-                                                             state,
-                                                             country,
-                                                             personalityType,
-                                                             aboutMe,
-                                                             hobbies,
-                                                             connexions,
-                                                             token);
+     // Function to initiate authentication for the new user
+     async signIn(username, password) {
+             const userPoolId = 'us-east-2_D6wRTbWHw';
+             const clientId = 'ubklaouam3eupblmrptdd1bn0';
+             const region = 'us-east-2';
 
-             return user;
-         }
+             const input = {
+               AuthFlow: "USER_PASSWORD_AUTH",
+               AuthParameters: {
+                 PASSWORD: password,
+                 USERNAME: username
+               },
+               ClientId: clientId,
+              };
+
+             const client = new CognitoIdentityProviderClient({ region: region });
+
+             const command = new InitiateAuthCommand(input);
+             const response = await client.send(command);
+             console.log(response);
+
+             return response;
+     }
 }
 
 /**

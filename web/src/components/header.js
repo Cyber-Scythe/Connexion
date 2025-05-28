@@ -108,36 +108,36 @@ export default class Header extends BindingClass {
         const notificationImg = document.createElement('img');
 
         connexionsImg.src = 'images/connexions.png';
-        connexionsImg.height = 45;
-        connexionsImg.width = 45;
+        connexionsImg.height = 35;
+        connexionsImg.width = 35;
 
         inboxImg.src = 'images/messages.png';
-        inboxImg.height = 45;
-        inboxImg.width = 45;
+        inboxImg.height = 35;
+        inboxImg.width = 35;
 
         notificationImg.src = 'images/notifications.png';
-        notificationImg.height = 45;
-        notificationImg.width = 45;
+        notificationImg.height = 35;
+        notificationImg.width = 35;
 
         const connexionsButton = document.createElement('a');
         connexionsButton.classList.add('buttn');
         connexionsButton.href = '/view_connexions.html';
-        connexionsButton.width = 30;
-        connexionsButton.height = 30;
+        connexionsButton.width = 35;
+        connexionsButton.height = 35;
         connexionsButton.appendChild(connexionsImg);
 
         const inboxButton = document.createElement('a');
         inboxButton.classList.add('buttn');
         inboxButton.href = '/userInbox.html';
-        inboxButton.width = 30;
-        inboxButton.height = 30;
+        inboxButton.width = 35;
+        inboxButton.height = 35;
         inboxButton.appendChild(inboxImg);
 
         const notificationsButton = document.createElement('a');
         notificationsButton.classList.add('buttn');
         notificationsButton.href = '/notifications.html';
-        notificationsButton.width = 30;
-        notificationsButton.height = 30;
+        notificationsButton.width = 35;
+        notificationsButton.height = 35;
         notificationsButton.style.marginRight = '100px';
         notificationsButton.appendChild(notificationImg);
 

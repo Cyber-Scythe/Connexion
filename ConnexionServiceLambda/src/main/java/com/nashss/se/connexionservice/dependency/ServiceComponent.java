@@ -79,4 +79,10 @@ public interface ServiceComponent {
      * @return GetPresignedDownloadUrl
      */
     GetPresignedDownloadUrlActivity provideGetPresignedDownloadUrlActivity();
+
+    /**
+     * Provides the relevant activity.
+     * @return CreateNewUserActivity
+     */
+    CreateNewUserActivity provideCreateNewUserActivity();
 }

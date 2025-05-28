@@ -1,0 +1,54 @@
+type Query {
+  userById(id: ID!): User
+}
+
+type User {
+  id: ID!
+  firstName: String
+  lastName: String
+  gender: String
+  birthMo: String
+  birthDay: Int
+  birthYear: Int
+  city: String
+  state: String
+  country: String
+  personalityType: String
+  hobbies: [String]
+  aboutMe: [String]
+  connexions: [User]
+  posts: [Post]
+}
+
+type Post {
+  id: ID!
+  author: User!
+  timestamp: String!
+  content: [String!]!
+  photo: [String]
+  comments: [Comment]
+}
+
+type Chat {
+  id: ID!
+  senderID: ID!
+  recipientID: ID!
+  timestamp: String!
+  content: [String!]!
+  readStatus: Boolean
+}
+
+type Comment {
+  id: ID!
+  postID: ID!
+  senderID: ID!
+  recipientID: ID!
+  timestamp: String!
+  content: [String!]!
+  response: [Comment]
+}
+
+type Conversation {
+  id: ID!
+  members: [User!]!
+}
