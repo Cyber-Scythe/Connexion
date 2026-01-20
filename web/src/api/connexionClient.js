@@ -304,7 +304,6 @@ export default class ConnexionClient extends BindingClass {
     /**
      * Send a new message to a user.
      * @param recipientEmail The email of the receiving user.
-     * @param messageContent The content of the message being sent.
      * @param dateTimeSent The date and time the message was sent.
      * @param messageContent The content of the message.
      * @param readStatus The status of the message
