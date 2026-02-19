@@ -39,6 +39,10 @@ export default class Authenticator extends BindingClass {
         await Auth.signOut();
     }
 
+    async signUp() {
+        await Auth.signUp();
+    }
+
     configureCognito() {
         Auth.configure({
             userPoolId: process.env.COGNITO_USER_POOL_ID,
@@ -47,6 +51,7 @@ export default class Authenticator extends BindingClass {
                 domain: process.env.COGNITO_DOMAIN,
                 redirectSignIn: process.env.COGNITO_REDIRECT_SIGNIN,
                 redirectSignOut: process.env.COGNITO_REDIRECT_SIGNOUT,
+                redirectSignUp: process.env.COGNITO_REDIRECT_SIGNUP,
                 region: 'us-east-2',
                 scope: ['email', 'openid', 'phone', 'profile'],
                 responseType: 'code'

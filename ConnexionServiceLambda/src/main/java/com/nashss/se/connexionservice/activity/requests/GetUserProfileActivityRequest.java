@@ -5,21 +5,28 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 @JsonDeserialize(builder = DeleteMessagesActivityRequest.Builder.class)
 public class GetUserProfileActivityRequest {
-    private final String name;
+    private final String firstName;
+    private final String lastName;
     private final String email;
     private final String id;
 
 
-    private GetUserProfileActivityRequest(String name, String email, String id) {
+    private GetUserProfileActivityRequest(String firstName, String lastName, String email, String id) {
 
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.id = id;
     }
 
-    public String getName() {
+    public String getFirstName() {
 
-        return name;
+        return firstName;
+    }
+
+    public String getLastName() {
+
+        return lastName;
     }
 
     public String getEmail() {
@@ -35,7 +42,8 @@ public class GetUserProfileActivityRequest {
     @Override
     public String toString() {
         return "GetUserProfileActivityRequest{" +
-                "name='" + name + '\'' +
+                "firstName='" + firstName + '\'' +
+                "lastName='" + lastName + '\'' +
                 "email='" + email + '\'' +
                 "id='" + id + '\'' +
                 '}';
@@ -49,13 +57,19 @@ public class GetUserProfileActivityRequest {
 
     @JsonPOJOBuilder
     public static class Builder {
-        private String name;
+        private String firstName;
+        private String lastName;
         private String email;
         private String id;
 
 
-        public Builder withName(String name) {
-            this.name = name;
+        public Builder withFirstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public Builder withLastName(String lastName) {
+            this.lastName = lastName;
             return this;
         }
 
@@ -71,7 +85,7 @@ public class GetUserProfileActivityRequest {
 
         public GetUserProfileActivityRequest build() {
 
-            return new GetUserProfileActivityRequest(name, email, id);
+            return new GetUserProfileActivityRequest(firstName, lastName, email, id);
         }
     }
 }

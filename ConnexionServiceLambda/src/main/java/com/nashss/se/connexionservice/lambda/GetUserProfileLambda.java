@@ -24,7 +24,8 @@ public class GetUserProfileLambda
                 // input.fromBody(GetUserProfileActivityRequest.class);
                 return input.fromUserClaims(claims -> GetUserProfileActivityRequest.builder()
                         .withEmail(claims.get("email"))
-                        .withName(claims.get("name"))
+                        .withFirstName(claims.get("firstName"))
+                        .withLastName(claims.get("lastName"))
                         .withId(claims.get("sub"))
                         .build());
             }, (request, serviceComponent) ->

@@ -12,14 +12,7 @@
 
 <body class="background">
 <header class="header" id="header">
-  <div class="dropdown">
-    <button class="dropbtn">Navigation</button>
-    <div class="dropdown-content" id="dropdown-content">
-      <a id="drp-dwn-1" href="/inbox.html">Messages</a>
-      <a id="drp-dwn-2" href="/view_connexions.html">Connexions</a>
-      <a id="drp-dwn-3" href="/view_profile.html">Profile</a>
-    </div>
-  </div>
+
 </header>
 <div class="main-content" id="panel">
   <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 mt-3 shadow-none border-radius-xl" id="navbarTop">
@@ -63,25 +56,19 @@
             <input type="file" id="file-upload" accept="image/*"/>
           </div>
           <br>
-<!--          <div>-->
-<!--            <form id="fs-profile-picture" accept-charset="utf-8"-->
-<!--                  action="https://formspree.io/xzbjawgz/FORM_ID"-->
-<!--                  method="POST"-->
-<!--                  enctype="multipart/form-data">-->
-<!--            </form>-->
-<!--            <div class="form-group">-->
-<!--              <label for="fs-profile-picture"> Your photo:</label>-->
-<!--              <input type="file" name="upload">-->
-<!--            </div>-->
             <div class="row">
               <div class="col-lg-6">
                 <div class="form-group">
-                  <label class="form-control-label" for="input-name">Name</label>
-                  <input type="text" id="input-name" class="form-control" placeholder="name">
+                  <label class="form-control-label" for="input-name">Full Name</label>
+                  <input type="text" id="input-name" class="form-control" placeholder="full name">
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="margin-right: 60px;">
                   <label class="form-control-label" for="input-age">Age</label>
                   <input type="text" id="input-age" class="form-control" placeholder="age">
+                </div>
+                <div class="form-group">
+                  <label class="form-control-label" for="input-country">City</label>
+                  <input type="text" id="input-country" class="form-control" placeholder="country">
                 </div>
                 <div class="form-group">
                   <label class="form-control-label" for="input-city">City</label>
@@ -120,7 +107,6 @@
             <button id="save-btn">
               <i id="fa-edit-profile" class="fa fa-edit-profile"></i>Save Changes</button>
           </div>
-      </div>
         </form>
     </div>
   </div>

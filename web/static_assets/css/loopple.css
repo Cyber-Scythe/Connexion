@@ -37,13 +37,13 @@
     font-size:14px;
     font-weight:600;
     cursor:pointer;
-    border:1px solid transparent;
-    border-radius:4px;
+    background-color: transparent;
+    border:none;
     text-align:center;
     vertical-align:middle;
     position:relative;
     transition:all .15s ease;
-    padding:10px 20px;
+    padding:10px 10px;
     letter-spacing:.3px;
     text-transform:none;
     will-change:transform

@@ -22,14 +22,20 @@ public class ModelConverter {
 
         if (user.getHobbies() != null && user.getConnexions() != null) {
             return UserModel.builder()
-                    .withName(user.getName())
-                    .withEmail(user.getEmail())
                     .withId(user.getId())
-                    .withAge(user.getAge())
+                    .withEmail(user.getEmail())
+                    .withFirstName(user.getFirstName())
+                    .withLastName(user.getLastName())
+                    .withGender(user.getGender())
+                    .withBirthMonth(user.getBirthMonth())
+                    .withBirthDay(user.getBirthDay())
+                    .withBirthYear(user.getBirthYear())
                     .withCity(user.getCity())
                     .withState(user.getState())
+                    .withCountry(user.getCountry())
                     .withPersonalityType(user.getPersonalityType())
                     .withHobbies(user.getHobbies())
+                    .withAboutMe(user.getAboutMe())
                     .withConnexions(user.getConnexions())
                     .build();
         } else if (user.getHobbies() == null) {
@@ -37,27 +43,39 @@ public class ModelConverter {
             hobbies = List.of();
 
             return UserModel.builder()
-                    .withName(user.getName())
-                    .withEmail(user.getEmail())
                     .withId(user.getId())
-                    .withAge(user.getAge())
+                    .withEmail(user.getEmail())
+                    .withFirstName(user.getFirstName())
+                    .withLastName(user.getLastName())
+                    .withGender(user.getGender())
+                    .withBirthMonth(user.getBirthMonth())
+                    .withBirthDay(user.getBirthDay())
+                    .withBirthYear(user.getBirthYear())
                     .withCity(user.getCity())
                     .withState(user.getState())
+                    .withCountry(user.getCountry())
                     .withPersonalityType(user.getPersonalityType())
+                    .withAboutMe(user.getAboutMe())
                     .withConnexions(user.getConnexions())
                     .build();
         } else if (user.getConnexions() == null) {
             connexions = List.of();
 
             return UserModel.builder()
-                    .withName(user.getName())
-                    .withEmail(user.getEmail())
                     .withId(user.getId())
-                    .withAge(user.getAge())
+                    .withEmail(user.getEmail())
+                    .withFirstName(user.getFirstName())
+                    .withLastName(user.getLastName())
+                    .withGender(user.getGender())
+                    .withBirthMonth(user.getBirthMonth())
+                    .withBirthDay(user.getBirthDay())
+                    .withBirthYear(user.getBirthYear())
                     .withCity(user.getCity())
                     .withState(user.getState())
+                    .withCountry(user.getCountry())
                     .withPersonalityType(user.getPersonalityType())
                     .withHobbies(user.getHobbies())
+                    .withAboutMe(user.getAboutMe())
                     .build();
         }
         return null;

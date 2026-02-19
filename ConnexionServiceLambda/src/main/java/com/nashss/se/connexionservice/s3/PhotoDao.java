@@ -63,7 +63,9 @@ public class PhotoDao {
             GeneratePresignedUrlRequest generatePresignedUrlRequest =
                     new GeneratePresignedUrlRequest(bucketName, objectKey)
                             .withMethod(HttpMethod.PUT);
+                            //.withContentType("image/*");
                             //.withExpiration(expiration);
+
             URL url = s3Client.generatePresignedUrl(generatePresignedUrlRequest);
 
             System.out.println("Pre-Signed URL: " + url.toString());
@@ -95,7 +97,7 @@ public class PhotoDao {
 
             URL url = s3Client.generatePresignedUrl(generatePresignedUrlRequest);
 
-            System.out.println("Pre-Signed URL: " + url.toString());
+            System.out.println("Pre-Signed download URL: " + url.toString());
             return url;
 
         } catch (AmazonServiceException e) {

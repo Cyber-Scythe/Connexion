@@ -2,6 +2,7 @@ package com.nashss.se.connexionservice.dependency;
 
 import com.nashss.se.connexionservice.activity.*;
 
+import com.nashss.se.connexionservice.activity.results.GetPresignedDownloadUrlActivityResult;
 import dagger.Component;
 
 import javax.inject.Singleton;
@@ -69,7 +70,19 @@ public interface ServiceComponent {
 
     /**
      * Provides the relevant activity.
-     * @return UpdateUserPhotoActivity
+     * @return GetPresignedUrlActivity
      */
     GetPresignedUrlActivity provideGetPresignedUrlActivity();
+
+    /**
+     * Provides the relevant activity
+     * @return GetPresignedDownloadUrl
+     */
+    GetPresignedDownloadUrlActivity provideGetPresignedDownloadUrlActivity();
+
+    /**
+     * Provides the relevant activity.
+     * @return CreateNewUserActivity
+     */
+    CreateNewUserActivity provideCreateNewUserActivity();
 }

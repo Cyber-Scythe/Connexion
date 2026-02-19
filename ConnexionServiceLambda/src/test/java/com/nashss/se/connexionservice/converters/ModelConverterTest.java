@@ -20,18 +20,29 @@ public class ModelConverterTest {
         User user = new User();
         user.setId("id");
         user.setEmail("email");
-        user.setName("name");
-        user.setAge(1);
+        user.setFirstName("firstName");
+        user.setLastName("lastName");
+        user.setBirthMonth(1);
+        user.setBirthDay(2);
+        user.setBirthYear(1990);
         user.setPersonalityType("TYPE");
         user.setCity("city");
         user.setState("state");
+        user.setCountry("country");
         user.setHobbies(List.of("hobby1", "hobby2", "hobby3"));
         user.setConnexions(List.of("c1", "c2", "c3"));
 
         UserModel userModel = modelConverter.toUserModel(user);
         assertEquals(user.getId(), userModel.getId());
-        assertEquals(user.getName(), userModel.getName());
-        assertEquals(user.getAge(), userModel.getAge());
+        assertEquals(user.getFirstName(), userModel.getFirstName());
+        assertEquals(user.getLastName(), userModel.getLastName());
+        assertEquals(user.getBirthMonth(), userModel.getBirthMonth());
+        assertEquals(user.getBirthDay(), userModel.getBirthDay());
+        assertEquals(user.getBirthYear(), userModel.getBirthYear());
+        assertEquals(user.getPersonalityType(), userModel.getPersonalityType());
+        assertEquals(user.getCity(), userModel.getCity());
+        assertEquals(user.getState(), userModel.getState());
+        assertEquals(user.getCountry(), userModel.getCountry());
         assertEquals(user.getHobbies(), copyToList(userModel.getHobbies()));
         assertEquals(user.getConnexions(), copyToList(userModel.getConnexions()));
     }
@@ -41,20 +52,32 @@ public class ModelConverterTest {
         User user = new User();
         user.setId("id");
         user.setEmail("email");
-        user.setName("name");
-        user.setAge(1);
+        user.setFirstName("firstName");
+        user.setLastName("lastName");
+        user.setBirthMonth(2);
+        user.setBirthDay(3);
+        user.setBirthYear(1991);
         user.setPersonalityType("TYPE");
         user.setCity("city");
         user.setState("state");
+        user.setCountry("country");
         user.setHobbies(List.of("hobby1", "hobby2", "hobby3"));
         user.setConnexions(null);
 
         UserModel userModel = modelConverter.toUserModel(user);
         assertEquals(user.getId(), userModel.getId());
-        assertEquals(user.getName(), userModel.getName());
-        assertEquals(user.getAge(), userModel.getAge());
+        assertEquals(user.getFirstName(), userModel.getFirstName());
+        assertEquals(user.getLastName(), userModel.getLastName());
+        assertEquals(user.getBirthMonth(), userModel.getBirthMonth());
+        assertEquals(user.getBirthDay(), userModel.getBirthDay());
+        assertEquals(user.getBirthYear(), userModel.getBirthYear());
+        assertEquals(user.getPersonalityType(), userModel.getPersonalityType());
+        assertEquals(user.getCity(), userModel.getCity());
+        assertEquals(user.getState(), userModel.getState());
+        assertEquals(user.getCountry(), userModel.getCountry());
         assertEquals(user.getHobbies(), copyToList(userModel.getHobbies()));
         assertEquals(user.getConnexions(), copyToList(userModel.getConnexions()));
+
         assertNull(userModel.getConnexions());
     }
 
@@ -63,20 +86,32 @@ public class ModelConverterTest {
         User user = new User();
         user.setId("id");
         user.setEmail("email");
-        user.setName("name");
-        user.setAge(1);
+        user.setFirstName("firstName");
+        user.setLastName("lastName");
+        user.setBirthMonth(2);
+        user.setBirthDay(3);
+        user.setBirthYear(1991);
         user.setPersonalityType("TYPE");
         user.setCity("city");
         user.setState("state");
+        user.setCountry("country");
         user.setHobbies(null);
         user.setConnexions(null);
 
         UserModel userModel = modelConverter.toUserModel(user);
         assertEquals(user.getId(), userModel.getId());
-        assertEquals(user.getName(), userModel.getName());
-        assertEquals(user.getAge(), userModel.getAge());
+        assertEquals(user.getFirstName(), userModel.getFirstName());
+        assertEquals(user.getLastName(), userModel.getLastName());
+        assertEquals(user.getBirthMonth(), userModel.getBirthMonth());
+        assertEquals(user.getBirthDay(), userModel.getBirthDay());
+        assertEquals(user.getBirthYear(), userModel.getBirthYear());
+        assertEquals(user.getPersonalityType(), userModel.getPersonalityType());
+        assertEquals(user.getCity(), userModel.getCity());
+        assertEquals(user.getState(), userModel.getState());
+        assertEquals(user.getCountry(), userModel.getCountry());
         assertEquals(user.getHobbies(), copyToList(userModel.getHobbies()));
         assertEquals(user.getConnexions(), copyToList(userModel.getConnexions()));
+
         assertNull(userModel.getConnexions());
     }
 

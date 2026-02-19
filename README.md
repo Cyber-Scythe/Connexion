@@ -18,7 +18,7 @@
 
   <p align="center">
     Social media has done so much to bring people together, but it is missing an integral part that allows people to make meaningful, genuine connections.
-    According to Myers Briggs, personality compatability is what lays the foundation for meaninful relationships. Connexion is a social media platform, in
+    According to Myers Briggs, personality compatibility is what lays the foundation for meaningful relationships. Connexion is a social media platform, in
     it's infancy, that matches users based on their personality type and ranks them by the hobbies they have in common. Unlike traditional social media       platforms, users can only see other users that they have matched with. This does away with the issue of "friend collecting".
   </p>
   <p>

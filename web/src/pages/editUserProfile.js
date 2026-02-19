@@ -18,8 +18,10 @@ class EditUserProfile extends BindingClass {
         this.bindClassMethods(['mount',
                                'populateHobbiesList',
                                'prepopulateProfile',
+                               'getFromS3Bucket',
                                'previewImage',
-                               'putInS3Bucket'], this);
+                               'putInS3Bucket',
+                               'findCities'], this);
 
         // Create a new datastore
         this.dataStore = new DataStore();
@@ -35,11 +37,17 @@ class EditUserProfile extends BindingClass {
      async clientLoaded() {
         console.log("clientLoaded method");
 
-        const currUser = await this.client.getProfile();
+        const token = localStorage.getItem("token");
+        console.log("token: " + token);
+
+
+        const currUser = await this.client.getProfile(token);
+        console.log("currUser: " + currUser.id);
         this.dataStore.set('currUser', currUser);
 
-        const hobbies = await this.client.getHobbiesList();
+        const hobbies = await this.client.getHobbiesList(token);
         this.dataStore.set('hobbies', hobbies);
+
 
         this.populateHobbiesList();
         this.prepopulateProfile();
@@ -50,6 +58,7 @@ class EditUserProfile extends BindingClass {
      */
      mount() {
         const fileUpload = document.getElementById('file-upload').addEventListener("change", this.previewImage);
+        const citySelector = document.getElementById('city_select').addEventListener("click", this.findCities);
 
         this.header.addHeaderToPage();
         this.client = new ConnexionClient();
@@ -64,68 +73,123 @@ class EditUserProfile extends BindingClass {
 
         console.log("jsonHobbyList: " + jsonHobbyList);
 
-           if (jsonHobbyList.length == 0) {
-               document.getElementById("hobbies-list").innerHTML = "Return list is empty."
-           }
+           if (jsonHobbyList.length !== 0) {
+               //document.getElementById("hobbies-list").innerHTML = "Return list is empty.";
 
-           for (let i = 0; i < jsonHobbyList.length; i++) {
+               for (let i = 0; i < jsonHobbyList.length; i++) {
 
-                let hobby = jsonHobbyList[i];
+                    let hobby = jsonHobbyList[i];
 
-                if (hobby != null) {
-                    document.getElementById("hobbies-list").innerHTML += hobby + "<br>";
+                    if (hobby != null && hobby !== "empty") {
+                        document.getElementById("hobbies-list").innerHTML += hobby + "<br>";
+                    }
+
+                    let checkbox = document.createElement('input');
+                    checkbox.className = 'container';
+                    checkbox.type = 'checkbox';
+                    checkbox.id = 'hobbyCheckbox' + i;
+                    checkbox.name = 'hobby';
+                    checkbox.value = hobby;
+
+                    let label = document.createElement('label')
+                    label.htmlFor = 'selected-hobby';
+                    label.appendChild(document.createTextNode('My Hobby'));
+
+                    let br = document.createElement('br');
+
+                    let container = document.getElementById('hobbies-list');
+                    container.appendChild(checkbox);
+                    container.appendChild(br);
                 }
-
-                let checkbox = document.createElement('input');
-                checkbox.className = 'container';
-                checkbox.type = 'checkbox';
-                checkbox.id = 'hobbyCheckbox' + i;
-                checkbox.name = 'hobby';
-                checkbox.value = hobby;
-
-                let label = document.createElement('label')
-                label.htmlFor = 'selected-hobby';
-                label.appendChild(document.createTextNode('My Hobby'));
-
-                let br = document.createElement('br');
-
-                let container = document.getElementById('hobbies-list');
-                container.appendChild(checkbox);
-                container.appendChild(br);
-            }
+           }
     }
 
-   /*
-    * Pre-populate user's profile with data already stored in the database
-    */
+   /**
+    * prepopulateProfile function. Function gets data from database and S3 bucket to fill the user's profile with
+    * information that is already stored in the database and S3 bucket.
+    **/
     async prepopulateProfile() {
+        console.log("prepopulateProfile method");
+
+        let profileCompletion = 0; // initial percentage of profile that is complete
+        const completionCircle = document.getElementById('profileProgressCircle--0');
+
         const user = this.dataStore.get('currUser');
+        const token = localStorage.getItem("token");
+
+
+        console.log("user from prepopulateProfile(): " + user.id);
+        // Need to download user's profile pic from S3 here. If 'profilePic != null, profileCompletion += 10'.
+        /**
+        * --- CHANGE MADE HERE ---
+        */
+        const downloadUrl = await this.client.getPresignedDownloadUrl(token, user.id);
+        const profilePic = await this.getFromS3Bucket(downloadUrl, key);
+
+        if(profilePic != null) {
+            profileCompletion += 10;
+            const profilePicElement = document.getElementById('preview-selected-image');
+            profilePicElement.src = profilePic;
+        } else {
+            const profilePicElement = document.getElementById('preview-selected-image');
+            profilePicElement.src = images/alien.png;
+        }
+
+
+        const firstName = localStorage.getItem("firstName");
+        if (user.firstName != null || firstName != null) {
+
+                    profileCompletion += 10;
+        }
+
+        const lastName = localStorage.getItem("lastName");
+        if (user.lastName != null || lastName != null) {
+
+                    profileCompletion += 10;
+        }
+
+        const fullName = firstName + " " + lastName;
 
         let username = document.getElementById('input-name');
-        username.value = user.name;
+        username.value = fullName;
 
-        if (user.age !== null) {
-            let age = document.getElementById('input-age');
-            age.value = user.age;
+        const userAge = localStorage.getItem("age");
+        if (user.age != null || userAge != null) {
+
+                    profileCompletion += 10;
         }
 
-        if (user.personalityType !== null) {
+        let age = document.getElementById('input-age');
+        age.value = userAge;
+
+        if (user.personalityType !== null || user.personalityType !== "empty") {
             let personalityType = document.getElementById('input-personality-type');
             personalityType.value = user.personalityType;
+            profileCompletion += 10;
         }
 
-        if (user.city !== null) {
+        if (user.city !== null || user.city !== "empty") {
             let city = document.getElementById('input-city');
             city.value = user.city;
+            profileCompletion += 10;
         }
 
-        if (user.state !== null) {
+        if (user.state !== null || user.state !== "empty") {
             let state = document.getElementById('input-state');
             state.value = user.state;
+            profileCompletion += 10;
+        }
+
+        if (user.country !== null || user.country !== "empty") {
+            let country = document.getElementById('input-country');
+            country.value = user.country;
+            profileCompletion += 10;
         }
 
         let hobbyList = this.dataStore.get('hobbies');
-        if (user.hobbies !== null) {
+        if (user.hobbies !== null || user.hobbies !== "empty") {
+            profileCompletion += 10;
+
             for (let a = 0; a < user.hobbies.length; a++) {
                 for (let i = 0; i < hobbyList.length; i++) {
                     if (user.hobbies[a] === hobbyList[i]) {
@@ -138,6 +202,12 @@ class EditUserProfile extends BindingClass {
 
         let connexions = null;
 
+        const completionStr = profileCompletion + '%';
+        completionCircle.setAttribute('aria-valuetext', completionStr);
+
+        const completionText = document.getElementById('BaseProgressCircle::Label');
+        completionText.text = completionStr;
+
         let saveButton = document.getElementById('save-btn');
         saveButton.addEventListener('click', async (evt) => {
 
@@ -147,10 +217,19 @@ class EditUserProfile extends BindingClass {
              const userId = curUser.id;
 
              const username = document.getElementById('input-name').value;
-             const age = document.getElementById('input-age').value;
+             /*
+             *  Age is calculated from birthdate upon signup and is saved, along with the user's age
+             *  in localStorage
+             */
+             const gender = document.getElementById('input-gender').value;
              const personalityType = document.getElementById('input-personality-type').value;
              const city = document.getElementById('input-city').value;
              const state = document.getElementById('input-state').value;
+
+             /*
+             *  Connexions will be pulled from the database and populated...
+             *
+             */
              const connexions = null;
 
              const hobbyList = this.dataStore.get('hobbies');
@@ -173,20 +252,39 @@ class EditUserProfile extends BindingClass {
              }
 
             console.log("userHobbies: ", userHobbies);
+
             const currUser = this.dataStore.get('currUser');
-            const photoData = this.dataStore.get('photoData');
+            const profilePic = this.dataStore.get('photoData');
             const presignedUrl = this.dataStore.get('presignedUrl');
 
             // *** PUT PHOTO IN S3 BUCKET ***
-            await this.putInS3Bucket(presignedUrl, photoData);
-
-            await this.client.updateUserProfile(currUser.id, username, age, city, state, personalityType, userHobbies, connexions);
+            await this.client.updateUserProfile(currUser.id, email, firstName, lastName, birthMonth, birthDay, birthYear, city, state, country, personalityType, userHobbies, aboutMe, connexions);
 
             const user = this.dataStore.get('currUser');
             console.log('user.id: ', user.id);
 
-           // location.href = '/view_profile.html?user=' + user.id + '';
+            location.href = '/view_profile.html?user=' + user.id + '';
         });
+    }
+
+    /**
+    * Gets an image from an S3 bucket and returns it.
+    */
+    async getFromS3Bucket(downloadUrl) {
+            const axios = require('axios');
+
+            axios.get(downloadUrl)
+                .then(response => {
+                  const bodyContents = response.Body;
+                  console.log(response.data.url);
+                  console.log(response.data.explanation);
+                  console.log('data :' + response.request.data);
+
+                  return response.request.data;
+                })
+                .catch(error => {
+                   console.log(error);
+                });
     }
 
      /**
@@ -204,8 +302,12 @@ class EditUserProfile extends BindingClass {
 
             // *** GET PRE-SIGNED URL ***
             const user = this.dataStore.get('currUser');
+            console.log('user ', user);
+
             const presignedUrl = await this.client.getPresignedUrl(user.id);
+
             console.log('Pre-signed URL: ', presignedUrl);
+
             this.dataStore.set('presignedUrl', presignedUrl);
 
             const imagePreviewElement = document.querySelector("#preview-selected-image");
@@ -219,21 +321,50 @@ class EditUserProfile extends BindingClass {
             console.log("FILE TYPE: ", fileType);
             console.log("IMAGE SRC: ", imageSrc);
 
+            this.dataStore.set('presignedUrl', presignedUrl);
+            this.dataStore.set('imageSrc', imageSrc);
             this.dataStore.set('photoData', imageFiles[0]);
+
+            let photoData = this.dataStore.get('photoData');
+            await this.putInS3Bucket(presignedUrl, imageFiles[0]);
+
+            //document.getElementById('profile-picture').src = photoData;
         }
     }
 
-    async putInS3Bucket(url, data) {
+    async putInS3Bucket(url, image) {
           const axios = require('axios');
 
-          axios.put(url, { data: data })
-            .then(response => {
-              console.log(response.data.url);
-              console.log(response.data.explanation);
-            })
-            .catch(error => {
-              console.log(error);
-            });
+         axios.put(url, image, {
+           headers: {
+             'Content-Type': image.type
+           }
+         });
+    }
+
+    async findCities() {
+        const country = document.getElementById('country_select--0').value;
+        const countryValue = country.value;
+        console.log(countryValue);
+
+        var GeoDb = require('wft-geodb-js-client');
+
+        var defaultClient = GeoDb.ApiClient.instance;
+        // Configure API key authorization: UserSecurity
+        var UserSecurity = defaultClient.authentications['UserSecurity'];
+        UserSecurity.apiKey = "YOUR API KEY";
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        UserSecurity.apiKeyPrefix['X-RapidAPI-Key'] = "Token"
+
+        var api = new GeoDb.GeoApi()
+        var opts = {
+          'countryIds': "countryIds_example", // {String} Only places in these countries (comma-delimited country codes or WikiData ids)
+        };
+        api.findCitiesUsingGET(opts).then(function(data) {
+          console.log('API called successfully. Returned data: ' + data);
+        }, function(error) {
+          console.error(error);
+        });
     }
 }
 

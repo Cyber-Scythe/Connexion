@@ -32,8 +32,11 @@ public class GetUserProfileActivityTest {
         User user = new User();
         user.setId("10101010101");
         user.setEmail("requestedEmail");
-        user.setName("requestedName");
-        user.setAge(11);
+        user.setFirstName("requestedFirstName");
+        user.setLastName("requestedLastName");
+        user.setBirthMonth(2);
+        user.setBirthDay(15);
+        user.setBirthYear(1990);
         user.setCity("requestedCity");
         user.setState("requestedState");
         user.setPersonalityType("TYPE");
@@ -45,7 +48,8 @@ public class GetUserProfileActivityTest {
         GetUserProfileActivityRequest request = GetUserProfileActivityRequest.builder()
                 .withId(user.getId())
                 .withEmail(user.getEmail())
-                .withName(user.getName())
+                .withFirstName(user.getFirstName())
+                .withLastName(user.getLastName())
                 .build();
 
         // WHEN
@@ -54,10 +58,14 @@ public class GetUserProfileActivityTest {
         // THEN
         assertEquals(user.getId(), result.getUser().getId());
         assertEquals(user.getEmail(), result.getUser().getEmail());
-        assertEquals(user.getName(), result.getUser().getName());
-        assertEquals(user.getAge(), result.getUser().getAge());
+        assertEquals(user.getFirstName(), result.getUser().getFirstName());
+        assertEquals(user.getLastName(), result.getUser().getLastName());
+        assertEquals(user.getBirthMonth(), result.getUser().getBirthMonth());
+        assertEquals(user.getBirthDay(), result.getUser().getBirthDay());
+        assertEquals(user.getBirthYear(), result.getUser().getBirthYear());
         assertEquals(user.getCity(), result.getUser().getCity());
         assertEquals(user.getState(), result.getUser().getState());
+        assertEquals(user.getCountry(), result.getUser().getCountry());
         assertEquals(user.getPersonalityType(), result.getUser().getUserPersonalityType());
         assertEquals(user.getHobbies(), result.getUser().getHobbies());
         assertEquals(user.getConnexions(), result.getUser().getConnexions());

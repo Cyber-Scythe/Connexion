@@ -83,6 +83,8 @@ Resources:
           - DeployCloudFront
           - !Sub "https://${CloudfrontDistribution.DomainName}/dashboard.html"
           - http://localhost:8000/dashboard.html
+          - !Sub "https://${CloudfrontDistribution.DomainName}/welcome.html"
+          - http://localhost:8000/welcome.html
       LogoutURLs:
         - !If
           - DeployCloudFront
@@ -455,6 +457,26 @@ Resources:
             Path: /index/{userId}/downloadUrl
             Method: get
 
+  CreateNewUserLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !GetAtt AccessRole.Arn
+      CodeUri: ConnexionServiceLambda
+      Handler: com.nashss.se.connexionservice.lambda.CreateNewUserLambda::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        ConnexionService:
+          Type: Api
+          Properties:
+            Path: /index/create/{userId}
+            Method: post
+
   #-----------------------------------------------------
   # DynamoDB Configuration
   #-----------------------------------------------------
@@ -467,14 +489,28 @@ Resources:
           AttributeType: "S"
         - AttributeName: "email"
           AttributeType: "S"
-#        - AttributeName: "name"
+#        - AttributeName: "firstName"
 #          AttributeType: "S"
-#        - AttributeName: "age"
+#        - AttributeName: "lastName"
+#           AttributeType: "S"
+#        - AttributeName: "gender"
 #          AttributeType: "S"
-#        - AttributeName: "location"
+#        - AttributeName: "birthMonth"
+#          AttributeType: "INT"
+#        - AttributeName: "birthDay"
+#          AttributeType: "INT"
+#        - AttributeName: "birthYear"
+#          AttributeType: "INT"
+#        - AttributeName: "city"
+#          AttributeType: "S"
+#        - AttributeName: "state"
+#          AttributeType: "S"
+#        - AttributeName: "country"
 #          AttributeType: "S"
         - AttributeName: "personalityType"
           AttributeType: "S"
+#        - AttributeName: "aboutMe"
+#          AttributeType: "S"
 #        - AttributeName: "hobbies"
 #          AttributeType: "SS"
 #        - AttributeName: "profilePicture"
@@ -597,4 +633,8 @@ Outputs:
   CognitoRedirectSignout:
     Description: "The URL of the deployed front-end application (COGNITO_REDIRECT_SIGNOUT)."
     Value: !Sub "https://${CloudfrontDistribution.DomainName}/index.html"
+    Condition: DeployCloudFront
+  CognitoRedirectSignup:
+    Description: "The URL of the deployed front-end application (COGNITO_REDIRECT_SIGNUP)."
+    Value: !Sub "https://${CloudfrontDistribution.DomainName}/welcome.html"
     Condition: DeployCloudFront

@@ -1,6 +1,5 @@
 package com.nashss.se.connexionservice.lambda;
 
-import com.google.gson.JsonParser;
 import com.nashss.se.connexionservice.activity.requests.UpdateUserProfileActivityRequest;
 import com.nashss.se.connexionservice.activity.results.UpdateUserProfileActivityResult;
 
@@ -25,14 +24,20 @@ public class UpdateUserProfileLambda
                             input.fromBody(UpdateUserProfileActivityRequest.class);
 
             return input.fromUserClaims(claims -> UpdateUserProfileActivityRequest.builder()
-                    .withId(claims.get("sub"))
-                    .withName(unauthenticatedRequest.getName())
-                    .withEmail(claims.get("email"))
-                    .withAge(unauthenticatedRequest.getAge())
+                    .withId(unauthenticatedRequest.getId())
+                    .withEmail(unauthenticatedRequest.getEmail())
+                    .withFirstName(unauthenticatedRequest.getFirstName())
+                    .withLastName(unauthenticatedRequest.getLastName())
+                    .withGender(unauthenticatedRequest.getGender())
+                    .withBirthMonth(unauthenticatedRequest.getBirthMonth())
+                    .withBirthDay(unauthenticatedRequest.getBirthDay())
+                    .withBirthYear(unauthenticatedRequest.getBirthYear())
                     .withCity(unauthenticatedRequest.getCity())
                     .withState(unauthenticatedRequest.getState())
+                    .withCountry(unauthenticatedRequest.getCountry())
                     .withPersonalityType(unauthenticatedRequest.getPersonalityType())
                     .withHobbies(unauthenticatedRequest.getHobbies())
+                    .withAboutMe(unauthenticatedRequest.getAboutMe())
                     .withConnexions(unauthenticatedRequest.getConnexions())
                     .build());
             }, (request, serviceComponent) -> serviceComponent.provideUpdateUserProfileActivity()

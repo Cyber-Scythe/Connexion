@@ -47,7 +47,7 @@ class SearchPlaylists extends BindingClass {
         //document.getElementById('search-playlists-form').addEventListener('submit', this.search);
         //document.getElementById('search-btn').addEventListener('click', this.search);
 
-        this.header.addHeaderToPage();
+        //this.header.addHeaderToPage();
 
         this.dataStore = new DataStore();
        // this.dataStore.addChangeListener(this.editProfile);

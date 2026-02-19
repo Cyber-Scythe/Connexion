@@ -34,11 +34,15 @@ public class GetConnexionProfileActivityTest {
     public void handleRequest_userFound_returnsUserModelInResult() {
         // GIVEN
         String expectedId = "expectedId";
-        String expectedName = "expectedName";
+        String expectedFirstName = "expectedFirstName";
+        String expectedLastName = "expectedLastName";
         String expectedEmail = "expectedEmail";
-        int expectedAge = 32;
+        int expectedBirthMonth = 1;
+        int expectedBirthDay = 1;
+        int expectedBirthYear = 2000;
         String expectedCity = "expectedCity";
         String expectedState = "expectedState";
+        String expectedCountry = "expectedCountry";
         String expectedPersonalityType = "expectedPersonalityType";
         List<String> expectedHobbies = List.of("hobbies");
 
@@ -46,11 +50,15 @@ public class GetConnexionProfileActivityTest {
 
         User user = new User();
         user.setId(expectedId);
-        user.setName(expectedName);
+        user.setFirstName(expectedFirstName);
+        user.setLastName(expectedLastName);
         user.setEmail(expectedEmail);
-        user.setAge(expectedAge);
+        user.setBirthMonth(expectedBirthMonth);
+        user.setBirthDay(expectedBirthDay);
+        user.setBirthYear(expectedBirthYear);
         user.setCity(expectedCity);
         user.setState(expectedState);
+        user.setCountry(expectedCountry);
         user.setPersonalityType(expectedPersonalityType);
         user.setHobbies(expectedHobbies);
         user.setConnexions(expectedConnexions);

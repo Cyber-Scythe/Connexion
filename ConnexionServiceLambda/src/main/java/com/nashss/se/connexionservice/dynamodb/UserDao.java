@@ -1,5 +1,15 @@
 package com.nashss.se.connexionservice.dynamodb;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.CreateBucketRequest;
+import com.amazonaws.services.s3.model.GetBucketLocationRequest;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.nashss.se.connexionservice.dynamodb.models.User;
 import com.nashss.se.connexionservice.metrics.MetricsPublisher;
 
@@ -40,8 +50,7 @@ public class UserDao {
      * @return the stored user
      */
     public User getUser(String id) {
-        User user = this.dynamoDbMapper.load(User.class, id);
-        return user;
+        return this.dynamoDbMapper.load(User.class, id);
     }
 
 
@@ -52,10 +61,11 @@ public class UserDao {
      * @return user Returns the user that was saved
      */
     public User saveUser(User user) {
+        // save the user data to DynamoDb
         this.dynamoDbMapper.save(user);
+
         return user;
     }
-
 
     /**
      * Perform a search ("via a scan") of the users table.

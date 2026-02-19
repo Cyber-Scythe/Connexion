@@ -38,8 +38,7 @@ public class HobbyDao {
         log.info("Inside HobbyDao getHobbies");
 
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
-        List<Hobby> hobbyScanExpression =  dynamoDbMapper.scan(Hobby.class, scanExpression);
-        return hobbyScanExpression;
+        return dynamoDbMapper.scan(Hobby.class, scanExpression);
     }
 }
 

@@ -67,20 +67,21 @@ public class GetUserProfileActivity {
 
             User newUser = new User();
             newUser.setEmail(getUserProfileActivityRequest.getEmail());
-            newUser.setName(getUserProfileActivityRequest.getName());
+            newUser.setFirstName(getUserProfileActivityRequest.getFirstName());
+            newUser.setLastName(getUserProfileActivityRequest.getLastName());
             newUser.setId(getUserProfileActivityRequest.getId());
 
             userDao.saveUser(newUser);
             userModel = new ModelConverter().toUserModel(newUser);
 
-            createS3Bucket(getUserProfileActivityRequest.getId());
+            // Want to eventually add each new user to an S3 bucket so photos and data can be stored there
         }
 
         return GetUserProfileActivityResult.builder()
                 .withUser(userModel)
                 .build();
     }
-
+/*
     private void createS3Bucket(String userId) {
 
         AmazonS3 s3 = AmazonS3ClientBuilder.standard()
@@ -108,6 +109,7 @@ public class GetUserProfileActivity {
             }
         }
     }
+ */
 
 }
 
