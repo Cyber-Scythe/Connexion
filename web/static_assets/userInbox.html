@@ -2,6 +2,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script type="text/javascript" src="assets/userInbox.js"></script>
+    <script type="text/javascript" src="assets/dropdownMenu.js"></script>
     <link rel="stylesheet" href="https://demos.creative-tim.com/soft-ui-dashboard/assets/css/nucleo-icons.css">
     <link rel="stylesheet" href="https://demos.creative-tim.com/soft-ui-dashboard/assets/css/nucleo-svg.css">
     <link rel="stylesheet" href="https://demos.creative-tim.com/soft-ui-dashboard/assets/css/soft-ui-dashboard.min.css?v=1.0.2">
@@ -11,7 +12,23 @@
 
 <body class="background">
 <header class="header" id="header">
-
+    <div class="dropdown" data-dropdown>
+        <button class="dropdown__trigger" aria-haspopup="true" aria-expanded="false">
+            Menu
+            <svg class="dropdown__icon" viewBox="0 0 20 20" width="16" height="=16">
+                <path d="M5 8l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2"/>
+            </svg>
+        </button>
+        <ul class="dropdown__menu" role="menu">
+            <li role="none"><a href="####" class="dropdown__item" role="menuitem">Home</a></li>
+            <li role="none"><a href="####" class="dropdown__item" role="menuitem">Profile</a></li>
+            <li role="none"><a href="####" class="dropdown__item" role="menuitem">Settings</a></li>
+            <li role="none"><a href="####" class="dropdown__item" role="menuitem">Dashboard</a></li>
+            <li role="none"><a href="####" class="dropdown__item" role="menuitem">Connexions</a></li>
+            <li role="none" class="dropdown__separator"></li>
+            <li role="none"><a href="#" class="dropdown__item" role="menuitem" data-action="logout">Logout</a></li>
+        </ul>
+    </div>
 </header>
 <div class="container-fluid pt-3">
     <br>
